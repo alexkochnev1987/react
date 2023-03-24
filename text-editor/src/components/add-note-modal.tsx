@@ -47,9 +47,11 @@ export const AddNoteModal = ({
       return splitedString.map((word, index) =>
         word[0] === '#' ? (
           index === 0 ? (
-            <strong style={{ color: 'red' }}>{word}</strong>
+            <strong key={word} style={{ color: 'red' }}>
+              {word}
+            </strong>
           ) : (
-            <span>
+            <span key={word}>
               {' '}
               <strong style={{ color: 'red' }}>{word}</strong>
             </span>
@@ -57,19 +59,23 @@ export const AddNoteModal = ({
         ) : index === 0 ? (
           word
         ) : (
-          <span> {word}</span>
+          <span key={word}> {word}</span>
         ),
       );
     }
+    return string;
   };
 
   return (
     <Modal size='lg' centered show={show} onHide={() => onHide()}>
       <Modal.Header closeButton />
-      <Modal.Title className='p-3'>Заметка:{highLighter(task)}</Modal.Title>
+      <Modal.Title className='p-3'>
+        {Tips.note}
+        {highLighter(task)}
+      </Modal.Title>
       <Modal.Body>
         <div>
-          Хэштэг:
+          {Tips.hash}
           {hashtag.length > 0 &&
             hashtag.map((x) => <Hashtag key={x} hashtag={x} deleteHashtag={deleteTag} />)}
         </div>
