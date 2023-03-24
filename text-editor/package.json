@@ -13,9 +13,15 @@
     "prettier:fix": "npm run prettier -- --write"
   },
   "dependencies": {
+    "@types/uuid": "^9.0.1",
+    "bootstrap": "^5.2.3",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-bootstrap": "^2.7.2",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.8.0",
+    "styled-components": "^5.3.9",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",
@@ -31,6 +37,7 @@
     "eslint-plugin-react": "^7.30.0",
     "eslint-plugin-react-hooks": "^4.5.0",
     "prettier": "^2.6.2",
+    "sass": "^1.59.3",
     "typescript": "*",
     "vite": "^4.2.1"
   }
