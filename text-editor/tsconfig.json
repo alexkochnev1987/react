@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": ["vitest/globals"],
     "target": "ESNext",
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
@@ -26,6 +27,6 @@
       "~/*": ["src/*"]
     }
   },
-  "include": ["vite.config.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["vite.config.ts", "**/*.ts", "**/*.tsx", "src/utils/validate.test.ts"],
   "exclude": ["node_modules"]
 }
