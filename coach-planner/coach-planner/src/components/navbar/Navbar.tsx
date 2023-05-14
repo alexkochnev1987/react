@@ -1,47 +1,62 @@
-import * as React from "react";
 import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
-import { Avatar, Grid, Typography } from "@mui/material";
-import { useAppSelector } from "../../store/hooks";
+import {
+  Avatar,
+  Box,
+  Grid,
+  IconButton,
+  Typography,
+  useTheme,
+} from "@mui/material";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
 
 import { RouteNames } from "../../router/routes";
 import { Link } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
+import { ColorModeContext } from "../../App";
+import { useContext } from "react";
+import { BoxDisplayFlex } from "../styled/Box-d-flex";
+import { NavigationMenu } from "./Navigation-meny";
 
 export function Navbar() {
   const appName = "CoachPlanner";
   const [user] = useAuthState(auth);
+  const theme = useTheme();
+  const colorMode = useContext(ColorModeContext);
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            {appName}
-          </Typography>
-          {user ? (
-            <>
-              {user.photoURL && <Avatar src={user.photoURL} />}
-              <Button
-                onClick={() => auth.signOut()}
-                size="small"
-                color="inherit"
-              >
-                Logout
-              </Button>
-            </>
+    <AppBar position="static">
+      <Toolbar>
+        <NavigationMenu />
+        <IconButton onClick={colorMode.toggleColorMode} color="inherit">
+          {theme.palette.mode === "dark" ? (
+            <Brightness7Icon />
           ) : (
-            <Button color="inherit" size="small">
-              <Link to={RouteNames.login} color="inherit">
-                Login
-              </Link>
-            </Button>
+            <Brightness4Icon />
           )}
-        </Toolbar>
-      </AppBar>
-    </Box>
+        </IconButton>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          {appName}
+        </Typography>
+
+        {user ? (
+          <BoxDisplayFlex gap={1}>
+            {user.photoURL && <Avatar src={user.photoURL} />}
+            <Button onClick={() => auth.signOut()} size="small" color="inherit">
+              Logout
+            </Button>
+          </BoxDisplayFlex>
+        ) : (
+          <Button color="inherit" size="small">
+            <Link to={RouteNames.login} color="inherit">
+              Login
+            </Link>
+          </Button>
+        )}
+      </Toolbar>
+    </AppBar>
   );
 }

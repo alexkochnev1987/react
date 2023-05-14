@@ -1,5 +1,4 @@
 import { Button } from "@mui/material";
-import { width } from "@mui/system";
 
 const maxFileSize = 10_000_000;
 

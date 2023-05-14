@@ -10,6 +10,9 @@ import { Plan } from "../pages/Plan";
 import { Registration } from "../pages/Registration";
 import { UserPage } from "../pages/User-page";
 import { RouteNames } from "./routes";
+import { TrainingPage } from "../pages/Trainig-page";
+import { ShowEvents } from "../pages/Show-events";
+import { TrainingsPage } from "../pages/Trainings-page";
 
 const PrivateRouter = createBrowserRouter([
   {
@@ -25,35 +28,34 @@ const PrivateRouter = createBrowserRouter([
           </RequireAuth>
         ),
         children: [
+          { path: "/", element: <Exercise /> },
           {
-            path: RouteNames.exercise,
+            path: RouteNames.myExercises,
             element: <Exercise />,
           },
           {
             path: RouteNames.plan,
             element: <Plan />,
+            children: [
+              {
+                path: RouteNames.plan + RouteNames.id,
+                element: <ShowEvents />,
+              },
+            ],
+          },
+
+          {
+            path: RouteNames.trainings,
+            element: <TrainingsPage />,
+            children: [
+              {
+                path: RouteNames.trainings + RouteNames.id,
+                element: <TrainingPage />,
+              },
+            ],
           },
         ],
       },
-      {
-        path: RouteNames.login,
-        element: <Login />,
-      },
-      {
-        path: RouteNames.registration,
-        element: <Registration />,
-      },
-    ],
-  },
-]);
-
-const GeneralRouter = createBrowserRouter([
-  {
-    path: "/",
-    element: <Layout />,
-    errorElement: <ErrorPage />,
-    children: [
-      { index: true, element: <Login /> },
       {
         path: RouteNames.login,
         element: <Login />,

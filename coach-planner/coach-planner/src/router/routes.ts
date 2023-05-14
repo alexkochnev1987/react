@@ -2,6 +2,9 @@ export enum RouteNames {
   login = "/login",
   registration = "/registration",
   user = "/user",
-  exercise = "/exercise",
+  myExercises = "/exercises",
+  trainings = "/trainings",
   plan = "/plan",
+  allExercises = "/all",
+  id = "/:id",
 }

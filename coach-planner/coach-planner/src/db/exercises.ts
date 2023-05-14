@@ -8,6 +8,8 @@ import {
   deleteDoc,
   getDocs,
   getDoc,
+  query,
+  where,
 } from "firebase/firestore";
 import { getDownloadURL, listAll, ref, uploadBytes } from "firebase/storage";
 import { db, storage } from "../firebase";
@@ -16,8 +18,8 @@ import { v4 as uuid } from "uuid";
 
 export interface ExerciseResponse {
   id: string;
-  like: string[];
-  dislike: string[];
+  like?: string[];
+  dislike?: string[];
   coachId: string;
   name: string;
   img: string;
@@ -28,8 +30,8 @@ export interface ExerciseResponse {
   link?: string;
   create: string;
   modify?: string;
+  coachImage?: string;
 }
-const date = Timestamp.fromDate(new Date());
 
 export interface UpdateExerciseBody {
   img: string;
@@ -39,28 +41,40 @@ export interface UpdateExerciseBody {
   tag?: string[];
   age?: string[];
   link?: string;
+  coachImage?: string;
 }
 
 export const exerciseCollection = collection(db, DbCollections.exercises);
-
-export const createExercise = async (coachId: string | undefined) => {
-  if (!coachId) return;
-  const response = await addDoc(exerciseCollection, {
-    coachId: coachId,
-    create: Timestamp.fromDate(new Date()),
-  });
-  return response.id;
-};
+export const getExercisesByCoachId = (coachId: string) =>
+  query(exerciseCollection, where("coachId", "==", coachId));
 
 export const getExercisesFromDb = async () => {
   const querySnapshot = await getDocs(collection(db, DbCollections.exercises));
-  return querySnapshot;
+  return querySnapshot.docs.map(
+    (x) => ({ id: x.id, ...x.data() } as ExerciseResponse)
+  );
+};
+
+export const createExercise = async (
+  coachId: string | undefined,
+  coachImage: string
+) => {
+  if (!coachId) return;
+  const image = coachImage || "";
+  const response = await addDoc(exerciseCollection, {
+    coachId: coachId,
+    coachImage: image,
+    create: Timestamp.fromDate(new Date()),
+  });
+  const exercise = await getExercisesById(response.id);
+  return exercise;
 };
 
 export const getExercisesById = async (id: string) => {
   const docRef = doc(db, DbCollections.exercises, id);
-  const querySnapshot = await getDoc(docRef);
-  console.log(querySnapshot.data());
+  const response = await getDoc(docRef);
+
+  return { id: response.id, ...response.data() } as ExerciseResponse;
 };
 
 export const updateExercise = async (
@@ -72,6 +86,8 @@ export const updateExercise = async (
     ...exercise,
     modify: serverTimestamp(),
   });
+  const newExercise = await getExercisesById(id);
+  return newExercise;
 };
 
 export const deleteExercise = async (id: string) => {
@@ -81,9 +97,6 @@ export const deleteExercise = async (id: string) => {
 
 export const uploadImg = async (file: File, id: string) => {
   const fileRef = ref(storage, id);
-  //   listAll(fileRef).then((x) =>
-  //     x.items.forEach((x) => getDownloadURL(x).then(console.log))
-  //   );
   const fileFromDb = await uploadBytes(fileRef, file);
   const url = await getDownloadURL(fileRef);
   return url;

@@ -1,8 +1,7 @@
 import { TextField } from "@mui/material";
-import Box from "@mui/system/Box";
 import { Control, Controller, FieldErrors } from "react-hook-form";
-import { UpdateExerciseBody } from "../../db/exercises";
-import { errorMessage, FormFields } from "./Exercise-form";
+import { UpdateExerciseBody } from "../../../db/exercises";
+import { FormFields, errorMessage } from "./constants";
 
 export const InputComponent = ({
   x,
@@ -14,7 +13,7 @@ export const InputComponent = ({
   control: Control<UpdateExerciseBody, any>;
 }) => {
   return (
-    <Box sx={{ p: 2, width: "auto" }}>
+    <>
       <Controller
         name={x.name}
         control={control}
@@ -36,6 +35,6 @@ export const InputComponent = ({
           {errorMessage}
         </p>
       )}
-    </Box>
+    </>
   );
 };

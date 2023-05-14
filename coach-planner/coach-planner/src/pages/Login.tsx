@@ -4,14 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { RouteNames } from "../router/routes";
 import GoogleIcon from "@mui/icons-material/Google";
 import {
-  getAuth,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
 import { useContext, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useAppSelector } from "../store/hooks";
 import { auth } from "../firebase";
 
 type Inputs = {

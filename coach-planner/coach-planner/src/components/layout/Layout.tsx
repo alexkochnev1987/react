@@ -6,7 +6,18 @@ export const Layout = () => {
   const description = "For using app login or register";
 
   return (
-    <Container>
+    <Container
+      disableGutters={true}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        width: "100%",
+        minHeight: "100vh",
+        bgcolor: "background.default",
+        color: "text.primary",
+        overflow: "hidden",
+      }}
+    >
       <Navbar />
       <MainPage />
     </Container>
