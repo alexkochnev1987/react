@@ -1,7 +1,4 @@
-import { Button } from "@mui/material";
-import React from "react";
-import { Link, Outlet } from "react-router-dom";
-import { RouteNames } from "../router/routes";
+import { Outlet } from "react-router-dom";
 
 export const UserPage = () => {
   return <Outlet />;

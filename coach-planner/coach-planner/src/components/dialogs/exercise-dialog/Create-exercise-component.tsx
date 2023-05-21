@@ -49,7 +49,7 @@ export const CreateExerciseComponent = (props: CreateExerciseProps) => {
                   <ShowImage
                     setValue={setValue}
                     idExercise={exercise.id}
-                    exerciseImage={exercise?.img}
+                    // exerciseImage={exercise?.img}
                   />
                 </Grid>
                 <Grid item container xs={12} sm={6} spacing={1}>

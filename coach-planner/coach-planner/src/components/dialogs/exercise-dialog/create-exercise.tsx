@@ -41,13 +41,7 @@ export const ExerciseDialog = (props: SimpleDialogProps) => {
 
   return (
     <Dialog onClose={handleClose} open={open} fullWidth={true}>
-      <SubmitDialog
-        open={openSubmit}
-        onClose={onClose}
-        close={() => {
-          setOpenSubmit(false);
-        }}
-      />
+      <SubmitDialog open={openSubmit} onClose={onClose} submit={onClose} />
       <DialogTitle>Create exercise</DialogTitle>
       <CreateExerciseComponent exercise={exercise} submit={submitForm} />
     </Dialog>

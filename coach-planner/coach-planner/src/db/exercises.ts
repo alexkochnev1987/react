@@ -45,6 +45,8 @@ export interface UpdateExerciseBody {
 }
 
 export const exerciseCollection = collection(db, DbCollections.exercises);
+export const getExerciseDocRef = (id: string) =>
+  doc(db, DbCollections.exercises, id);
 export const getExercisesByCoachId = (coachId: string) =>
   query(exerciseCollection, where("coachId", "==", coachId));
 
@@ -57,7 +59,7 @@ export const getExercisesFromDb = async () => {
 
 export const createExercise = async (
   coachId: string | undefined,
-  coachImage: string
+  coachImage: string | null | undefined
 ) => {
   if (!coachId) return;
   const image = coachImage || "";
@@ -66,8 +68,9 @@ export const createExercise = async (
     coachImage: image,
     create: Timestamp.fromDate(new Date()),
   });
-  const exercise = await getExercisesById(response.id);
-  return exercise;
+  return response.id;
+  // const exercise = await getExercisesById(response.id);
+  // return exercise;
 };
 
 export const getExercisesById = async (id: string) => {
@@ -79,15 +82,15 @@ export const getExercisesById = async (id: string) => {
 
 export const updateExercise = async (
   id: string,
-  exercise: UpdateExerciseBody
+  exercise: Partial<UpdateExerciseBody>
 ) => {
   const docRef = doc(db, DbCollections.exercises, id);
   await updateDoc(docRef, {
     ...exercise,
     modify: serverTimestamp(),
   });
-  const newExercise = await getExercisesById(id);
-  return newExercise;
+  // const newExercise = await getExercisesById(id);
+  // return newExercise;
 };
 
 export const deleteExercise = async (id: string) => {

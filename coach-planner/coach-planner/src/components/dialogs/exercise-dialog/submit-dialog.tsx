@@ -6,34 +6,48 @@ import {
   DialogTitle,
 } from "@mui/material";
 
+export interface dialogContent {
+  title: string;
+  message: string;
+  submit?: string;
+  cancel?: string;
+}
+
 interface SubmitDialogProps {
   open: boolean;
   onClose: () => void;
-  close: () => void;
+
+  submit: () => void;
+  content?: dialogContent;
 }
 
-export const SubmitDialog = ({ open, onClose, close }: SubmitDialogProps) => {
+const dialogTitle = "Вы уверены, что хотите закрыть страницу?";
+const dialogMessage = "Все несохраненные данные будут потеряны.";
+const cancelContent = "Отмена";
+const submitContent = "Подтвердить";
+
+export const SubmitDialog = ({
+  content,
+  open,
+  onClose,
+  submit,
+}: SubmitDialogProps) => {
   const cancel = () => {
-    console.log("close");
-    close();
-  };
-  const submit = () => {
-    close();
     onClose();
   };
 
   return (
-    <Dialog open={open}>
-      <DialogTitle>Вы уверены, что хотите закрыть страницу?</DialogTitle>
+    <Dialog open={open} onClose={onClose}>
+      <DialogTitle>{content?.title ? content?.title : dialogTitle}</DialogTitle>
       <DialogContent>
-        <p>Все несохраненные данные будут потеряны.</p>
+        <p>{content?.message ? content.message : dialogMessage}</p>
       </DialogContent>
       <DialogActions>
         <Button onClick={() => cancel()} color="primary">
-          Отмена
+          {content?.cancel ? content.cancel : cancelContent}
         </Button>
-        <Button onClick={() => submit()} color="primary">
-          Закрыть страницу
+        <Button onClick={submit} color="primary">
+          {content?.submit ? content.submit : submitContent}
         </Button>
       </DialogActions>
     </Dialog>

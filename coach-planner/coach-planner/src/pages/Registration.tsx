@@ -1,7 +1,11 @@
 import { Button } from "@mui/material";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RouteNames } from "../router/routes";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { toast } from "react-toastify";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useEffect } from "react";
 
 type Inputs = {
   email: string;
@@ -10,12 +14,32 @@ type Inputs = {
 };
 
 export const Registration = () => {
+  const auth = getAuth();
+  const navigate = useNavigate();
+  const [user] = useAuthState(auth);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = async ({ email, password }) => {};
+
+  const onSubmit: SubmitHandler<Inputs> = async ({ email, password }) => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+
+        toast.success(`Hello ${user.displayName}`);
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        toast.error(errorMessage);
+      });
+  };
+
+  useEffect(() => {
+    if (user) navigate("/");
+  }, [user]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

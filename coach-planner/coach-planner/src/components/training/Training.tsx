@@ -1,6 +1,16 @@
-import { Avatar, Card, CardHeader, Grid } from "@mui/material";
-import { TrainingResponse, addExerciseInTraining } from "../../db/trainings";
-import { red } from "@mui/material/colors";
+import {
+  Avatar,
+  Button,
+  Card,
+  CardHeader,
+  Grid,
+  Typography,
+} from "@mui/material";
+import {
+  TrainingResponse,
+  addExerciseInTraining,
+  deleteTraining,
+} from "../../db/trainings";
 import { OpenExerciseDialog } from "../Open-exercise-dialog";
 import { ExerciseResponse } from "../../db/exercises";
 import { ExerciseParamsCard } from "./Exercise-params-card";
@@ -8,9 +18,12 @@ import { countEnergySupplyTime } from "../../utils/countEnergySupplyTime";
 import { TrainingParams } from "./Training-params";
 import { ExerciseTree } from "../tree/Exercise-tree";
 import { ExpandText } from "./ExpandText";
+import { useNavigate } from "react-router-dom";
+import { RouteNames } from "../../router/routes";
 
 export const Training = ({ training }: { training: TrainingResponse }) => {
   const buttonLabel = "Add new exercise";
+  const navigate = useNavigate();
 
   const { id, coachId, coachImage, comments, exercises, name } = training;
 
@@ -18,36 +31,36 @@ export const Training = ({ training }: { training: TrainingResponse }) => {
     addExerciseInTraining(exercise, id);
   };
 
+  const deleteMyTraining = () => {
+    deleteTraining(id);
+    navigate(RouteNames.trainings);
+  };
+
   return (
-    <Card>
+    <>
       <ExpandText label="Show exercises">
         <ExerciseTree coachId={coachId} />
       </ExpandText>
-      <CardHeader
-        title={
-          <TrainingParams id={id} params={countEnergySupplyTime(exercises)} />
-        }
-        avatar={
-          <Avatar
-            sx={{ bgcolor: red[500] }}
-            aria-label="recipe"
-            src={coachImage}
-          />
-        }
-      />
-      <Grid container spacing={2} sx={{ background: "red" }}>
-        <Grid item xs={6} md={4} sx={{ background: "green" }}>
-          Training
-        </Grid>
-        <Grid item xs={6} md={8} sx={{ background: "green" }}>
-          {name}
-        </Grid>
+      <Grid
+        container
+        spacing={2}
+        justifyContent="space-between"
+        boxSizing="border-box"
+        p={1}
+        m={0}
+        width={"100%"}
+      >
+        <Typography variant="h2">{name}</Typography>
+        <Button onClick={deleteMyTraining} color="error" variant="contained">
+          Delete Training
+        </Button>
       </Grid>
+      <TrainingParams id={id} params={countEnergySupplyTime(exercises)} />
       <OpenExerciseDialog callback={addExercise} buttonLabel={buttonLabel} />
       {exercises &&
         exercises.map((x) => (
           <ExerciseParamsCard trainingId={id} key={x.uuid} exercise={x} />
         ))}
-    </Card>
+    </>
   );
 };

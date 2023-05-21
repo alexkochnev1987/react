@@ -13,6 +13,7 @@ import { RouteNames } from "./routes";
 import { TrainingPage } from "../pages/Trainig-page";
 import { ShowEvents } from "../pages/Show-events";
 import { TrainingsPage } from "../pages/Trainings-page";
+import { SetExercise } from "../pages/Set-exercise";
 
 const PrivateRouter = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const PrivateRouter = createBrowserRouter([
             element: <Exercise />,
           },
           {
+            path: RouteNames.myExercises + RouteNames.id,
+            element: <SetExercise />,
+          },
+          {
             path: RouteNames.plan,
             element: <Plan />,
             children: [
@@ -47,12 +52,10 @@ const PrivateRouter = createBrowserRouter([
           {
             path: RouteNames.trainings,
             element: <TrainingsPage />,
-            children: [
-              {
-                path: RouteNames.trainings + RouteNames.id,
-                element: <TrainingPage />,
-              },
-            ],
+          },
+          {
+            path: RouteNames.trainings + RouteNames.id,
+            element: <TrainingPage />,
           },
         ],
       },
@@ -69,7 +72,5 @@ const PrivateRouter = createBrowserRouter([
 ]);
 
 export const MyRouterProvider = () => {
-  const auth = getAuth();
-
   return <RouterProvider router={PrivateRouter} />;
 };

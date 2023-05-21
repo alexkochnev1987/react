@@ -11,6 +11,7 @@ import {
 import { useContext, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
+import { toast } from "react-toastify";
 
 type Inputs = {
   email: string;
@@ -31,19 +32,16 @@ export const Login = () => {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log(user);
+        toast.success(`Hello ${user.displayName}`);
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
+        toast.error(errorMessage);
       });
   };
 
-  const onSubmit: SubmitHandler<Inputs> = async (
-    { email, password },
-    e: React.BaseSyntheticEvent<object, any, any> | undefined
-  ) => {
-    e?.preventDefault();
+  const onSubmit: SubmitHandler<Inputs> = async ({ email, password }) => {
     signWithEmail(email, password);
   };
 
@@ -59,7 +57,7 @@ export const Login = () => {
     if (user) navigate("/");
   }, [user]);
   return (
-    <form onSubmit={handleSubmit((data, e) => onSubmit(data, e))}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <input
         {...register("email", { required: true })}
         placeholder="email"

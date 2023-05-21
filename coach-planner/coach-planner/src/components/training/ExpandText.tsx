@@ -12,9 +12,11 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 export const ExpandText = ({
   label,
   children,
+  text,
 }: {
   label: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
+  text?: string;
 }) => {
   const [expanded, setExpanded] = useState(false);
   const handleExpandClick = () => setExpanded((x) => !x);
@@ -26,12 +28,14 @@ export const ExpandText = ({
           onClick={handleExpandClick}
           aria-expanded={expanded}
           aria-label="show more"
+          disabled={!children && !text}
         >
           {expanded ? <ExpandLessIcon /> : <ExpandMoreIcon />}
         </IconButton>
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>{children}</CardContent>
+        {children && <CardContent>{children}</CardContent>}
+        {text && <CardContent>{text}</CardContent>}
       </Collapse>
     </>
   );

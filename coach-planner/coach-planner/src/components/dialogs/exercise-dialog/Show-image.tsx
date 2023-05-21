@@ -2,33 +2,62 @@ import { Box, CardMedia, CircularProgress, Hidden } from "@mui/material";
 import React, { useState } from "react";
 import { UseFormSetValue } from "react-hook-form";
 import { UploadFile } from "./Upload-file";
-import { UpdateExerciseBody, uploadImg } from "../../../db/exercises";
+import {
+  UpdateExerciseBody,
+  updateExercise,
+  uploadImg,
+} from "../../../db/exercises";
 import { BoxFlexColumn } from "../../styled/Box-d-flex";
 
 export const ShowImage = ({
   setValue,
   idExercise,
-  exerciseImage,
-}: {
-  setValue: UseFormSetValue<UpdateExerciseBody>;
+}: // exerciseImage,
+{
+  setValue?: UseFormSetValue<UpdateExerciseBody>;
   idExercise: string;
-  exerciseImage: string | undefined;
+  // exerciseImage: string | undefined;
 }) => {
-  const [image, setImage] = useState(exerciseImage);
+  // const [image, setImage] = useState(exerciseImage);
   const [loadImage, setLoadImage] = useState(false);
-  const loadFile = (file: File) => {
+  const loadFile = async (file: File) => {
     setLoadImage(true);
-    uploadImg(file, idExercise)
-      .then((img) => {
-        setImage(img);
-        setValue("img", img);
-      })
-      .finally(() => setLoadImage(false));
+    const img = await uploadImg(file, idExercise);
+    console.log(idExercise);
+
+    await updateExercise(idExercise, { img });
+
+    // setImage(img);
+    // console.log(img);
+
+    // setValue("img", img);
+    setLoadImage(false);
   };
 
   return (
     <BoxFlexColumn width={"100%"} gap={1}>
       {loadImage ? (
+        <div
+          style={{
+            display: "flex",
+            height: "100%",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <CircularProgress />
+        </div>
+      ) : (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <UploadFile loadFile={loadFile} />
+        </div>
+      )}
+      {/* {loadImage ? (
         <div
           style={{
             display: "flex",
@@ -53,15 +82,7 @@ export const ShowImage = ({
             <img src={image} alt="exercise image" style={{ width: "100%" }} />
           </Box>
         )
-      )}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <UploadFile loadFile={loadFile} />
-      </div>
+      )} */}
     </BoxFlexColumn>
   );
 };

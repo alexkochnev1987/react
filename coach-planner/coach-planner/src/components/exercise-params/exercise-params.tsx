@@ -10,6 +10,7 @@ import {
   energySupplyOptions,
   energySupplyParams,
   EnergySupply,
+  LoadIntensity,
 } from "./constants";
 import { InputNumberComponent } from "./Input-number";
 import { RadioIntensity } from "./Radio-intensity";
@@ -29,6 +30,23 @@ import { useClickOutside } from "../../hooks/use-click-outside";
 import { setRest } from "../../utils/setRest";
 import { setEnergySupply } from "../../utils/setEnergySupply";
 import { countExerciseTime } from "../../utils/countExerciseTime";
+import { SelectComponent } from "./Select-componet";
+
+export const energyOptions = [
+  EnergySupply.CP,
+  EnergySupply.CPLa,
+  EnergySupply.LA,
+  EnergySupply.O2,
+  EnergySupply.Rest,
+];
+
+export const intensityOptions = [
+  LoadIntensity.max,
+  LoadIntensity.sub,
+  LoadIntensity.high,
+  LoadIntensity.low,
+  LoadIntensity.min,
+];
 
 export const ExerciseParams = ({
   params,
@@ -40,6 +58,7 @@ export const ExerciseParams = ({
   const {
     handleSubmit,
     setValue,
+    getValues,
     control,
     watch,
     reset,
@@ -95,68 +114,71 @@ export const ExerciseParams = ({
 
   return (
     <ClickAwayListener onClickAway={handleBlur}>
-      <Box sx={{ maxWidth: "280px" }}>
-        <FormControlLabel
-          control={<Switch checked={modeManual} onChange={handleChange} />}
-          label={modeManual ? "Мануал" : "Авто"}
-        />
+      {/* <Box sx={{ maxWidth: "280px" }}> */}
 
-        <form
-          onFocus={handleFocus}
-          onSubmit={handleSubmit(onSubmit)}
-          ref={refForm}
-        >
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <RadioIntensity
-                mode={true}
-                x={radioParams}
-                control={control}
-                errors={errors}
-                options={selectOptions}
+      <form
+        onFocus={handleFocus}
+        onSubmit={handleSubmit(onSubmit)}
+        ref={refForm}
+      >
+        <Grid container spacing={1}>
+          <Grid item xs={12}>
+            <Typography variant="h6" textAlign="center">
+              <FormControlLabel
+                control={
+                  <Switch checked={modeManual} onChange={handleChange} />
+                }
+                label={modeManual ? "Мануал" : "Авто"}
               />
-            </Grid>
-            <Grid item xs={6}>
-              <Grid container spacing={2} p={1}>
-                {ExerciseParamsArray.map((x) => (
-                  <Grid item xs={12} key={x.name}>
-                    <InputNumberComponent
-                      mode={modeManual}
-                      x={x}
-                      control={control}
-                      errors={errors}
-                    />
-                  </Grid>
-                ))}
-              </Grid>
-            </Grid>
-            <Grid item xs={12}>
-              <RadioIntensity
-                mode={modeManual}
-                options={energySupplyOptions}
-                x={energySupplyParams}
-                control={control}
-                errors={errors}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="h6" gutterBottom>
-                Время упражнения :{totalTime} мин
-              </Typography>
-            </Grid>
-            {formActive && (
-              <Container disableGutters>
-                <Button variant="contained" color="error" onClick={handleBlur}>
-                  Отмена
-                </Button>
-                <Button type="submit" variant="contained" color="success">
-                  Сохранить
-                </Button>
-              </Container>
-            )}
+              Total:{totalTime} min
+            </Typography>
           </Grid>
-        </form>
-      </Box>
+          <Grid item xs={6}>
+            <SelectComponent
+              label="Intensity"
+              items={intensityOptions}
+              callback={(value) => setValue("loadIntensity", value)}
+              value={getValues("loadIntensity")}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <SelectComponent
+              label="Energy"
+              manual={!modeManual}
+              items={energyOptions}
+              callback={(value) =>
+                setValue("energySupply", value as EnergySupply)
+              }
+              value={getValues("energySupply")}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Grid container spacing={1}>
+              {ExerciseParamsArray.map((x) => (
+                <Grid item xs={3} key={x.name}>
+                  <InputNumberComponent
+                    mode={modeManual}
+                    x={x}
+                    control={control}
+                    errors={errors}
+                  />
+                </Grid>
+              ))}
+            </Grid>
+          </Grid>
+          {formActive && (
+            <Container disableGutters>
+              <Button variant="contained" color="error" onClick={handleBlur}>
+                Отмена
+              </Button>
+              <Button type="submit" variant="contained" color="success">
+                Сохранить
+              </Button>
+            </Container>
+          )}
+        </Grid>
+      </form>
+      {/* </Box> */}
     </ClickAwayListener>
   );
 };

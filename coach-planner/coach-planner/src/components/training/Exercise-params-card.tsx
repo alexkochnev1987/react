@@ -9,7 +9,9 @@ import {
   updateExerciseInTraining,
 } from "../../db/trainings";
 import { CardTrainingExercise } from "./Card-training-exercise";
-import { Button } from "@mui/material";
+import { Button, IconButton, Stack } from "@mui/material";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
 export const ExerciseParamsCard = ({
   trainingId,
@@ -28,23 +30,38 @@ export const ExerciseParamsCard = ({
   };
 
   const shiftExerciseUp = () => {
-    shiftExercise(trainingId, exercise.uuid, shiftExerciseRight);
-  };
-
-  const shiftExerciseDown = () => {
     shiftExercise(trainingId, exercise.uuid, shiftExerciseLeft);
   };
 
+  const shiftExerciseDown = () => {
+    shiftExercise(trainingId, exercise.uuid, shiftExerciseRight);
+  };
+
   return (
-    <>
-      <Button onClick={shiftExerciseUp}>Up</Button>
-      <Button onClick={shiftExerciseDown}>Down</Button>
-      <CardTrainingExercise
-        exercise={exercise.exercise}
-        deleteExercise={deleteExercise}
-        submitParams={submitParams}
-        params={exercise.params}
-      />
-    </>
+    <CardTrainingExercise
+      exercise={exercise.exercise}
+      deleteExercise={deleteExercise}
+      submitParams={submitParams}
+      params={exercise.params}
+    >
+      <Stack spacing={1}>
+        <IconButton
+          onClick={shiftExerciseUp}
+          color="primary"
+          size="small"
+          sx={{ minWidth: "30px", width: "30px" }}
+        >
+          <ArrowUpwardIcon />
+        </IconButton>
+        <IconButton
+          onClick={shiftExerciseDown}
+          color="primary"
+          size="small"
+          sx={{ minWidth: "30px", width: "30px" }}
+        >
+          <ArrowDownwardIcon />
+        </IconButton>
+      </Stack>
+    </CardTrainingExercise>
   );
 };

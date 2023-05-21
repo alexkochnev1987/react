@@ -2,11 +2,15 @@ import {
   Timestamp,
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
+  getDocs,
   onSnapshot,
+  query,
   serverTimestamp,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import {
   ExerciseParamsDefault,
@@ -17,6 +21,7 @@ import { db } from "../firebase";
 import { DbCollections } from "./constants";
 import { v4 as uuidv4 } from "uuid";
 import { executeReducerBuilderCallback } from "@reduxjs/toolkit/dist/mapBuilders";
+import { ToastOptions, toast } from "react-toastify";
 
 export interface TrainingExerciseData {
   exercise: ExerciseResponse;
@@ -44,7 +49,19 @@ export interface TrainingResponse {
 export interface CreateTrainingRequest {
   coachId: string;
   coachImage?: string;
+  name: string;
 }
+
+const toastOptions: ToastOptions<{}> = {
+  position: "top-center",
+  autoClose: 5000,
+  hideProgressBar: false,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  progress: undefined,
+  theme: "colored",
+};
 
 export const trainingsCollection = collection(db, DbCollections.trainings);
 export const getTrainingRef = (id: string | undefined) => {
@@ -60,14 +77,43 @@ export const getTrainingById = async (id: string) => {
 
 export const createTraining = async ({
   coachId,
-  coachImage = undefined,
+  name,
 }: CreateTrainingRequest) => {
   if (!coachId) return;
   await addDoc(trainingsCollection, {
     coachId: coachId,
-    coachImage,
+    name,
     create: Timestamp.fromDate(new Date()),
   });
+};
+
+export const deleteTraining = async (trainingId: string) => {
+  const docRef = doc(trainingsCollection, trainingId);
+  await deleteDoc(docRef);
+};
+
+export const getTrainingByName = async ({
+  coachId,
+  name,
+}: CreateTrainingRequest) => {
+  const q = query(trainingsCollection, where("name", "==", name));
+  const querySnapshot = await getDocs(q);
+  return querySnapshot.docs.length ? querySnapshot.docs[0].id : false;
+};
+
+export const createUniqueTraining = async ({
+  coachId,
+  name,
+}: CreateTrainingRequest) => {
+  const exist = await getTrainingByName({ coachId, name });
+  if (exist) {
+    toast.error("Training with this name exist", toastOptions);
+    return;
+  }
+  createTraining({ coachId, name });
+  const trainingId = await getTrainingByName({ coachId, name });
+  toast.success("Training successfully created", toastOptions);
+  return trainingId;
 };
 
 export const updateTraining = async (

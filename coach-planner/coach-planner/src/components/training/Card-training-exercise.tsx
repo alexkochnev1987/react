@@ -1,64 +1,53 @@
-import {
-  Avatar,
-  Button,
-  Card,
-  CardHeader,
-  CardMedia,
-  Chip,
-  Grid,
-  Typography,
-} from "@mui/material";
-import { red } from "@mui/material/colors";
+import { Button, Card, CardHeader, CardMedia, Grid } from "@mui/material";
+
 import { ExerciseResponse } from "../../db/exercises";
 import { ExpandText } from "./ExpandText";
 import { ExerciseParams } from "../exercise-params/exercise-params";
 import { IExerciseParams } from "../exercise-params/constants";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 
 export const CardTrainingExercise = ({
   exercise,
   deleteExercise,
   submitParams,
   params,
+  children,
 }: {
   deleteExercise: () => void;
   exercise: ExerciseResponse;
   submitParams: (data: IExerciseParams) => void;
   params: IExerciseParams;
+  children?: React.ReactNode;
 }) => {
   return (
     <Card>
-      <Button onClick={deleteExercise}>Delete current exercise</Button>
-      <Grid container spacing={2}>
-        <Grid item xs={8}>
-          <CardHeader
-            title={exercise.name}
-            avatar={
-              <Avatar
-                sx={{ bgcolor: red[500] }}
-                aria-label="recipe"
-                src={exercise.coachImage}
-              />
-            }
-            subheader={exercise.tag?.map((x) => (
-              <Chip label={x} key={x} />
-            ))}
-          />
-          <CardMedia
-            component="img"
-            width={"100%"}
-            image={exercise.img}
-            alt={exercise.name}
-          />
-          <ExpandText label="Description">
-            <Typography paragraph>{exercise.description}</Typography>
-          </ExpandText>
-          <ExpandText label="Key points">
-            <Typography paragraph>{exercise.keyPoints}</Typography>
-          </ExpandText>
-        </Grid>
-        <Grid item xs={4}>
-          <ExerciseParams submit={submitParams} params={params} />
-        </Grid>
+      <CardHeader
+        action={
+          <Button onClick={deleteExercise} color="error">
+            <DeleteForeverIcon />
+          </Button>
+        }
+        title={exercise.name}
+        subheader={exercise.tag?.map((x, index) => (
+          <span key={x}>{x}; </span>
+        ))}
+        avatar={children}
+      />
+      <ExpandText label="Image">
+        <CardMedia
+          component="img"
+          width={"100%"}
+          image={exercise.img}
+          alt={exercise.name}
+        />
+      </ExpandText>
+      <ExerciseParams submit={submitParams} params={params} />
+      <Grid container justifyContent="space-between">
+        <ExpandText
+          label="Description"
+          text={exercise.description}
+        ></ExpandText>
+        <ExpandText label="Key points" text={exercise.keyPoints}></ExpandText>
       </Grid>
     </Card>
   );

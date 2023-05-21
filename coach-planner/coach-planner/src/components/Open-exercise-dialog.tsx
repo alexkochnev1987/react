@@ -22,7 +22,7 @@ export const OpenExerciseDialog = ({
     if (!exerciseResponse) {
       const photo = user?.photoURL || "";
       const newExercise = await createExercise(user?.uid, photo);
-      setExercise(newExercise);
+      // setExercise(newExercise);
       return setOpen(true);
     }
 
