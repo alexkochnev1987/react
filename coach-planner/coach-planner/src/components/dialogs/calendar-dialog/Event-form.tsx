@@ -10,6 +10,8 @@ import { createEvent, updateEvent } from "../../../db/events";
 import { useParams } from "react-router-dom";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { trainingsCollection } from "../../../db/trainings";
+import { useState } from "react";
+import { IExerciseParams } from "../../training/Training-params";
 
 interface EventFormProps {
   event: Partial<CalendarEvent>;
@@ -48,6 +50,7 @@ const colors: string[] = [
 
 export interface MyCalendarEvents extends CalendarEvent {
   training: string;
+  params?: IExerciseParams;
 }
 
 const initialValue: MyCalendarEvents = {
@@ -84,12 +87,6 @@ export const EventForm = ({ event, submit, close, id }: EventFormProps) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <InputDate
-        startAt={defaultValues.startAt}
-        endAt={defaultValues.endAt}
-        setValue={setValue}
-      />
-      <SelectColor control={control} colors={colors} />
       {trainings && (
         <SelectTraining
           setValue={setValue}
@@ -97,6 +94,12 @@ export const EventForm = ({ event, submit, close, id }: EventFormProps) => {
           trainings={trainings}
         />
       )}
+      <InputDate
+        startAt={defaultValues.startAt}
+        endAt={defaultValues.endAt}
+        setValue={setValue}
+      />
+      <SelectColor control={control} colors={colors} />
       <Button type="submit" variant="contained">
         Save
       </Button>

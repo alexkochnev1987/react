@@ -10,20 +10,15 @@ import {
 } from "@mui/material";
 import { red } from "@mui/material/colors";
 import { ExpandText } from "./training/ExpandText";
-import { OpenExerciseDialog } from "./Open-exercise-dialog";
 import { NavLink } from "react-router-dom";
 import { RouteNames } from "../router/routes";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import { SubmitDialog } from "./dialogs/exercise-dialog/submit-dialog";
-import { deleteDialogContent } from "./Exercise/Change-exercise-card";
 import { useState } from "react";
+import { deleteDialogContent } from "./Exercise/constants";
 
 export const ExerciseCard = ({ exercise }: { exercise: ExerciseResponse }) => {
-  // const buttonLabel = "Update exercise";
-  // const deleteExercises = () => {
-  //   deleteExercise(exercise.id);
-  // };
   const [openSubmit, setOpenSubmit] = useState(false);
   const deleteMyExercise = () => {
     deleteExercise(exercise.id);
@@ -31,10 +26,6 @@ export const ExerciseCard = ({ exercise }: { exercise: ExerciseResponse }) => {
 
   return (
     <Card>
-      {/* <OpenExerciseDialog
-        exerciseResponse={exercise}
-        buttonLabel={buttonLabel}
-      /> */}
       <SubmitDialog
         content={deleteDialogContent}
         open={openSubmit}

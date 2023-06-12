@@ -7,4 +7,5 @@ export enum RouteNames {
   plan = "/plan",
   allExercises = "/all",
   id = "/:id",
+  draw = "/draw",
 }

@@ -9,7 +9,7 @@ import {
   updateExerciseInTraining,
 } from "../../db/trainings";
 import { CardTrainingExercise } from "./Card-training-exercise";
-import { Button, IconButton, Stack } from "@mui/material";
+import { Button, Fab, IconButton, Stack } from "@mui/material";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 
@@ -49,7 +49,7 @@ export const ExerciseParamsCard = ({
           onClick={shiftExerciseUp}
           color="primary"
           size="small"
-          sx={{ minWidth: "30px", width: "30px" }}
+          sx={{ width: "30px" }}
         >
           <ArrowUpwardIcon />
         </IconButton>
@@ -57,7 +57,7 @@ export const ExerciseParamsCard = ({
           onClick={shiftExerciseDown}
           color="primary"
           size="small"
-          sx={{ minWidth: "30px", width: "30px" }}
+          sx={{ width: "30px" }}
         >
           <ArrowDownwardIcon />
         </IconButton>

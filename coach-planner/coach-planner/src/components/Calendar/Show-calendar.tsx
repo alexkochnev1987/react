@@ -1,15 +1,19 @@
-import { DocumentData, QuerySnapshot } from "firebase/firestore";
 import Kalend, {
   CalendarEvent,
   CalendarView,
   OnEventClickData,
   OnNewEventClickData,
+  OnSelectViewData,
 } from "kalend";
 import React, { useCallback, useState } from "react";
 import { AddTrainingDialog } from "../dialogs/calendar-dialog/Add-training-in-plan-dialog";
 import { getEventsCollectionLink, updateEvent } from "../../db/events";
 import { useCollection } from "react-firebase-hooks/firestore";
 import "kalend/dist/styles/index.css";
+import { Typography } from "@mui/material";
+import { getFirstLastDayWeek } from "../../utils/getFirstLastDayOfWeek";
+import { PageChangeData } from "kalend/common/interface";
+import { countMinutesByDate } from "../../utils/countMinutesByDate";
 
 export const ShowCalendar = ({ planId }: { planId: string }) => {
   const [myEvents] = useCollection(getEventsCollectionLink(planId));
@@ -19,6 +23,10 @@ export const ShowCalendar = ({ planId }: { planId: string }) => {
     setName(data);
     setOpen(true);
   };
+  const [dateRange, setDateRange] = useState<{
+    rangeFrom: string;
+    rangeTo: string;
+  }>();
   const parseDocumentData = () => {
     if (myEvents)
       return myEvents.docs.map(
@@ -40,6 +48,20 @@ export const ShowCalendar = ({ planId }: { planId: string }) => {
     setOpen(false);
   };
 
+  calendarEvents()
+    ?.filter((event) => {
+      return (
+        dateRange &&
+        new Date(event.startAt) >= new Date(dateRange?.rangeFrom) &&
+        new Date(event.startAt) <= new Date(dateRange?.rangeTo)
+      );
+    })
+    .map((event) => ({
+      startDate: event.startAt,
+      duration: countMinutesByDate(event.startAt, event.endAt),
+      trainingId: event.training,
+    }));
+
   return (
     <>
       <AddTrainingDialog open={open} onClose={handleClose} eventParams={name} />
@@ -59,6 +81,9 @@ export const ShowCalendar = ({ planId }: { planId: string }) => {
           weekDayStart={"Monday"}
           calendarIDsHidden={["work"]}
           language={"en"}
+          onPageChange={(v: PageChangeData) => {
+            setDateRange({ rangeFrom: v.rangeFrom, rangeTo: v.rangeTo });
+          }}
         />
       )}
     </>

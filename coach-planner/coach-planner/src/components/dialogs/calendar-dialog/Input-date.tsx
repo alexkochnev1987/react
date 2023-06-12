@@ -68,7 +68,7 @@ export const InputDate = ({
   };
 
   return (
-    <div>
+    <>
       <TextField
         type="date"
         label="Date"
@@ -91,6 +91,6 @@ export const InputDate = ({
         }}
         onChange={onChangeDuration}
       />
-    </div>
+    </>
   );
 };

@@ -1,16 +1,10 @@
 import React, { useState } from "react";
-import { useCollection } from "react-firebase-hooks/firestore";
-import { trainingsCollection } from "../../../db/trainings";
-import {
-  Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-} from "@mui/material";
+
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { UseFormSetValue } from "react-hook-form";
 import { MyCalendarEvents } from "./Event-form";
 import { DocumentData, QuerySnapshot } from "firebase/firestore";
+import { LoadTrainingParams } from "./Load-training-params";
 
 export const SelectTraining = ({
   setValue,
@@ -30,9 +24,9 @@ export const SelectTraining = ({
   };
 
   const [trainingId, setTrainingId] = useState(id);
-
   return (
-    <div>
+    <>
+      {trainingId && <LoadTrainingParams id={trainingId} />}
       <FormControl sx={{ width: "100%" }}>
         <InputLabel>Select training</InputLabel>
         <Select
@@ -52,6 +46,6 @@ export const SelectTraining = ({
             ))}
         </Select>
       </FormControl>
-    </div>
+    </>
   );
 };

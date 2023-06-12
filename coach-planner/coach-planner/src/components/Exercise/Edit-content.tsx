@@ -1,62 +1,69 @@
-import { Box, Button, TextField, Tooltip } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid,
+  IconButton,
+  TextField,
+  Tooltip,
+} from "@mui/material";
 import React, { useState } from "react";
-import { ExerciseResponse, updateExercise } from "../../db/exercises";
+import {
+  ExerciseResponse,
+  ExerciseResponseKeys,
+  updateExercise,
+} from "../../db/exercises";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
 
-type ExerciseResponseKeys = keyof ExerciseResponse;
 export const EditContent = ({
-  idExercise,
-  fieldName,
+  // idExercise,
+  // fieldName,
+  callback,
   value,
   label,
 }: {
-  idExercise: string;
-  fieldName: ExerciseResponseKeys;
-  value: string | string[] | undefined;
+  // idExercise: string;
+  // fieldName: ExerciseResponseKeys;
+  value: string | undefined;
   label: string;
+  callback: (value: string | undefined) => void;
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [content, setContent] = useState(value);
 
-  const handleClick = () => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setContent(event.target.value);
     setIsEditing(true);
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setContent(event.target.value);
+  const handleCancel = () => {
+    setContent(value);
+    setIsEditing(false);
   };
-
   const handleSave = () => {
     setIsEditing(false);
-    updateExercise(idExercise, { [fieldName]: content });
+    callback(content);
+    // updateExercise(idExercise, { [fieldName]: content });
   };
   return (
-    <Box>
-      {isEditing ? (
-        <TextField
-          value={content}
-          onChange={handleInputChange}
-          autoFocus
-          fullWidth
-          label={label}
-        />
-      ) : (
-        <Tooltip title={label} placement="top-start">
-          <div onClick={handleClick}>{content || "Введите значение"}</div>
-        </Tooltip>
-      )}
+    <Box display="flex">
+      <TextField
+        value={content}
+        onChange={handleInputChange}
+        autoFocus
+        fullWidth
+        label={label}
+        multiline
+      />
       {isEditing && (
-        <>
-          <Button variant="contained" color="primary" onClick={handleSave}>
-            Сохранить
-          </Button>
-          <Button
-            variant="contained"
-            color="error"
-            onClick={() => setIsEditing(false)}
-          >
-            Отменить
-          </Button>
-        </>
+        <Box>
+          <IconButton onClick={handleSave} sx={{ padding: 0 }}>
+            <CheckCircleIcon color="success" />
+          </IconButton>
+          <IconButton onClick={handleCancel} sx={{ padding: 0 }}>
+            <CancelIcon color="error" />
+          </IconButton>
+        </Box>
       )}
     </Box>
   );

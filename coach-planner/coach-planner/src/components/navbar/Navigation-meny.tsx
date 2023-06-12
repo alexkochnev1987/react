@@ -5,6 +5,25 @@ import React from "react";
 import { RouteNames } from "../../router/routes";
 import { NavLink } from "react-router-dom";
 
+const NavRoutes = [
+  {
+    name: "Exercises",
+    link: RouteNames.myExercises,
+  },
+  {
+    name: "Plan",
+    link: RouteNames.plan,
+  },
+  {
+    name: "Trainings",
+    link: RouteNames.trainings,
+  },
+  {
+    name: "Draw",
+    link: RouteNames.draw,
+  },
+];
+
 export const NavigationMenu = () => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -40,21 +59,13 @@ export const NavigationMenu = () => {
         onClose={handleClose}
         TransitionComponent={Fade}
       >
-        <MenuItem onClick={handleClose}>
-          <Link component={NavLink} to={RouteNames.myExercises}>
-            Exercises
-          </Link>
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Link component={NavLink} to={RouteNames.plan}>
-            Plan
-          </Link>
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Link component={NavLink} to={RouteNames.trainings}>
-            Trainings
-          </Link>
-        </MenuItem>
+        {NavRoutes.map((x) => (
+          <MenuItem onClick={handleClose} key={x.name}>
+            <Link component={NavLink} to={x.link}>
+              {x.name}
+            </Link>
+          </MenuItem>
+        ))}
       </Menu>
     </>
   );

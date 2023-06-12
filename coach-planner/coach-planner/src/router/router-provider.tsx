@@ -14,6 +14,7 @@ import { TrainingPage } from "../pages/Trainig-page";
 import { ShowEvents } from "../pages/Show-events";
 import { TrainingsPage } from "../pages/Trainings-page";
 import { SetExercise } from "../pages/Set-exercise";
+import { DrawPage } from "../pages/Draw-page";
 
 const PrivateRouter = createBrowserRouter([
   {
@@ -41,12 +42,10 @@ const PrivateRouter = createBrowserRouter([
           {
             path: RouteNames.plan,
             element: <Plan />,
-            children: [
-              {
-                path: RouteNames.plan + RouteNames.id,
-                element: <ShowEvents />,
-              },
-            ],
+          },
+          {
+            path: RouteNames.plan + RouteNames.id,
+            element: <ShowEvents />,
           },
 
           {
@@ -56,6 +55,10 @@ const PrivateRouter = createBrowserRouter([
           {
             path: RouteNames.trainings + RouteNames.id,
             element: <TrainingPage />,
+          },
+          {
+            path: RouteNames.draw,
+            element: <DrawPage />,
           },
         ],
       },

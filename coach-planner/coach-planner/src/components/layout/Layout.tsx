@@ -18,7 +18,7 @@ export const Layout = () => {
         minHeight: "100vh",
         bgcolor: "background.default",
         color: "text.primary",
-        overflow: "hidden",
+        // overflow: "hidden",
       }}
     >
       <ToastContainer />

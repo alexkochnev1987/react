@@ -6,6 +6,7 @@ import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
 import { toast } from "react-toastify";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useEffect } from "react";
+import { auth } from "../firebase";
 
 type Inputs = {
   email: string;
@@ -14,7 +15,6 @@ type Inputs = {
 };
 
 export const Registration = () => {
-  const auth = getAuth();
   const navigate = useNavigate();
   const [user] = useAuthState(auth);
   const {

@@ -1,4 +1,3 @@
-import React from "react";
 import { ExerciseResponse } from "../../db/exercises";
 import { ExpandExerciseImage } from "./Expand-exercise-image";
 import { useParams } from "react-router-dom";

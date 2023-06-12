@@ -10,9 +10,8 @@ export const getColorFromParams = (param: string) => {
     case EnergySupply.LA:
       return colors.red[500];
     case EnergySupply.Rest:
-      //   return colors.blue[500];
-      return "#008B8B";
+      return colors.blue[200];
     default:
-      return colors.lightBlue[500];
+      return colors.lightBlue[700];
   }
 };

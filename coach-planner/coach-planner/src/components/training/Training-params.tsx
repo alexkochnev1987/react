@@ -1,34 +1,32 @@
-import { Box, Container, Grid } from "@mui/material";
-import React from "react";
+import { Box, Container, Grid, Typography } from "@mui/material";
 import { getColorFromParams } from "../../utils/getColorFromParams";
+export interface IExerciseParams {
+  CP: number;
+  "CP+LA": number;
+  LA: number;
+  O2: number;
+  Rest: number;
+}
 
-export const TrainingParams = ({
-  id,
-  params,
-}: {
-  id: string;
-  params: {
-    CP: number;
-    "CP+LA": number;
-    LA: number;
-    O2: number;
-    Rest: number;
-  };
-}) => {
+export const TrainingParams = ({ params }: { params: IExerciseParams }) => {
   return (
-    <Grid container spacing={2}>
+    <Box
+      display={"flex"}
+      position={"sticky"}
+      top={0}
+      width={"100%"}
+      zIndex={1051}
+    >
       {Object.entries(params).map((x) => (
-        <Grid item xs={2} key={x[0]}>
-          <Box height={100} bgcolor={getColorFromParams(x[0])}>
+        <Box bgcolor={getColorFromParams(x[0])} flex={1}>
+          <Typography variant="caption" paragraph align="center">
+            {x[0]}
+          </Typography>
+          <Typography variant="overline" paragraph align="center" m={0}>
             {x[1]}
-          </Box>
-        </Grid>
-      ))}
-      <Grid item xs={2}>
-        <Box height={100}>
-          {Object.values(params).reduce((prev, curr) => prev + curr, 0)}
+          </Typography>
         </Box>
-      </Grid>
-    </Grid>
+      ))}
+    </Box>
   );
 };

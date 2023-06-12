@@ -33,6 +33,8 @@ export interface ExerciseResponse {
   coachImage?: string;
 }
 
+export type ExerciseResponseKeys = keyof ExerciseResponse;
+
 export interface UpdateExerciseBody {
   img: string;
   name: string;

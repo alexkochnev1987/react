@@ -9,12 +9,14 @@ export const TrainingPage = () => {
   const [value, loading, error] = useDocument(getTrainingRef(id));
 
   return (
-    <Stack spacing={1}>
-      {value && (
-        <Training
-          training={{ id: value.id, ...value.data() } as TrainingResponse}
-        />
-      )}
-    </Stack>
+    <>
+      <Stack spacing={1}>
+        {value && (
+          <Training
+            training={{ id: value.id, ...value.data() } as TrainingResponse}
+          />
+        )}
+      </Stack>
+    </>
   );
 };

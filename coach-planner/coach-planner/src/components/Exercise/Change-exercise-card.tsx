@@ -7,9 +7,14 @@ import {
   CardMedia,
   Chip,
   Grid,
+  Typography,
 } from "@mui/material";
 import { ExpandText } from "../training/ExpandText";
-import { ExerciseResponse, deleteExercise } from "../../db/exercises";
+import {
+  ExerciseResponse,
+  deleteExercise,
+  updateExercise,
+} from "../../db/exercises";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useState } from "react";
 import { SubmitDialog } from "../dialogs/exercise-dialog/submit-dialog";
@@ -17,13 +22,8 @@ import { useNavigate } from "react-router-dom";
 import { RouteNames } from "../../router/routes";
 import { ShowImage } from "../dialogs/exercise-dialog/Show-image";
 import { EditContent } from "./Edit-content";
-
-export const deleteDialogContent = {
-  title: "Вы хотите удалить упражнение",
-  message: "Упражнение будет удалено безвозвратно",
-  submit: "Подтвердить",
-  cancel: "Отмена",
-};
+import { MultipleSelectChip } from "./Edit-tags";
+import { ageOptions, deleteDialogContent, tagOptions } from "./constants";
 
 export const ChangeExerciseCard = ({
   exercise,
@@ -36,6 +36,11 @@ export const ChangeExerciseCard = ({
     navigate(RouteNames.myExercises);
     deleteExercise(exercise.id);
   };
+
+  const updateMyExercise = (content: undefined | string, fieldName: string) => {
+    updateExercise(exercise.id, { [fieldName]: content });
+  };
+
   return (
     <Card>
       <SubmitDialog
@@ -50,8 +55,9 @@ export const ChangeExerciseCard = ({
         title={
           <EditContent
             label={"Название упражнения"}
-            idExercise={exercise.id}
-            fieldName={"name"}
+            // idExercise={exercise.id}
+            // fieldName={"name"}
+            callback={(value) => updateMyExercise(value, "name")}
             value={exercise.name}
           />
         }
@@ -62,9 +68,6 @@ export const ChangeExerciseCard = ({
             src={exercise.coachImage}
           />
         }
-        subheader={exercise.tag?.map((x) => (
-          <Chip label={x} key={x} />
-        ))}
         action={
           <Button onClick={() => setOpenSubmit(true)} color="error">
             <DeleteForeverIcon />
@@ -85,19 +88,34 @@ export const ChangeExerciseCard = ({
         </Grid>
         <Grid item xs={12} sm={4} md={6} lg={6}>
           <EditContent
-            idExercise={exercise.id}
-            fieldName={"age"}
-            value={exercise.age}
-            label={"Возраст"}
-          />
-          <EditContent
-            idExercise={exercise.id}
-            fieldName={"description"}
+            // idExercise={exercise.id}
+            // fieldName={"description"}
+            callback={(value) => updateMyExercise(value, "description")}
             value={exercise.description}
             label={"Описание упражнения"}
           />
-          {/* <ExpandText label="Description" text={exercise.description} />
-          <ExpandText label="Key points" text={exercise.keyPoints} /> */}
+          <EditContent
+            // idExercise={exercise.id}
+            // fieldName={"keyPoints"}
+            callback={(value) => updateMyExercise(value, "keyPoints")}
+            value={exercise.keyPoints}
+            label={"Key points"}
+          />
+          <MultipleSelectChip
+            idExercise={exercise.id}
+            fieldName={"tag"}
+            value={exercise.tag}
+            label={"Tag"}
+            options={tagOptions}
+          />
+
+          <MultipleSelectChip
+            idExercise={exercise.id}
+            fieldName={"age"}
+            value={exercise.age}
+            label={"Age"}
+            options={ageOptions}
+          />
         </Grid>
       </Grid>
     </Card>

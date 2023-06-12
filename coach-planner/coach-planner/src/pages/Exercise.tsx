@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-
 import {
   createExercise,
   exerciseCollection,
@@ -9,7 +7,6 @@ import {
 import { useCollection } from "react-firebase-hooks/firestore";
 import { ExerciseCard } from "../components/Exercise-card";
 import { BoxFlexColumn } from "../components/styled/Box-d-flex";
-import { OpenExerciseDialog } from "../components/Open-exercise-dialog";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -30,7 +27,6 @@ export const Exercise = () => {
       <Button variant="outlined" onClick={createNewExercise}>
         {buttonLabel}
       </Button>
-      {/* <OpenExerciseDialog buttonLabel={buttonLabel} /> */}
       {value &&
         value.docs.map((doc) => (
           <ExerciseCard

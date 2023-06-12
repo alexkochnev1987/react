@@ -10,7 +10,6 @@ export const useClickOutside = <T extends HTMLElement>(
   const handleClick = useCallback(
     (event: MouseEvent) => {
       const select = selectRef.current?.MenuProps;
-      console.log(select);
 
       if (ref.current && !ref.current.contains(event.target as Node)) {
         callback();
