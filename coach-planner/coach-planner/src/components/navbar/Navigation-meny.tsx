@@ -22,6 +22,10 @@ const NavRoutes = [
     name: "Draw",
     link: RouteNames.draw,
   },
+  {
+    name: "Konva",
+    link: RouteNames.conva,
+  },
 ];
 
 export const NavigationMenu = () => {

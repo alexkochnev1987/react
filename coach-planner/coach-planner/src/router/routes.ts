@@ -8,4 +8,5 @@ export enum RouteNames {
   allExercises = "/all",
   id = "/:id",
   draw = "/draw",
+  conva = "conva",
 }
