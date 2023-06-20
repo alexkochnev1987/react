@@ -1,3 +1,5 @@
 {
-  "cSpell.words": ["firestore", "middlewares", "toastr"]
+  "cSpell.words": ["firestore", "middlewares", "toastr"],
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }

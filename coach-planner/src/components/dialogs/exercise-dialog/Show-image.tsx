@@ -1,39 +1,26 @@
-import { Box, CardMedia, CircularProgress, Hidden } from "@mui/material";
-import React, { useState } from "react";
-import { UseFormSetValue } from "react-hook-form";
-import { UploadFile } from "./Upload-file";
-import {
-  UpdateExerciseBody,
-  updateExercise,
-  uploadImg,
-} from "../../../db/exercises";
+import { Box, CircularProgress } from '@mui/material';
+import React, { useState } from 'react';
+import { UploadFile } from './Upload-file';
+import { updateExercise, uploadImg } from '../../../db/exercises';
 
-export const ShowImage = ({
-  setValue,
-  idExercise,
-}: {
-  setValue?: UseFormSetValue<UpdateExerciseBody>;
-  idExercise: string;
-}) => {
+export const ShowImage = ({ idExercise }: { idExercise: string }) => {
   const [loadImage, setLoadImage] = useState(false);
   const loadFile = async (file: File) => {
     setLoadImage(true);
     const img = await uploadImg(file, idExercise);
-    console.log(idExercise);
-
     await updateExercise(idExercise, { img });
     setLoadImage(false);
   };
 
   return (
-    <Box display={"flex"} width={"100%"} gap={1}>
+    <Box display={'flex'} width={'100%'} gap={1}>
       {loadImage ? (
         <div
           style={{
-            display: "flex",
-            height: "100%",
-            alignItems: "center",
-            justifyContent: "center",
+            display: 'flex',
+            height: '100%',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
           <CircularProgress />
@@ -41,39 +28,13 @@ export const ShowImage = ({
       ) : (
         <div
           style={{
-            display: "flex",
-            justifyContent: "center",
+            display: 'flex',
+            justifyContent: 'center',
           }}
         >
           <UploadFile loadFile={loadFile} />
         </div>
       )}
-      {/* {loadImage ? (
-        <div
-          style={{
-            display: "flex",
-            height: "100%",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <CircularProgress />
-        </div>
-      ) : (
-        image && (
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              maxHeight: "100%",
-              overflow: "hidden",
-            }}
-          >
-            <img src={image} alt="exercise image" style={{ width: "100%" }} />
-          </Box>
-        )
-      )} */}
     </Box>
   );
 };
