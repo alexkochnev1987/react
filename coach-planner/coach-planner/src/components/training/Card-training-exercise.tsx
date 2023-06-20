@@ -47,21 +47,16 @@ export const CardTrainingExercise = ({
             handleExpandClick={handleExpandClick}
           />
         }
-        // subheader={exercise.tag?.map((x, index) => (
-        //   <span key={x}>{x}; </span>
-        // ))}
         avatar={children}
       />
       <CardContent>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
-          {/* <ExpandText label="Image"> */}
           <CardMedia
             component="img"
             width={"100%"}
             image={exercise.img}
             alt={exercise.name}
           />
-          {/* </ExpandText> */}
           <ExerciseParams submit={submitParams} params={params} />
           <Grid container justifyContent="space-between">
             <ExpandText label="Description" text={exercise.description} />

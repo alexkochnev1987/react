@@ -6,13 +6,18 @@ import React, {
   useState,
 } from "react";
 import axios from "axios";
-const ITEMS_API_URL = "http://api.coinlayer.com/api/live";
-const access_key = "f07c7fd538999a5f171768250a51f426";
-const target = "CAD";
+const ITEMS_API_URL = "http://data.fixer.io/api/latest";
+const access_key = "2df9ab7f9e13a75b5c13e11995550c1d";
 
-// const ITEMS_API_URL =
-//   "http://api.coinlayer.com/convert?access_key=f07c7fd538999a5f171768250a51f426&from=BTC&to=ETH&amount=10";
 const DEBOUNCE_DELAY = 500;
+const options = {
+  url: ITEMS_API_URL,
+  method: "get",
+  params: {
+    access_key: access_key,
+    base: "EUR",
+  },
+};
 
 // the exported component can be either a function or a class
 
@@ -34,9 +39,10 @@ export default function Autocomplete() {
   const getData = async (value: string) => {
     try {
       setLoading(true);
-      const { data } = await axios(ITEMS_API_URL, {
-        params: { access_key: access_key, target: target },
-      });
+      const { data } = await axios(options);
+      // .get(ITEMS_API_URL, {
+      //   params: { access_key: access_key, base: "EUR" },
+      // });
 
       // const data = [value];
       console.log(data);
