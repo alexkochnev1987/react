@@ -1,9 +1,0 @@
-// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
-
-exports[`Routing test > class btn length 1`] = `
-<input
-  placeholder="enter name"
-  type="text"
-  value=""
-/>
-`;

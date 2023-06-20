@@ -1,5 +1,5 @@
 import { Image as ImageComponent, Layer } from "react-konva";
-import field from "./../../assets/field.png";
+import field from "../../assets/field.png";
 
 export const BackgroundField = () => {
   const backgroundImage = new Image();
