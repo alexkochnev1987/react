@@ -6,8 +6,7 @@ import {
 
 import { useCollection } from "react-firebase-hooks/firestore";
 import { ExerciseCard } from "../components/Exercise-card";
-import { BoxFlexColumn } from "../components/styled/Box-d-flex";
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
@@ -23,7 +22,7 @@ export const Exercise = () => {
   };
 
   return (
-    <BoxFlexColumn gap={1} padding={1}>
+    <Box gap={1} padding={1}>
       <Button variant="outlined" onClick={createNewExercise}>
         {buttonLabel}
       </Button>
@@ -34,6 +33,6 @@ export const Exercise = () => {
             exercise={{ id: doc.id, ...doc.data() } as ExerciseResponse}
           />
         ))}
-    </BoxFlexColumn>
+    </Box>
   );
 };

@@ -18,8 +18,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase";
 import { ColorModeContext } from "../../App";
 import { useContext } from "react";
-import { BoxDisplayFlex } from "../styled/Box-d-flex";
-import { NavigationMenu } from "./Navigation-meny";
+import { NavigationMenu } from "./Navigation-menu";
 
 export function Navbar() {
   const appName = "CoachPlanner";
@@ -43,12 +42,12 @@ export function Navbar() {
         </Typography>
 
         {user ? (
-          <BoxDisplayFlex gap={1}>
+          <Box display={"flex"} gap={1}>
             {user.photoURL && <Avatar src={user.photoURL} />}
             <Button onClick={() => auth.signOut()} size="small" color="inherit">
               Logout
             </Button>
-          </BoxDisplayFlex>
+          </Box>
         ) : (
           <Button color="inherit" size="small">
             <Link to={RouteNames.login} color="inherit">

@@ -20,8 +20,6 @@ import { ExerciseResponse } from "./exercises";
 import { db } from "../firebase";
 import { DbCollections } from "./constants";
 import { v4 as uuidv4 } from "uuid";
-import { executeReducerBuilderCallback } from "@reduxjs/toolkit/dist/mapBuilders";
-import { ToastOptions, toast } from "react-toastify";
 
 export interface TrainingExerciseData {
   exercise: ExerciseResponse;
@@ -51,17 +49,6 @@ export interface CreateTrainingRequest {
   coachImage?: string;
   name: string;
 }
-
-const toastOptions: ToastOptions<{}> = {
-  position: "top-center",
-  autoClose: 5000,
-  hideProgressBar: false,
-  closeOnClick: true,
-  pauseOnHover: true,
-  draggable: true,
-  progress: undefined,
-  theme: "colored",
-};
 
 export const trainingsCollection = collection(db, DbCollections.trainings);
 export const getTrainingRef = (id: string | undefined) => {
@@ -107,12 +94,10 @@ export const createUniqueTraining = async ({
 }: CreateTrainingRequest) => {
   const exist = await getTrainingByName({ coachId, name });
   if (exist) {
-    toast.error("Training with this name exist", toastOptions);
-    return;
+    throw Error("Training wit this name exist");
   }
   createTraining({ coachId, name });
   const trainingId = await getTrainingByName({ coachId, name });
-  toast.success("Training successfully created", toastOptions);
   return trainingId;
 };
 

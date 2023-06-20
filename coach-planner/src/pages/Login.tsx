@@ -11,7 +11,6 @@ import {
 import { useContext, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
-import { toast } from "react-toastify";
 
 type Inputs = {
   email: string;
@@ -32,12 +31,10 @@ export const Login = () => {
       .then((userCredential) => {
         const user = userCredential.user;
         console.log(user);
-        toast.success(`Hello ${user.displayName}`);
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        toast.error(errorMessage);
       });
   };
 

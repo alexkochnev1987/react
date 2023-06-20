@@ -3,7 +3,6 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { RouteNames } from "../router/routes";
 import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
-import { toast } from "react-toastify";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useEffect } from "react";
 import { auth } from "../firebase";
@@ -27,13 +26,10 @@ export const Registration = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
-
-        toast.success(`Hello ${user.displayName}`);
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        toast.error(errorMessage);
       });
   };
 
