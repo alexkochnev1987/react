@@ -1,5 +1,5 @@
 import { Box, CircularProgress } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { UploadFile } from './Upload-file';
 import { updateExercise, uploadImg } from '../../../db/exercises';
 

@@ -1,18 +1,29 @@
-import { ThemeProvider, createTheme, responsiveFontSizes } from "@mui/material";
-import { createContext, useMemo, useState } from "react";
-import { MyRouterProvider } from "./router/router-provider";
+import { type PaletteMode, ThemeProvider, createTheme, responsiveFontSizes } from '@mui/material';
+import { createContext, useMemo, useState } from 'react';
+import { MyRouterProvider } from './router/router-provider';
+interface DefaultContextValue {
+  toggleColorMode: () => void;
+}
 
-export const ColorModeContext = createContext({ toggleColorMode: () => {} });
+const defaultContext: DefaultContextValue = {
+  toggleColorMode: function (): void {
+    throw new Error('Function not implemented.');
+  },
+};
+
+export const ColorModeContext = createContext(defaultContext);
+const lightMode: PaletteMode = 'light';
+const darkMode: PaletteMode = 'dark';
 
 function App() {
-  const [mode, setMode] = useState<"light" | "dark">("light");
+  const [mode, setMode] = useState<PaletteMode>(lightMode);
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+        setMode((prevMode) => (prevMode === lightMode ? darkMode : lightMode));
       },
     }),
-    []
+    [],
   );
 
   const theme = useMemo(
@@ -22,10 +33,11 @@ function App() {
           palette: {
             mode,
           },
-        })
+        }),
       ),
-    [mode]
+    [mode],
   );
+
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>

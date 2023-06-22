@@ -1,69 +1,78 @@
-import { Layer, Stage } from "react-konva";
-import { RefObject, useMemo, useRef, useState } from "react";
-import { KonvaEventObject } from "konva/lib/Node";
-import { LineComponent } from "./Line";
-import { useAppSelector } from "../../store/hooks";
-import { LineTypes, UserActionsValues } from "../../store/slices/canvas-slice";
-import { BackgroundField } from "./Background-field";
-import { Stage as StageType } from "konva/lib/Stage";
+import { Stage } from 'react-konva';
+import { useRef, useState } from 'react';
+import { KonvaEventObject } from 'konva/lib/Node';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import {
+  UserActionsValues,
+  selectColor,
+  selectLineType,
+  selectLineWidth,
+  selectPlayerType,
+  selectUserAction,
+} from '../../store/slices/canvas-slice';
+import { BackgroundField } from './Background-field';
+import { Stage as StageType } from 'konva/lib/Stage';
+import { addLine, addPlayer, deleteCurrent, drawLine } from '../../store/slices/draw-objects-slice';
+
+import { DrawArrowLine } from './Draw-arrow-line';
+import { Vector2d } from 'konva/lib/types';
+import { DrawPlayers } from './Draw-players';
 
 export const ModifyCurve = () => {
+  const dispatch = useAppDispatch();
   const stageRef = useRef<StageType>(null);
-  const pointsRef = useRef<number[]>([]);
-  const action = useAppSelector((state) => state.canvas.userAction);
-  const color = useAppSelector((state) => state.canvas.color);
-  const lineType = useAppSelector((state) => state.canvas.lineType);
-  const [selectId, setSelectId] = useState<number>();
-
+  const action = useAppSelector(selectUserAction);
+  const color = useAppSelector(selectColor);
+  const lineType = useAppSelector(selectLineType);
+  const width = useAppSelector(selectLineWidth);
+  const type = useAppSelector(selectPlayerType);
+  const [img, setImg] = useState('');
   const isDrawing = useRef(false);
-  const [lines, setLines] =
-    useState<{ points: number[]; color: string; line: LineTypes }[]>();
+  const lastPoint = useRef<Vector2d>();
+
   const handleMouseDown = (e: KonvaEventObject<MouseEvent>) => {
     if (action === UserActionsValues.select) {
       return;
     }
-    isDrawing.current = true;
     const stage = e.target.getStage();
-    if (stage) {
-      const pos = stage.getPointerPosition();
-      if (pos) {
-        const newLines = lines
-          ? [...lines, { points: [pos.x, pos.y], color: color, line: lineType }]
-          : [{ points: [pos.x, pos.y], color: color, line: lineType }];
-        setLines(newLines);
-      }
-    }
-  };
-  const debounce = (fn: Function, ms: number) => {
-    let timer: NodeJS.Timeout;
-    return function (this: any, ...args: any[]) {
-      const callFn = () => fn.apply(this, args);
-      clearTimeout(timer);
-      timer = setTimeout(callFn, ms);
-    };
-  };
-
-  const throttle = (fn: Function, ms: number) => {
-    let isThrottle = false;
-    let savedArgs: any[] | null;
-    let savedThis: any | null;
-    function wrapper(this: any, ...arg: any[]) {
-      if (isThrottle) {
-        savedArgs = arg;
-        savedThis = this;
-        return;
-      }
-      fn.apply(this, arg);
-      isThrottle = true;
-      setTimeout(() => {
-        isThrottle = false;
-        if (savedArgs && savedThis) {
-          wrapper.apply(savedThis, savedArgs);
-          savedArgs = savedThis = null;
+    if (action === UserActionsValues.draw) {
+      isDrawing.current = true;
+      if (stage) {
+        const pos = stage.getPointerPosition();
+        if (pos) {
+          dispatch(addLine({ points: [pos.x, pos.y], color, line: lineType, width }));
+          lastPoint.current = pos;
         }
-      }, ms);
+      }
     }
-    return wrapper;
+
+    if (action === UserActionsValues.addPlayer) {
+      if (stage) {
+        const pos = stage.getPointerPosition();
+        if (pos) {
+          dispatch(addPlayer({ point: [pos.x, pos.y], color, type }));
+        }
+      }
+    }
+  };
+  const drawArrowLine = (x: number, y: number) => dispatch(drawLine([x, y]));
+
+  const cutArrowPoints = (currentPoint: Vector2d | null) => {
+    const difference = 30;
+    if (currentPoint && lastPoint.current) {
+      const lastX = lastPoint.current.x;
+      const lastY = lastPoint.current.y;
+
+      if (Math.abs(lastX - currentPoint.x) > difference) {
+        drawArrowLine(currentPoint.x, currentPoint.y);
+        lastPoint.current = currentPoint;
+      } else {
+        if (Math.abs(lastY - currentPoint.y) > difference) {
+          drawArrowLine(currentPoint.x, currentPoint.y);
+          lastPoint.current = currentPoint;
+        }
+      }
+    }
   };
 
   const handleMouseMove = (e: KonvaEventObject<MouseEvent>) => {
@@ -72,79 +81,29 @@ export const ModifyCurve = () => {
     }
     const stage = e.target.getStage();
     if (stage) {
-      const point = stage.getPointerPosition();
-      if (lines) {
-        const lastLine = lines[lines.length - 1];
-
-        if (point) {
-          if (lastLine) {
-            const lastX = lastLine.points[lastLine.points.length - 2];
-            const lastY = lastLine.points[lastLine.points.length - 1];
-            const points = pointsRef.current;
-            points.push(point.x, point.y);
-            pointsRef.current = points;
-            console.log(pointsRef.current);
-
-            if (Math.abs(lastX - point.x) > 30) {
-              lastLine.points = lastLine.points.concat([point.x, point.y]);
-            } else {
-              if (Math.abs(lastY - point.y) > 30) {
-                lastLine.points = lastLine.points.concat([point.x, point.y]);
-              }
-            }
-
-            lines.splice(lines.length - 1, 1, lastLine);
-            setLines(lines.concat());
-          }
-        }
-      }
+      const pos = stage.getPointerPosition();
+      cutArrowPoints(pos);
     }
   };
-
-  const trot = throttle(handleMouseMove, 500);
 
   const handleMouseUp = () => {
     isDrawing.current = false;
   };
 
-  const setPoints = (numbers: number[], index: number) => {
-    if (lines) {
-      const newLines = [...lines];
-      newLines[index].points = numbers;
-      setLines(newLines);
-    }
-  };
-
-  const setColor = (color: string, index: number) => {
-    if (lines) {
-      const newLines = [...lines];
-      newLines[index].color = color;
-      setLines(newLines);
-    }
-  };
-
-  const setLineType = (line: LineTypes, index: number) => {
-    if (lines) {
-      const newLines = [...lines];
-      newLines[index].line = line;
-      setLines(newLines);
-    }
-  };
-
   const deleteLine = () => {
-    if (lines) {
-      const newLines = [...lines];
-      if (selectId || selectId === 0) newLines?.splice(selectId, 1);
-      setLines(newLines);
-      setSelectId(undefined);
-    }
+    dispatch(deleteCurrent());
   };
 
-  const handleExport = () => {
+  const handleExport = async () => {
     const uri = stageRef.current;
     if (uri) {
+      const blob = await uri.toBlob();
+      console.log(blob);
+
       const data = uri.toDataURL();
-      console.log(data);
+      console.log(data.length);
+
+      setImg(data);
     }
   };
 
@@ -157,30 +116,15 @@ export const ModifyCurve = () => {
         width={window.innerWidth}
         height={window.innerHeight}
         onMouseDown={handleMouseDown}
-        // onMousemove={handleMouseMove}
-        onMouseMove={trot}
+        onMousemove={handleMouseMove}
         onMouseup={handleMouseUp}
-        style={{ position: "relative" }}
+        style={{ position: 'relative' }}
       >
         <BackgroundField />
-        <Layer>
-          {lines &&
-            lines.map((line, i) => (
-              <LineComponent
-                setLineType={setLineType}
-                line={line.line}
-                setColor={setColor}
-                color={line.color}
-                index={i}
-                setPoints={setPoints}
-                points={line.points}
-                active={selectId}
-                setSelectId={setSelectId}
-                key={i}
-              />
-            ))}
-        </Layer>
+        <DrawArrowLine />
+        <DrawPlayers />
       </Stage>
+      {img && <img src={img} alt="" />}
     </>
   );
 };

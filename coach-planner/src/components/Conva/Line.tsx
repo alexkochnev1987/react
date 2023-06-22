@@ -1,37 +1,34 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Arrow } from "react-konva";
-import { Anchor } from "./Anchor";
-import { KonvaEventObject } from "konva/lib/Node";
+import { useEffect, useRef } from 'react';
+import { Arrow } from 'react-konva';
+import { Anchor } from './Anchor';
+import { KonvaEventObject } from 'konva/lib/Node';
 
-import { Arrow as ArrowType } from "konva/lib/shapes/Arrow";
-import { useAppSelector } from "../../store/hooks";
-import { set } from "react-hook-form";
-import { SignalCellularConnectedNoInternet4BarRounded } from "@mui/icons-material";
-import { LineTypes } from "../../store/slices/canvas-slice";
-
-export const LineComponent = ({
-  points,
-  active,
-  setSelectId,
-  setPoints,
-  index,
-  color,
-  setColor,
-  line,
+import { Arrow as ArrowType } from 'konva/lib/shapes/Arrow';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import {
+  LineTypes,
+  UserActionsValues,
+  selectColor,
+  selectLineType,
+  selectLineWidth,
+  selectUserAction,
+} from '../../store/slices/canvas-slice';
+import {
+  ArrowLine,
+  changeLine,
+  setCurrent,
+  setLineColor,
   setLineType,
-}: {
-  line: LineTypes;
-  points: number[];
-  active: number | undefined;
-  setSelectId: React.Dispatch<React.SetStateAction<number | undefined>>;
-  setPoints: (numbers: number[], index: number) => void;
-  index: number;
-  color: string;
-  setColor: (color: string, index: number) => void;
-  setLineType: (line: LineTypes, index: number) => void;
-}) => {
-  const reduxColor = useAppSelector((state) => state.canvas.color);
-  const lineType = useAppSelector((state) => state.canvas.lineType);
+  setLineWidth,
+} from '../../store/slices/draw-objects-slice';
+import { findNearestPoint } from './helpers';
+
+export const LineComponent = ({ current, line }: { line: ArrowLine; current: string | null }) => {
+  const userAction = useAppSelector(selectUserAction);
+  const lineColor = useAppSelector(selectColor);
+  const lineType = useAppSelector(selectLineType);
+  const lineWidth = useAppSelector(selectLineWidth);
+  const dispatch = useAppDispatch();
   const ref = useRef<ArrowType>(null);
   const reducePoints = (acc: number[][], num: number, index: number) => {
     if (index % 2 === 0) {
@@ -41,7 +38,7 @@ export const LineComponent = ({
     }
     return acc;
   };
-  const dragAnchor = (e: KonvaEventObject<DragEvent>, i: number) => {
+  const dragAnchor = (e: KonvaEventObject<DragEvent>, i: number, points: number[]) => {
     const pointsArray = [...points];
     if (i === 0) {
       pointsArray[i] = e.target.x();
@@ -50,41 +47,30 @@ export const LineComponent = ({
       pointsArray[i * 2] = e.target.x();
       pointsArray[i * 2 + 1] = e.target.y();
     }
-    setPoints(pointsArray, index);
+    dispatch(changeLine(pointsArray));
   };
 
-  const deletePoint = (i: number) => {
+  const deletePoint = (i: number, points: number[]) => {
     const pointsArray = [...points];
     if (i === 0) {
       pointsArray.splice(i, 2);
     } else {
       pointsArray.splice(i * 2, 2);
     }
-    setPoints(pointsArray, index);
+    dispatch(changeLine(pointsArray));
   };
 
-  const findNearestPoint = (x: number, y: number) => {
-    let pointIndex = 0;
-    let abs = Number.MAX_VALUE;
-    points.forEach((elem, index, arr) => {
-      if (index % 2 === 0) {
-        const middlePoint = Math.abs(elem - x) + Math.abs(arr[index + 1] - y);
-        if (middlePoint < abs) {
-          pointIndex = index;
-          abs = middlePoint;
-        }
-      }
-    });
-    return pointIndex;
+  const selectCurrent = () => {
+    if (userAction === UserActionsValues.select) dispatch(setCurrent(line.id));
   };
 
-  const onDbClick = (e: KonvaEventObject<MouseEvent>) => {
+  const onDbClick = (e: KonvaEventObject<MouseEvent>, points: number[]) => {
     const x = e.evt.offsetX;
     const y = e.evt.offsetY;
-    const pointIndex = findNearestPoint(x, y);
+    const pointIndex = findNearestPoint(x, y, points);
     const newPoints = [...points];
     newPoints.splice(pointIndex + 2, 0, x, y);
-    setPoints(newPoints, index);
+    dispatch(changeLine(newPoints));
   };
 
   const setLineDash = (line: LineTypes) => {
@@ -102,45 +88,59 @@ export const LineComponent = ({
   };
 
   useEffect(() => {
-    if (index === active) {
-      setColor(reduxColor, index);
+    if (current === line.id) {
+      dispatch(setLineType(lineType));
     }
-  }, [reduxColor]);
+  }, [current, dispatch, line.id, lineType]);
 
   useEffect(() => {
-    if (index === active) {
-      setLineType(lineType, index);
+    if (current === line.id) {
+      dispatch(setLineColor(lineColor));
     }
-  }, [lineType]);
+  }, [current, dispatch, line.id, lineColor]);
+
+  useEffect(() => {
+    if (current === line.id) {
+      dispatch(setLineWidth(lineWidth));
+    }
+  }, [current, dispatch, line.id, lineWidth]);
 
   return (
     <>
       <Arrow
         ref={ref}
-        points={points}
-        stroke={color}
-        strokeWidth={5}
+        points={line.points}
+        stroke={line.color}
+        strokeWidth={2 * line.width}
         tension={0.5}
         lineCap="round"
         lineJoin="round"
-        fill={color}
+        fill={line.color}
         pointerLength={20}
         pointerWidth={20}
-        dash={setLineDash(line)}
-        onClick={(e) => {
-          setSelectId(index);
+        dash={setLineDash(line.line)}
+        onClick={selectCurrent}
+        onDblClick={(e) => onDbClick(e, line.points)}
+        onMouseOver={(e: KonvaEventObject<MouseEvent>) => {
+          document.body.style.cursor = 'pointer';
+          const width = e.currentTarget.getAttr('strokeWidth');
+          e.currentTarget._setAttr('strokeWidth', width * 1.5);
         }}
-        onDblClick={onDbClick}
+        onMouseOut={(e: KonvaEventObject<MouseEvent>) => {
+          document.body.style.cursor = 'pointer';
+          const width = e.currentTarget.getAttr('strokeWidth');
+          e.currentTarget._setAttr('strokeWidth', width / 1.5);
+        }}
       />
-      {index === active &&
-        points.reduce(reducePoints, []).map(([x, y], index) => {
+      {current === line.id &&
+        line.points.reduce(reducePoints, []).map(([x, y], index) => {
           return (
             <Anchor
               key={index}
               x={x}
               y={y}
-              dragFunction={(x) => dragAnchor(x, index)}
-              deleteAnchor={() => deletePoint(index)}
+              dragFunction={(x) => dragAnchor(x, index, line.points)}
+              deleteAnchor={() => deletePoint(index, line.points)}
             />
           );
         })}

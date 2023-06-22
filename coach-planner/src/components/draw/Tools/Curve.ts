@@ -26,10 +26,10 @@ class QuadraticCurve {
 
 export class QuadraticCurves {
   private curves: QuadraticCurve[] = [];
-  constructor(
-    private canvas: HTMLCanvasElement,
-    private context: CanvasRenderingContext2D
-  ) {}
+  constructor(private canvas: HTMLCanvasElement, private context: CanvasRenderingContext2D) {
+    this.canvas = canvas;
+    this.context = context;
+  }
 
   addCurve(props: QuadraticCurveProps) {
     this.clearContext();
@@ -98,10 +98,9 @@ export class QuadraticCurves {
 
       const result = [0, 1, 2, -1, -2]
         .map((elem) =>
-          this.context.isPointInStroke(curveLine, x + elem, y) ||
-          this.context.isPointInStroke(curveLine, x, y + elem)
+          this.context.isPointInStroke(curveLine, x + elem, y) || this.context.isPointInStroke(curveLine, x, y + elem)
             ? true
-            : false
+            : false,
         )
         .some((elem) => elem === true);
 

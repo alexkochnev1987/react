@@ -1,19 +1,19 @@
-import { Box, Button, IconButton } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
-import { useAppSelector } from "../../store/hooks";
-import { ColorTypes, UserActionsValues } from "../../store/slices/canvas-slice";
-import { CanvasBackground } from "./Canvas-background";
+import { Box, Button, IconButton } from '@mui/material';
+import React, { useEffect, useRef, useState } from 'react';
+import { useAppSelector } from '../../store/hooks';
+import { ColorTypes, UserActionsValues } from '../../store/slices/canvas-slice';
+import { CanvasBackground } from './Canvas-background';
 
-import { CanvasGame } from "../game/Canvas-game";
-import { Circles } from "./Tools/Player";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { UserActions } from "./User-actions";
-import { QuadraticCurveProps, QuadraticCurves } from "./Tools/Curve";
+import { CanvasGame } from '../game/Canvas-game';
+import { Circles } from './Tools/Player';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { UserActions } from './User-actions';
+import { QuadraticCurveProps, QuadraticCurves } from './Tools/Curve';
 
 export const Canvas = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isDrawing, setIsDrawing] = useState(false);
-  const lineType = useAppSelector((state) => state.canvas.lineType);
+  // const lineType = useAppSelector((state) => state.canvas.lineType);
   const userAction = useAppSelector((state) => state.canvas.userAction);
   const color = useAppSelector((state) => state.canvas.color);
   const lineWidth = useAppSelector((state) => state.canvas.lineWidth);
@@ -27,7 +27,7 @@ export const Canvas = () => {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    const context = canvas?.getContext("2d");
+    const context = canvas?.getContext('2d');
     if (canvas && context) {
       const circles = new Circles(canvas, context);
       setCircles(circles);
@@ -40,7 +40,7 @@ export const Canvas = () => {
     setIsDrawing(true);
 
     const canvas = canvasRef.current;
-    const context = canvas?.getContext("2d");
+    const context = canvas?.getContext('2d');
     if (canvas && context) {
       const rect = canvas.getBoundingClientRect();
       const x = event.clientX - rect.left;
@@ -74,7 +74,7 @@ export const Canvas = () => {
       const rect = canvas.getBoundingClientRect();
       const x = event.clientX - rect.left;
       const y = event.clientY - rect.top;
-      const context = canvas.getContext("2d")!;
+      const context = canvas.getContext('2d')!;
 
       if (isDrawing) {
         if (userAction === UserActionsValues.polyline) {
@@ -121,7 +121,7 @@ export const Canvas = () => {
   };
 
   const clearCanvas = (canvas: HTMLCanvasElement) => {
-    const context = canvas.getContext("2d")!;
+    const context = canvas.getContext('2d')!;
     context.resetTransform();
     context.clearRect(0, 0, canvas.width, canvas.height);
   };
@@ -134,19 +134,16 @@ export const Canvas = () => {
   };
 
   const selectCursorType = () => {
-    if (userAction === UserActionsValues.drag)
-      return isDrawing ? "grabbing" : "grab";
-    if (userAction === UserActionsValues.select) return "default";
-    return color === ColorTypes.white ? "cell" : "crosshair";
+    if (userAction === UserActionsValues.drag) return isDrawing ? 'grabbing' : 'grab';
+    if (userAction === UserActionsValues.select) return 'default';
+    return color === ColorTypes.white ? 'cell' : 'crosshair';
   };
 
   return (
     <>
-      <Box display={"flex"} sx={{ height: "45px" }} gap={"5px"}>
+      <Box display={'flex'} sx={{ height: '45px' }} gap={'5px'}>
         <Button onClick={() => deleteLine(0)}>Clear</Button>
-        <Button onClick={() => setOpenGame((state) => !state)}>
-          ToggleGame
-        </Button>
+        <Button onClick={() => setOpenGame((state) => !state)}>ToggleGame</Button>
         <Button onClick={() => circles?.addPlayer(color)}>Add circle</Button>
         {userAction === UserActionsValues.select && (
           <IconButton onClick={() => circles?.deletePlayer()} color="error">
@@ -157,12 +154,12 @@ export const Canvas = () => {
       <UserActions />
 
       <Box
-        padding={"4px"}
-        display={"flex"}
-        justifyContent={"center"}
-        width={"100%"}
-        border={"2px solid"}
-        borderColor={"palevioletred"}
+        padding={'4px'}
+        display={'flex'}
+        justifyContent={'center'}
+        width={'100%'}
+        border={'2px solid'}
+        borderColor={'palevioletred'}
       >
         {openGame ? (
           <CanvasGame />
@@ -171,7 +168,7 @@ export const Canvas = () => {
             style={{
               zIndex: 10,
               cursor: selectCursorType(),
-              position: "absolute",
+              position: 'absolute',
             }}
             onMouseDown={startDrawing}
             onMouseMove={drawLine}

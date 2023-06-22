@@ -1,35 +1,17 @@
-import { red } from "@mui/material/colors";
-import {
-  Avatar,
-  Button,
-  Card,
-  CardHeader,
-  CardMedia,
-  Chip,
-  Grid,
-  Typography,
-} from "@mui/material";
-import { ExpandText } from "../training/ExpandText";
-import {
-  ExerciseResponse,
-  deleteExercise,
-  updateExercise,
-} from "../../db/exercises";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { useState } from "react";
-import { SubmitDialog } from "../dialogs/exercise-dialog/submit-dialog";
-import { useNavigate } from "react-router-dom";
-import { RouteNames } from "../../router/routes";
-import { ShowImage } from "../dialogs/exercise-dialog/Show-image";
-import { EditContent } from "./Edit-content";
-import { MultipleSelectChip } from "./Edit-tags";
-import { ageOptions, deleteDialogContent, tagOptions } from "./constants";
+import { red } from '@mui/material/colors';
+import { Avatar, Button, Card, CardHeader, CardMedia, Grid } from '@mui/material';
+import { ExerciseResponse, deleteExercise, updateExercise } from '../../db/exercises';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { useState } from 'react';
+import { SubmitDialog } from '../dialogs/exercise-dialog/submit-dialog';
+import { useNavigate } from 'react-router-dom';
+import { RouteNames } from '../../router/routes';
+import { ShowImage } from '../dialogs/exercise-dialog/Show-image';
+import { EditContent } from './Edit-content';
+import { MultipleSelectChip } from './Edit-tags';
+import { ageOptions, deleteDialogContent, tagOptions } from './constants';
 
-export const ChangeExerciseCard = ({
-  exercise,
-}: {
-  exercise: ExerciseResponse;
-}) => {
+export const ChangeExerciseCard = ({ exercise }: { exercise: ExerciseResponse }) => {
   const navigate = useNavigate();
   const [openSubmit, setOpenSubmit] = useState(false);
   const deleteMyExercise = () => {
@@ -54,20 +36,14 @@ export const ChangeExerciseCard = ({
       <CardHeader
         title={
           <EditContent
-            label={"Название упражнения"}
+            label={'Название упражнения'}
             // idExercise={exercise.id}
             // fieldName={"name"}
-            callback={(value) => updateMyExercise(value, "name")}
+            callback={(value) => updateMyExercise(value, 'name')}
             value={exercise.name}
           />
         }
-        avatar={
-          <Avatar
-            sx={{ bgcolor: red[500] }}
-            aria-label="recipe"
-            src={exercise.coachImage}
-          />
-        }
+        avatar={<Avatar sx={{ bgcolor: red[500] }} aria-label="recipe" src={exercise.coachImage} />}
         action={
           <Button onClick={() => setOpenSubmit(true)} color="error">
             <DeleteForeverIcon />
@@ -76,12 +52,7 @@ export const ChangeExerciseCard = ({
       />
       <Grid container padding={1}>
         <Grid item xs={12} sm={8} md={6} lg={6}>
-          <CardMedia
-            component="img"
-            width={"100%"}
-            image={exercise.img}
-            alt={exercise.name}
-          />
+          <CardMedia component="img" width={'100%'} image={exercise.img} alt={exercise.name} />
           <Grid item xs={12} sm={6}>
             <ShowImage idExercise={exercise.id} />
           </Grid>
@@ -90,30 +61,30 @@ export const ChangeExerciseCard = ({
           <EditContent
             // idExercise={exercise.id}
             // fieldName={"description"}
-            callback={(value) => updateMyExercise(value, "description")}
+            callback={(value) => updateMyExercise(value, 'description')}
             value={exercise.description}
-            label={"Описание упражнения"}
+            label={'Описание упражнения'}
           />
           <EditContent
             // idExercise={exercise.id}
             // fieldName={"keyPoints"}
-            callback={(value) => updateMyExercise(value, "keyPoints")}
+            callback={(value) => updateMyExercise(value, 'keyPoints')}
             value={exercise.keyPoints}
-            label={"Key points"}
+            label={'Key points'}
           />
           <MultipleSelectChip
             idExercise={exercise.id}
-            fieldName={"tag"}
+            fieldName={'tag'}
             value={exercise.tag}
-            label={"Tag"}
+            label={'Tag'}
             options={tagOptions}
           />
 
           <MultipleSelectChip
             idExercise={exercise.id}
-            fieldName={"age"}
+            fieldName={'age'}
             value={exercise.age}
-            label={"Age"}
+            label={'Age'}
             options={ageOptions}
           />
         </Grid>
