@@ -21,8 +21,8 @@ export enum ColorTypes {
 export enum UserActionsValues {
   select = 'select',
   draw = 'draw',
-  drag = 'drag',
-  polyline = 'polyline',
+  // drag = 'drag',
+  // polyline = 'polyline',
   addPlayer = 'addPlayer',
 }
 

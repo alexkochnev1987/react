@@ -1,5 +1,5 @@
 import { Stage } from 'react-konva';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import { KonvaEventObject } from 'konva/lib/Node';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
@@ -12,13 +12,16 @@ import {
 } from '../../store/slices/canvas-slice';
 import { BackgroundField } from './Background-field';
 import { Stage as StageType } from 'konva/lib/Stage';
-import { addLine, addPlayer, deleteCurrent, drawLine } from '../../store/slices/draw-objects-slice';
+import { addLine, addPlayer, deleteCurrent, drawLine, setCurrent } from '../../store/slices/draw-objects-slice';
 
 import { DrawArrowLine } from './Draw-arrow-line';
 import { Vector2d } from 'konva/lib/types';
 import { DrawPlayers } from './Draw-players';
+import { useParams } from 'react-router-dom';
+import { updateExercise, uploadBlob } from '../../db/exercises';
 
 export const ModifyCurve = () => {
+  const { id } = useParams();
   const dispatch = useAppDispatch();
   const stageRef = useRef<StageType>(null);
   const action = useAppSelector(selectUserAction);
@@ -26,7 +29,7 @@ export const ModifyCurve = () => {
   const lineType = useAppSelector(selectLineType);
   const width = useAppSelector(selectLineWidth);
   const type = useAppSelector(selectPlayerType);
-  const [img, setImg] = useState('');
+  // const [img, setImg] = useState('');
   const isDrawing = useRef(false);
   const lastPoint = useRef<Vector2d>();
 
@@ -56,7 +59,6 @@ export const ModifyCurve = () => {
     }
   };
   const drawArrowLine = (x: number, y: number) => dispatch(drawLine([x, y]));
-
   const cutArrowPoints = (currentPoint: Vector2d | null) => {
     const difference = 30;
     if (currentPoint && lastPoint.current) {
@@ -94,16 +96,22 @@ export const ModifyCurve = () => {
     dispatch(deleteCurrent());
   };
 
+  const loadFile = async (file: Blob, id: string | undefined) => {
+    if (id) {
+      const img = await uploadBlob(file, id);
+      await updateExercise(id, { img });
+    }
+  };
+
   const handleExport = async () => {
     const uri = stageRef.current;
+    dispatch(setCurrent(null));
     if (uri) {
-      const blob = await uri.toBlob();
-      console.log(blob);
+      const blob = (await uri.toBlob()) as Blob;
+      loadFile(blob, id);
+      // const data = uri.toDataURL()
 
-      const data = uri.toDataURL();
-      console.log(data.length);
-
-      setImg(data);
+      // setImg(data);
     }
   };
 
@@ -124,7 +132,7 @@ export const ModifyCurve = () => {
         <DrawArrowLine />
         <DrawPlayers />
       </Stage>
-      {img && <img src={img} alt="" />}
+      {/* {img && <img src={img} alt="" />} */}
     </>
   );
 };

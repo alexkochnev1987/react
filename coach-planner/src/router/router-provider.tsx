@@ -12,8 +12,7 @@ import { TrainingPage } from '../pages/Trainig-page';
 import { ShowEvents } from '../pages/Show-events';
 import { TrainingsPage } from '../pages/Trainings-page';
 import { SetExercise } from '../pages/Set-exercise';
-import { DrawPage } from '../pages/Draw-page';
-import { Conva } from '../components/Conva/Conva';
+// import { Conva } from '../components/Conva/Conva';
 
 const PrivateRouter = createBrowserRouter([
   {
@@ -54,14 +53,6 @@ const PrivateRouter = createBrowserRouter([
           {
             path: RouteNames.trainings + RouteNames.id,
             element: <TrainingPage />,
-          },
-          {
-            path: RouteNames.draw,
-            element: <DrawPage />,
-          },
-          {
-            path: RouteNames.conva,
-            element: <Conva />,
           },
         ],
       },

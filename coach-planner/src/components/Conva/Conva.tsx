@@ -5,7 +5,7 @@ export const Conva = () => {
   return (
     <>
       <UserActions />
-      <ModifyCurve />;
+      <ModifyCurve />
     </>
   );
 };

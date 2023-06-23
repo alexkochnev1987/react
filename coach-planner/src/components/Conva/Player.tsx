@@ -5,6 +5,7 @@ import {
   selectCurrentId,
   setCurrent,
   setUserColor,
+  setUserPoint,
   setUserType,
 } from '../../store/slices/draw-objects-slice';
 import { Circle, RegularPolygon } from 'react-konva';
@@ -33,12 +34,11 @@ export const PlayerComponent = ({ player }: { player: Player }) => {
       document.body.style.cursor = 'pointer';
       if (current !== player.id) e.currentTarget._setAttr('strokeWidth', 2);
     },
-    // onDragMove: function (e: KonvaEventObject<DragEvent>) {
-    //   //   dragFunction(e);
-    // },
-    // onDblClick: () => {
-    //   //   deleteAnchor();
-    // },
+    onDragEnd: function (e: KonvaEventObject<MouseEvent>) {
+      if (current === player.id) {
+        dispatch(setUserPoint([e.target.x(), e.target.y()]));
+      }
+    },
     onClick: function () {
       dispatch(setCurrent(player.id));
     },
@@ -54,17 +54,7 @@ export const PlayerComponent = ({ player }: { player: Player }) => {
       dispatch(setUserType(playerType));
     }
   }, [current, dispatch, playerType, player.id]);
-  //   useEffect(() => {
-  //     if (current === line.id) {
-  //       dispatch(setLineColor(lineColor));
-  //     }
-  //   }, [current, dispatch, line.id, lineColor]);
 
-  //   useEffect(() => {
-  //     if (current === line.id) {
-  //       dispatch(setLineWidth(lineWidth));
-  //     }
-  //   }, [current, dispatch, line.id, lineWidth]);
   switch (player.type) {
     case PlayerTypes.circle:
       return <Circle {...props} />;

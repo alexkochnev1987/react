@@ -61,7 +61,7 @@ const drawObjectsSlice = createSlice({
       }
       state.current = newLine.id;
     },
-    setCurrent(state, action: PayloadAction<string>) {
+    setCurrent(state, action: PayloadAction<string | null>) {
       state.current = action.payload;
     },
     drawLine(state, action: PayloadAction<number[]>) {
@@ -103,20 +103,9 @@ const drawObjectsSlice = createSlice({
     setUserType(state, action: PayloadAction<PlayerTypes>) {
       if (state.players && state.current) state.players[state.current].type = action.payload;
     },
-    //   setColorWidth(state, action: PayloadAction<ColorWidth>) {
-    //     state.color = action.payload.color;
-    //     state.lineWidth = action.payload.lineWidth;
-    //   },
-    //   setColor(state, action: PayloadAction<ColorTypes>) {
-    //     state.color = action.payload;
-    //   },
-    //   setWidth(state, action: PayloadAction<number>) {
-    //     state.lineWidth = action.payload;
-    //   },
-
-    //   setUserAction(state, action: PayloadAction<UserActionsValues>) {
-    //     state.userAction = action.payload;
-    //   },
+    setUserPoint(state, action: PayloadAction<number[]>) {
+      if (state.players && state.current) state.players[state.current].point = action.payload;
+    },
   },
 });
 
@@ -132,6 +121,7 @@ export const {
   setLineWidth,
   setUserColor,
   setUserType,
+  setUserPoint,
 } = drawObjectsSlice.actions;
 
 const selectDraw = (state: RootState) => state.draw;

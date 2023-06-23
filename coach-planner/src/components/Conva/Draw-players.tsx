@@ -6,11 +6,8 @@ import { PlayerComponent } from './Player';
 
 export const DrawPlayers = () => {
   const players = useAppSelector(selectPlyersObject);
+  console.log('player');
   return (
-    <>
-      <Layer>
-        {players.length > 0 && players.map((player) => <PlayerComponent player={player} key={player.id} />)}
-      </Layer>
-    </>
+    <Layer>{players.length > 0 && players.map((player) => <PlayerComponent player={player} key={player.id} />)}</Layer>
   );
 };

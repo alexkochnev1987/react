@@ -6,10 +6,11 @@ import { useState } from 'react';
 import { SubmitDialog } from '../dialogs/exercise-dialog/submit-dialog';
 import { useNavigate } from 'react-router-dom';
 import { RouteNames } from '../../router/routes';
-import { ShowImage } from '../dialogs/exercise-dialog/Show-image';
+// import { ShowImage } from '../dialogs/exercise-dialog/Show-image';
 import { EditContent } from './Edit-content';
 import { MultipleSelectChip } from './Edit-tags';
 import { ageOptions, deleteDialogContent, tagOptions } from './constants';
+import { Conva } from '../Conva/Conva';
 
 export const ChangeExerciseCard = ({ exercise }: { exercise: ExerciseResponse }) => {
   const navigate = useNavigate();
@@ -37,8 +38,6 @@ export const ChangeExerciseCard = ({ exercise }: { exercise: ExerciseResponse })
         title={
           <EditContent
             label={'Название упражнения'}
-            // idExercise={exercise.id}
-            // fieldName={"name"}
             callback={(value) => updateMyExercise(value, 'name')}
             value={exercise.name}
           />
@@ -51,23 +50,21 @@ export const ChangeExerciseCard = ({ exercise }: { exercise: ExerciseResponse })
         }
       />
       <Grid container padding={1}>
-        <Grid item xs={12} sm={8} md={6} lg={6}>
+        <Grid item>
+          <Conva />
           <CardMedia component="img" width={'100%'} image={exercise.img} alt={exercise.name} />
+          {/* <CardMedia component="img" width={'100%'} image={exercise.img} alt={exercise.name} />
           <Grid item xs={12} sm={6}>
             <ShowImage idExercise={exercise.id} />
-          </Grid>
+          </Grid> */}
         </Grid>
         <Grid item xs={12} sm={4} md={6} lg={6}>
           <EditContent
-            // idExercise={exercise.id}
-            // fieldName={"description"}
             callback={(value) => updateMyExercise(value, 'description')}
             value={exercise.description}
             label={'Описание упражнения'}
           />
           <EditContent
-            // idExercise={exercise.id}
-            // fieldName={"keyPoints"}
             callback={(value) => updateMyExercise(value, 'keyPoints')}
             value={exercise.keyPoints}
             label={'Key points'}

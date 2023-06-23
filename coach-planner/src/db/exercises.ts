@@ -10,11 +10,10 @@ import {
   getDoc,
   query,
   where,
-} from "firebase/firestore";
-import { getDownloadURL, listAll, ref, uploadBytes } from "firebase/storage";
-import { db, storage } from "../firebase";
-import { DbCollections } from "./constants";
-import { v4 as uuid } from "uuid";
+} from 'firebase/firestore';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { db, storage } from '../firebase';
+import { DbCollections } from './constants';
 
 export interface ExerciseResponse {
   id: string;
@@ -47,24 +46,17 @@ export interface UpdateExerciseBody {
 }
 
 export const exerciseCollection = collection(db, DbCollections.exercises);
-export const getExerciseDocRef = (id: string) =>
-  doc(db, DbCollections.exercises, id);
-export const getExercisesByCoachId = (coachId: string) =>
-  query(exerciseCollection, where("coachId", "==", coachId));
+export const getExerciseDocRef = (id: string) => doc(db, DbCollections.exercises, id);
+export const getExercisesByCoachId = (coachId: string) => query(exerciseCollection, where('coachId', '==', coachId));
 
 export const getExercisesFromDb = async () => {
   const querySnapshot = await getDocs(collection(db, DbCollections.exercises));
-  return querySnapshot.docs.map(
-    (x) => ({ id: x.id, ...x.data() } as ExerciseResponse)
-  );
+  return querySnapshot.docs.map((x) => ({ id: x.id, ...x.data() } as ExerciseResponse));
 };
 
-export const createExercise = async (
-  coachId: string | undefined,
-  coachImage: string | null | undefined
-) => {
+export const createExercise = async (coachId: string | undefined, coachImage: string | null | undefined) => {
   if (!coachId) return;
-  const image = coachImage || "";
+  const image = coachImage || '';
   const response = await addDoc(exerciseCollection, {
     coachId: coachId,
     coachImage: image,
@@ -82,17 +74,12 @@ export const getExercisesById = async (id: string) => {
   return { id: response.id, ...response.data() } as ExerciseResponse;
 };
 
-export const updateExercise = async (
-  id: string,
-  exercise: Partial<UpdateExerciseBody>
-) => {
+export const updateExercise = async (id: string, exercise: Partial<UpdateExerciseBody>) => {
   const docRef = doc(db, DbCollections.exercises, id);
   await updateDoc(docRef, {
     ...exercise,
     modify: serverTimestamp(),
   });
-  // const newExercise = await getExercisesById(id);
-  // return newExercise;
 };
 
 export const deleteExercise = async (id: string) => {
@@ -102,7 +89,14 @@ export const deleteExercise = async (id: string) => {
 
 export const uploadImg = async (file: File, id: string) => {
   const fileRef = ref(storage, id);
-  const fileFromDb = await uploadBytes(fileRef, file);
+  await uploadBytes(fileRef, file);
+  const url = await getDownloadURL(fileRef);
+  return url;
+};
+
+export const uploadBlob = async (file: Blob, id: string) => {
+  const fileRef = ref(storage, id);
+  await uploadBytes(fileRef, file);
   const url = await getDownloadURL(fileRef);
   return url;
 };
