@@ -1,16 +1,11 @@
-import { Image as ImageComponent, Layer } from "react-konva";
-import field from "../../assets/field.png";
+import { Layer } from 'react-konva';
+import field from '../../assets/field.png';
+import { ImageComponent } from './Image-component';
 
 export const BackgroundField = () => {
-  const backgroundImage = new Image();
-  backgroundImage.src = field;
   return (
     <Layer>
-      <ImageComponent
-        image={backgroundImage}
-        width={window.innerWidth}
-        height={window.innerHeight}
-      />
+      <ImageComponent src={field} width={window.innerWidth} height={window.innerHeight} />
     </Layer>
   );
 };

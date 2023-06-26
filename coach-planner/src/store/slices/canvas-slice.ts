@@ -1,43 +1,14 @@
 import { type PayloadAction, createSlice, createSelector } from '@reduxjs/toolkit';
 import { RootState } from '../store';
-import { PlayerTypes } from './draw-objects-slice';
-
-export enum LineTypes {
-  forward = 'forward',
-  backward = 'backward',
-  pass = 'pass',
-  forwardPuck = 'puckForward',
-  backwardPuck = 'puckBackward',
-  shot = 'shot',
-}
-
-export enum ColorTypes {
-  red = 'red',
-  blue = 'blue',
-  black = 'black',
-  green = 'green',
-  white = 'white',
-}
-export enum UserActionsValues {
-  select = 'select',
-  draw = 'draw',
-  // drag = 'drag',
-  // polyline = 'polyline',
-  addPlayer = 'addPlayer',
-}
-
-export interface CanvasState {
-  lineType: LineTypes;
-  color: ColorTypes;
-  lineWidth: number;
-  userAction: UserActionsValues;
-  playerType: PlayerTypes;
-}
-
-export interface ColorWidth {
-  color: ColorTypes;
-  lineWidth: number;
-}
+import {
+  CanvasState,
+  ColorTypes,
+  ColorWidth,
+  EquipmentTypes,
+  LineTypes,
+  PlayerTypes,
+  UserActionsValues,
+} from './constants';
 
 const initialState: CanvasState = {
   lineType: LineTypes.forward,
@@ -45,6 +16,7 @@ const initialState: CanvasState = {
   lineWidth: 1,
   userAction: UserActionsValues.draw,
   playerType: PlayerTypes.circle,
+  equipmentType: EquipmentTypes.puck,
 };
 
 const canvasSlice = createSlice({
@@ -64,17 +36,21 @@ const canvasSlice = createSlice({
     setWidth(state, action: PayloadAction<number>) {
       state.lineWidth = action.payload;
     },
-
     setUserAction(state, action: PayloadAction<UserActionsValues>) {
       state.userAction = action.payload;
     },
     setPlayerType(state, action: PayloadAction<PlayerTypes>) {
       state.playerType = action.payload;
     },
+    setEquipmentType(state, action: PayloadAction<EquipmentTypes>) {
+      state.equipmentType = action.payload;
+    },
   },
 });
 
-export const { setLineType, setColorWidth, setUserAction, setWidth, setColor, setPlayerType } = canvasSlice.actions;
+export const { setLineType, setColorWidth, setUserAction, setWidth, setColor, setPlayerType, setEquipmentType } =
+  canvasSlice.actions;
+
 const selectCanvas = (state: RootState) => state.canvas;
 
 export const selectColor = createSelector([selectCanvas], (canvas) => canvas.color);
@@ -82,5 +58,6 @@ export const selectLineType = createSelector([selectCanvas], (canvas) => canvas.
 export const selectLineWidth = createSelector([selectCanvas], (canvas) => canvas.lineWidth);
 export const selectUserAction = createSelector([selectCanvas], (canvas) => canvas.userAction);
 export const selectPlayerType = createSelector([selectCanvas], (canvas) => canvas.playerType);
+export const selectEquipmentType = createSelector([selectCanvas], (canvas) => canvas.equipmentType);
 
 export default canvasSlice.reducer;

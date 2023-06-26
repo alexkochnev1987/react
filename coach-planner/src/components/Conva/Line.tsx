@@ -5,23 +5,10 @@ import { KonvaEventObject } from 'konva/lib/Node';
 
 import { Arrow as ArrowType } from 'konva/lib/shapes/Arrow';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import {
-  LineTypes,
-  UserActionsValues,
-  selectColor,
-  selectLineType,
-  selectLineWidth,
-  selectUserAction,
-} from '../../store/slices/canvas-slice';
-import {
-  ArrowLine,
-  changeLine,
-  setCurrent,
-  setLineColor,
-  setLineType,
-  setLineWidth,
-} from '../../store/slices/draw-objects-slice';
+import { selectColor, selectLineType, selectLineWidth, selectUserAction } from '../../store/slices/canvas-slice';
+import { setColor, setCurrent, setLineType, setLineWidth, setPoint } from '../../store/slices/draw-objects-slice';
 import { findNearestPoint } from './helpers';
+import { ArrowLine, LineTypes, UserActionsValues } from '../../store/slices/constants';
 
 export const LineComponent = ({ current, line }: { line: ArrowLine; current: string | null }) => {
   const userAction = useAppSelector(selectUserAction);
@@ -47,7 +34,7 @@ export const LineComponent = ({ current, line }: { line: ArrowLine; current: str
       pointsArray[i * 2] = e.target.x();
       pointsArray[i * 2 + 1] = e.target.y();
     }
-    dispatch(changeLine(pointsArray));
+    dispatch(setPoint(pointsArray));
   };
 
   const deletePoint = (i: number, points: number[]) => {
@@ -57,7 +44,7 @@ export const LineComponent = ({ current, line }: { line: ArrowLine; current: str
     } else {
       pointsArray.splice(i * 2, 2);
     }
-    dispatch(changeLine(pointsArray));
+    dispatch(setPoint(pointsArray));
   };
 
   const selectCurrent = () => {
@@ -70,7 +57,7 @@ export const LineComponent = ({ current, line }: { line: ArrowLine; current: str
     const pointIndex = findNearestPoint(x, y, points);
     const newPoints = [...points];
     newPoints.splice(pointIndex + 2, 0, x, y);
-    dispatch(changeLine(newPoints));
+    dispatch(setPoint(newPoints));
   };
 
   const setLineDash = (line: LineTypes) => {
@@ -95,7 +82,7 @@ export const LineComponent = ({ current, line }: { line: ArrowLine; current: str
 
   useEffect(() => {
     if (current === line.id) {
-      dispatch(setLineColor(lineColor));
+      dispatch(setColor(lineColor));
     }
   }, [current, dispatch, line.id, lineColor]);
 

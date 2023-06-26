@@ -1,17 +1,10 @@
 import React, { useEffect } from 'react';
-import {
-  Player,
-  PlayerTypes,
-  selectCurrentId,
-  setCurrent,
-  setUserColor,
-  setUserPoint,
-  setUserType,
-} from '../../store/slices/draw-objects-slice';
+import { selectCurrentId, setColor, setCurrent, setPlayerType, setPoint } from '../../store/slices/draw-objects-slice';
 import { Circle, RegularPolygon } from 'react-konva';
 import { KonvaEventObject } from 'konva/lib/Node';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { selectColor, selectPlayerType } from '../../store/slices/canvas-slice';
+import { Player, PlayerTypes } from '../../store/slices/constants';
 
 export const PlayerComponent = ({ player }: { player: Player }) => {
   const dispatch = useAppDispatch();
@@ -36,7 +29,7 @@ export const PlayerComponent = ({ player }: { player: Player }) => {
     },
     onDragEnd: function (e: KonvaEventObject<MouseEvent>) {
       if (current === player.id) {
-        dispatch(setUserPoint([e.target.x(), e.target.y()]));
+        dispatch(setPoint([e.target.x(), e.target.y()]));
       }
     },
     onClick: function () {
@@ -46,12 +39,12 @@ export const PlayerComponent = ({ player }: { player: Player }) => {
 
   useEffect(() => {
     if (current === player.id) {
-      dispatch(setUserColor(color));
+      dispatch(setColor(color));
     }
   }, [current, dispatch, color, player.id]);
   useEffect(() => {
     if (current === player.id) {
-      dispatch(setUserType(playerType));
+      dispatch(setPlayerType(playerType));
     }
   }, [current, dispatch, playerType, player.id]);
 

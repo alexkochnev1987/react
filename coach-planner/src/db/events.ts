@@ -1,16 +1,8 @@
-import {
-  Timestamp,
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  serverTimestamp,
-  updateDoc,
-} from "firebase/firestore";
-import { db } from "../firebase";
-import { DbCollections } from "./constants";
-import { CalendarEvent } from "kalend";
-import { MyCalendarEvents } from "../components/dialogs/calendar-dialog/Event-form";
+import { Timestamp, addDoc, collection, deleteDoc, doc, serverTimestamp, updateDoc } from 'firebase/firestore';
+import { db } from '../firebase';
+import { DbCollections } from './constants';
+
+import { MyCalendarEvents } from '../components/dialogs/calendar-dialog/Event-form';
 
 // export interface CalendarEvent {
 //   id: any;
@@ -30,13 +22,9 @@ import { MyCalendarEvents } from "../components/dialogs/calendar-dialog/Event-fo
 //   [key: string]: any;
 // }
 
-export const getEventsCollectionLink = (id: string) =>
-  collection(db, DbCollections.plans, id, DbCollections.events);
+export const getEventsCollectionLink = (id: string) => collection(db, DbCollections.plans, id, DbCollections.events);
 
-export const createEvent = async (
-  planId: string,
-  event: Partial<MyCalendarEvents>
-) => {
+export const createEvent = async (planId: string, event: Partial<MyCalendarEvents>) => {
   if (!planId) return;
   await addDoc(getEventsCollectionLink(planId), {
     ...event,
@@ -44,10 +32,7 @@ export const createEvent = async (
   });
 };
 
-export const updateEvent = async (
-  planId: string,
-  event: Partial<MyCalendarEvents>
-) => {
+export const updateEvent = async (planId: string, event: Partial<MyCalendarEvents>) => {
   const docRef = doc(getEventsCollectionLink(planId), event.id);
   updateDoc(docRef, { ...event, modify: serverTimestamp() });
 };

@@ -1,10 +1,10 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 export enum Severity {
-  success = "success",
-  warning = "warning",
-  error = "error",
-  info = "info",
+  success = 'success',
+  warning = 'warning',
+  error = 'error',
+  info = 'info',
 }
 
 export interface ToastrState {
@@ -14,13 +14,13 @@ export interface ToastrState {
 }
 
 const initialState: ToastrState = {
-  message: "",
+  message: '',
   open: false,
   severity: Severity.success,
 };
 
 const toastrSlice = createSlice({
-  name: "toastr",
+  name: 'toastr',
   initialState,
   reducers: {
     setToastr(state, action: PayloadAction<ToastrState>) {

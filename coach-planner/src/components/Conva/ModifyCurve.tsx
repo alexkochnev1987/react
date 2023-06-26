@@ -3,8 +3,8 @@ import { useRef } from 'react';
 import { KonvaEventObject } from 'konva/lib/Node';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {
-  UserActionsValues,
   selectColor,
+  selectEquipmentType,
   selectLineType,
   selectLineWidth,
   selectPlayerType,
@@ -12,13 +12,15 @@ import {
 } from '../../store/slices/canvas-slice';
 import { BackgroundField } from './Background-field';
 import { Stage as StageType } from 'konva/lib/Stage';
-import { addLine, addPlayer, deleteCurrent, drawLine, setCurrent } from '../../store/slices/draw-objects-slice';
-
 import { DrawArrowLine } from './Draw-arrow-line';
 import { Vector2d } from 'konva/lib/types';
 import { DrawPlayers } from './Draw-players';
 import { useParams } from 'react-router-dom';
-import { updateExercise, uploadBlob } from '../../db/exercises';
+import { UserActionsValues } from '../../store/slices/constants';
+import { addEquipment, addLine, addPlayer, drawLine, setCurrent } from '../../store/slices/draw-objects-slice';
+import { UserActions } from '../draw/User-actions';
+import { loadFile } from './helpers';
+import { DrawEquipment } from './Draw-equipment';
 
 export const ModifyCurve = () => {
   const { id } = useParams();
@@ -29,7 +31,7 @@ export const ModifyCurve = () => {
   const lineType = useAppSelector(selectLineType);
   const width = useAppSelector(selectLineWidth);
   const type = useAppSelector(selectPlayerType);
-  // const [img, setImg] = useState('');
+  const equipment = useAppSelector(selectEquipmentType);
   const isDrawing = useRef(false);
   const lastPoint = useRef<Vector2d>();
 
@@ -54,6 +56,15 @@ export const ModifyCurve = () => {
         const pos = stage.getPointerPosition();
         if (pos) {
           dispatch(addPlayer({ point: [pos.x, pos.y], color, type }));
+        }
+      }
+    }
+
+    if (action === UserActionsValues.addEquipment) {
+      if (stage) {
+        const pos = stage.getPointerPosition();
+        if (pos) {
+          dispatch(addEquipment({ point: [pos.x, pos.y], color, type: equipment, rotation: 0 }));
         }
       }
     }
@@ -92,33 +103,18 @@ export const ModifyCurve = () => {
     isDrawing.current = false;
   };
 
-  const deleteLine = () => {
-    dispatch(deleteCurrent());
-  };
-
-  const loadFile = async (file: Blob, id: string | undefined) => {
-    if (id) {
-      const img = await uploadBlob(file, id);
-      await updateExercise(id, { img });
-    }
-  };
-
   const handleExport = async () => {
     const uri = stageRef.current;
     dispatch(setCurrent(null));
     if (uri) {
       const blob = (await uri.toBlob()) as Blob;
       loadFile(blob, id);
-      // const data = uri.toDataURL()
-
-      // setImg(data);
     }
   };
 
   return (
     <>
-      <button onClick={handleExport}>Load</button>
-      <button onClick={deleteLine}>Delete</button>
+      <UserActions saveImage={handleExport} />
       <Stage
         ref={stageRef}
         width={window.innerWidth}
@@ -131,8 +127,8 @@ export const ModifyCurve = () => {
         <BackgroundField />
         <DrawArrowLine />
         <DrawPlayers />
+        <DrawEquipment />
       </Stage>
-      {/* {img && <img src={img} alt="" />} */}
     </>
   );
 };

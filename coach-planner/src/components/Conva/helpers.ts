@@ -1,3 +1,5 @@
+import { updateExercise, uploadBlob } from '../../db/exercises';
+
 export const findNearestPoint = (x: number, y: number, points: number[]) => {
   let pointIndex = 0;
   let abs = Number.MAX_VALUE;
@@ -11,4 +13,11 @@ export const findNearestPoint = (x: number, y: number, points: number[]) => {
     }
   });
   return pointIndex;
+};
+
+export const loadFile = async (file: Blob, id: string | undefined) => {
+  if (id) {
+    const img = await uploadBlob(file, id);
+    await updateExercise(id, { img });
+  }
 };

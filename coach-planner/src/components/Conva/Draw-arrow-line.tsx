@@ -7,7 +7,7 @@ import { selectCurrentId, selectLinesObject } from '../../store/slices/draw-obje
 export const DrawArrowLine = () => {
   const lines = useAppSelector(selectLinesObject);
   const current = useAppSelector(selectCurrentId);
-  console.log('arrow');
+
   return (
     <Layer>
       {lines.length > 0 && lines.map((line) => <LineComponent current={current} line={line} key={line.id} />)}

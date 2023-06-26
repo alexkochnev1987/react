@@ -1,7 +1,8 @@
-import React from "react";
-import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { LineTypes, setLineType } from "../../../store/slices/canvas-slice";
-import { Button, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import React from 'react';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { setLineType } from '../../../store/slices/canvas-slice';
+import { MenuItem, Select, type SelectChangeEvent } from '@mui/material';
+import { LineTypes } from '../../../store/slices/constants';
 
 const lineTypesArray = [
   LineTypes.forward,
