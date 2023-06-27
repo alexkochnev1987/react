@@ -1,30 +1,22 @@
-import { IconButton, Link, Menu, MenuItem } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import Fade from "@mui/material/Fade";
-import React from "react";
-import { RouteNames } from "../../router/routes";
-import { NavLink } from "react-router-dom";
+import { IconButton, Link, Menu, MenuItem } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import Fade from '@mui/material/Fade';
+import React from 'react';
+import { RouteNames } from '../../router/routes';
+import { NavLink } from 'react-router-dom';
 
 const NavRoutes = [
   {
-    name: "Exercises",
+    name: 'Exercises',
     link: RouteNames.myExercises,
   },
   {
-    name: "Plan",
+    name: 'Plan',
     link: RouteNames.plan,
   },
   {
-    name: "Trainings",
+    name: 'Trainings',
     link: RouteNames.trainings,
-  },
-  {
-    name: "Draw",
-    link: RouteNames.draw,
-  },
-  {
-    name: "Konva",
-    link: RouteNames.conva,
   },
 ];
 
@@ -46,9 +38,9 @@ export const NavigationMenu = () => {
         aria-label="menu"
         sx={{ mr: 2 }}
         id="fade-button"
-        aria-controls={open ? "fade-menu" : undefined}
+        aria-controls={open ? 'fade-menu' : undefined}
         aria-haspopup="true"
-        aria-expanded={open ? "true" : undefined}
+        aria-expanded={open ? 'true' : undefined}
         onClick={handleClick}
       >
         <MenuIcon />
@@ -56,7 +48,7 @@ export const NavigationMenu = () => {
       <Menu
         id="fade-menu"
         MenuListProps={{
-          "aria-labelledby": "fade-button",
+          'aria-labelledby': 'fade-button',
         }}
         anchorEl={anchorEl}
         open={open}

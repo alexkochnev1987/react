@@ -5,7 +5,7 @@ import { ImageComponent } from './Image-component';
 export const BackgroundField = () => {
   return (
     <Layer>
-      <ImageComponent src={field} width={window.innerWidth} height={window.innerHeight} />
+      <ImageComponent src={field} width={640} height={320} />
     </Layer>
   );
 };

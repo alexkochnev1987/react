@@ -1,7 +1,8 @@
-import { type PayloadAction, createSlice, createSelector } from '@reduxjs/toolkit';
+import { type PayloadAction, createSlice, createSelector, createAsyncThunk } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import { ArrowLine, DrawObjectsState, Equipment, LineTypes, Player, PlayerTypes, getObjectWithId } from './constants';
 import { AllDrawType } from '../../components/Conva/helpers';
+import { updateExercise, uploadBlob } from '../../db/exercises';
 
 const initialState: DrawObjectsState = {
   current: null,
@@ -12,12 +13,28 @@ const initialState: DrawObjectsState = {
 type PlayerProps = Omit<Player, 'id'>;
 type ArrowLineProps = Omit<ArrowLine, 'id'>;
 type EquipmentProps = Omit<Equipment, 'id'>;
+
+export const loadFile = async (file: Blob, id: string | undefined, conva: AllDrawType) => {
+  if (id) {
+    const img = await uploadBlob(file, id);
+    await updateExercise(id, { img, conva });
+  }
+};
+
+export const saveImage = createAsyncThunk<string, { file: Blob; id: string | undefined }, { rejectValue: string }>(
+  'draw/saveImage',
+  async ({ file, id }, thunkApi) => {
+    const state = thunkApi.getState() as RootState;
+    const { players, lines, equipment } = state.draw;
+    loadFile(file, id, { players, lines, equipment });
+    return '';
+  },
+);
 const drawObjectsSlice = createSlice({
   name: 'draw-objects',
   initialState,
   reducers: {
     setImage(state, action: PayloadAction<AllDrawType>) {
-      console.log(action.payload);
       state.equipment = action.payload.equipment;
       state.lines = action.payload.lines;
       state.players = action.payload.players;
@@ -99,6 +116,21 @@ const drawObjectsSlice = createSlice({
         if (state.equipment?.[state.current]) state.equipment[state.current].rotation = action.payload;
       }
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(saveImage.pending, (state) => {
+        // state.loading = true;
+        // state.error = undefined;
+      })
+      .addCase(saveImage.fulfilled, (state, action) => {
+        // state.books = action.payload;
+        // state.loading = false;
+      })
+      .addCase(saveImage.rejected, (state, action) => {
+        // state.error = action.error.message;
+        // state.loading = false;
+      });
   },
 });
 

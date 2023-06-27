@@ -51,14 +51,32 @@ export const LineComponent = ({ current, line }: { line: ArrowLine; current: str
     if (userAction === UserActionsValues.select) dispatch(setCurrent(line.id));
   };
 
-  const onDbClick = (e: KonvaEventObject<MouseEvent>, points: number[]) => {
-    const x = e.evt.offsetX;
-    const y = e.evt.offsetY;
-    const pointIndex = findNearestPoint(x, y, points);
-    const newPoints = [...points];
-    newPoints.splice(pointIndex + 2, 0, x, y);
-    dispatch(setPoint(newPoints));
+  const onDbClick = (e: KonvaEventObject<MouseEvent> | KonvaEventObject<Event>, points: number[]) => {
+    const stage = e.target.getStage();
+
+    console.log(stage);
+    if (stage) {
+      const pos = stage.getPointerPosition();
+      if (pos) {
+        const x = pos.x;
+        const y = pos.y;
+        const pointIndex = findNearestPoint(x, y, points);
+        const newPoints = [...points];
+        newPoints.splice(pointIndex + 2, 0, x, y);
+        dispatch(setPoint(newPoints));
+      }
+    }
   };
+
+  // const onDbTouch = (e: KonvaEventObject<Event>, points: number[]) => {
+
+  // const x = e.;
+  // const y = e.evt.offsetY;
+  // const pointIndex = findNearestPoint(x, y, points);
+  // const newPoints = [...points];
+  // newPoints.splice(pointIndex + 2, 0, x, y);
+  // dispatch(setPoint(newPoints));
+  // };
 
   const setLineDash = (line: LineTypes) => {
     if (line === LineTypes.pass) {
@@ -107,6 +125,8 @@ export const LineComponent = ({ current, line }: { line: ArrowLine; current: str
         pointerWidth={20}
         dash={setLineDash(line.line)}
         onClick={selectCurrent}
+        onTouchStart={selectCurrent}
+        onDblTap={(e) => onDbClick(e, line.points)}
         onDblClick={(e) => onDbClick(e, line.points)}
         onMouseOver={(e: KonvaEventObject<MouseEvent>) => {
           document.body.style.cursor = 'pointer';

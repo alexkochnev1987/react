@@ -45,7 +45,6 @@ const PrivateRouter = createBrowserRouter([
             path: RouteNames.plan + RouteNames.id,
             element: <ShowEvents />,
           },
-
           {
             path: RouteNames.trainings,
             element: <TrainingsPage />,

@@ -1,6 +1,5 @@
-import React from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { Box, IconButton, Tooltip } from '@mui/material';
+import { Box } from '@mui/material';
 import {
   selectEquipmentType,
   selectPlayerType,
@@ -12,16 +11,14 @@ import {
 import { SelectColor } from './Tools/Select-color';
 import { SelectLineType } from './Tools/Line';
 import { SelectSize } from './Tools/Select-size';
-import { ActionsOnConva, TooltipTitle, lineTypesArray, playerTypesArray, toolsTypesArray } from './constants';
-import { deleteCurrent, getAllDraw, setCurrent } from '../../store/slices/draw-objects-slice';
+import { lineTypesArray, playerTypesArray, toolsTypesArray } from './constants';
+import { setCurrent } from '../../store/slices/draw-objects-slice';
 import { IconButtonForTool } from './Tools/IconForTool';
 import { EquipmentTypes, UserActionsValues } from '../../store/slices/constants';
-import { AllDrawType } from '../Conva/helpers';
+import { SaveImageButtons } from '../Conva/Save-image-button';
 
-export const UserActions = ({ saveImage }: { saveImage: (allDraw: AllDrawType) => Promise<void> }) => {
+export const UserActions = ({ saveImage }: { saveImage: () => Promise<void> }) => {
   const dispatch = useAppDispatch();
-  const allDraw = useAppSelector(getAllDraw);
-
   const userAction = useAppSelector(selectUserAction);
   const playerType = useAppSelector(selectPlayerType);
   const equipmentType = useAppSelector(selectEquipmentType);
@@ -29,10 +26,8 @@ export const UserActions = ({ saveImage }: { saveImage: (allDraw: AllDrawType) =
     if (userAction !== value) dispatch(setCurrent(null));
     dispatch(setUserAction(value));
   };
-  const setToolActionHandler = (value: EquipmentTypes) => dispatch(setEquipmentType(value));
-
-  const onSaveImage = () => {
-    saveImage(allDraw);
+  const setToolActionHandler = (value: EquipmentTypes) => {
+    dispatch(setEquipmentType(value));
   };
 
   return (
@@ -55,7 +50,9 @@ export const UserActions = ({ saveImage }: { saveImage: (allDraw: AllDrawType) =
               color="primary"
               key={x.value}
               isActive={playerType === x.value}
-              onClick={() => dispatch(setPlayerType(x.value))}
+              onClick={() => {
+                dispatch(setPlayerType(x.value));
+              }}
             >
               {x.icon}
             </IconButtonForTool>
@@ -80,21 +77,7 @@ export const UserActions = ({ saveImage }: { saveImage: (allDraw: AllDrawType) =
           </>
         )}
       </Box>
-      <Box display={'flex'} sx={{ height: '45px' }} gap={'5px'}>
-        <Tooltip title={TooltipTitle.deleteLine} placement="top">
-          <IconButton color="error" onClick={() => dispatch(deleteCurrent())}>
-            {ActionsOnConva.deleteIcon}
-          </IconButton>
-        </Tooltip>
-        <Tooltip title={TooltipTitle.save} placement="top">
-          <IconButton color="primary" onClick={onSaveImage}>
-            {ActionsOnConva.saveIcon}
-          </IconButton>
-        </Tooltip>
-        <Tooltip title={TooltipTitle.saveAs} placement="top">
-          <IconButton color="primary">{ActionsOnConva.saveAs}</IconButton>
-        </Tooltip>
-      </Box>
+      <SaveImageButtons saveImage={saveImage} />
     </Box>
   );
 };

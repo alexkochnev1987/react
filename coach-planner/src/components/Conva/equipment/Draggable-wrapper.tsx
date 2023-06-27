@@ -12,20 +12,21 @@ export const DraggableWrapper = ({ equipment, children }: { equipment: Equipment
       dispatch(setPoint([e.target.x(), e.target.y()]));
     }
   };
-  const onDragStart = (e: KonvaEventObject<MouseEvent>) => {
-    console.log(e);
-
+  const onDragStart = () => {
     dispatch(setCurrent(equipment.id));
   };
   return (
     <Group
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
+      onTap={() => dispatch(setCurrent(equipment.id))}
+      onClick={() => dispatch(setCurrent(equipment.id))}
       draggable
       x={equipment.point[0] - 10}
       y={equipment.point[1] - 10}
       width={20}
       height={20}
+      scale={current === equipment.id ? { x: 2, y: 2 } : { x: 1, y: 1 }}
     >
       {children}
     </Group>

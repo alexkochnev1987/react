@@ -37,6 +37,9 @@ export const Anchor = ({
     onDblClick: () => {
       deleteAnchor();
     },
+    onDblTap: () => {
+      deleteAnchor();
+    },
   };
   return <Circle {...props} />;
 };

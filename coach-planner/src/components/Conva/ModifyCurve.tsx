@@ -17,9 +17,15 @@ import { Vector2d } from 'konva/lib/types';
 import { DrawPlayers } from './Draw-players';
 import { useParams } from 'react-router-dom';
 import { UserActionsValues } from '../../store/slices/constants';
-import { addEquipment, addLine, addPlayer, drawLine, setCurrent } from '../../store/slices/draw-objects-slice';
+import {
+  addEquipment,
+  addLine,
+  addPlayer,
+  drawLine,
+  saveImage,
+  setCurrent,
+} from '../../store/slices/draw-objects-slice';
 import { UserActions } from '../draw/User-actions';
-import { AllDrawType, loadFile } from './helpers';
 import { DrawEquipment } from './Draw-equipment';
 
 export const ModifyCurve = () => {
@@ -35,7 +41,7 @@ export const ModifyCurve = () => {
   const isDrawing = useRef(false);
   const lastPoint = useRef<Vector2d>();
 
-  const handleMouseDown = (e: KonvaEventObject<MouseEvent>) => {
+  const handleMouseDown = (e: KonvaEventObject<MouseEvent> | KonvaEventObject<TouchEvent>) => {
     if (action === UserActionsValues.select) {
       return;
     }
@@ -88,7 +94,7 @@ export const ModifyCurve = () => {
     }
   };
 
-  const handleMouseMove = (e: KonvaEventObject<MouseEvent>) => {
+  const handleMouseMove = (e: KonvaEventObject<MouseEvent> | KonvaEventObject<TouchEvent>) => {
     if (!isDrawing.current) {
       return;
     }
@@ -103,12 +109,12 @@ export const ModifyCurve = () => {
     isDrawing.current = false;
   };
 
-  const handleExport = async (allDraw: AllDrawType) => {
+  const handleExport = async () => {
     const uri = stageRef.current;
     dispatch(setCurrent(null));
     if (uri) {
-      const blob = (await uri.toBlob()) as Blob;
-      loadFile(blob, id, allDraw);
+      const file = (await uri.toBlob()) as Blob;
+      dispatch(saveImage({ file, id }));
     }
   };
 
@@ -117,8 +123,11 @@ export const ModifyCurve = () => {
       <UserActions saveImage={handleExport} />
       <Stage
         ref={stageRef}
-        width={window.innerWidth}
-        height={window.innerHeight}
+        width={640}
+        height={320}
+        onTouchStart={handleMouseDown}
+        onTouchMove={handleMouseMove}
+        onTouchEnd={handleMouseUp}
         onMouseDown={handleMouseDown}
         onMousemove={handleMouseMove}
         onMouseup={handleMouseUp}
