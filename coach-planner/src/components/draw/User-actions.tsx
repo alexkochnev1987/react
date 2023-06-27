@@ -13,17 +13,27 @@ import { SelectColor } from './Tools/Select-color';
 import { SelectLineType } from './Tools/Line';
 import { SelectSize } from './Tools/Select-size';
 import { ActionsOnConva, TooltipTitle, lineTypesArray, playerTypesArray, toolsTypesArray } from './constants';
-import { deleteCurrent } from '../../store/slices/draw-objects-slice';
+import { deleteCurrent, getAllDraw, setCurrent } from '../../store/slices/draw-objects-slice';
 import { IconButtonForTool } from './Tools/IconForTool';
 import { EquipmentTypes, UserActionsValues } from '../../store/slices/constants';
+import { AllDrawType } from '../Conva/helpers';
 
-export const UserActions = ({ saveImage }: { saveImage: () => Promise<void> }) => {
+export const UserActions = ({ saveImage }: { saveImage: (allDraw: AllDrawType) => Promise<void> }) => {
   const dispatch = useAppDispatch();
+  const allDraw = useAppSelector(getAllDraw);
+
   const userAction = useAppSelector(selectUserAction);
   const playerType = useAppSelector(selectPlayerType);
   const equipmentType = useAppSelector(selectEquipmentType);
-  const setUserActionHandler = (value: UserActionsValues) => dispatch(setUserAction(value));
+  const setUserActionHandler = (value: UserActionsValues) => {
+    if (userAction !== value) dispatch(setCurrent(null));
+    dispatch(setUserAction(value));
+  };
   const setToolActionHandler = (value: EquipmentTypes) => dispatch(setEquipmentType(value));
+
+  const onSaveImage = () => {
+    saveImage(allDraw);
+  };
 
   return (
     <Box display={'flex'} alignItems={'center'} gap={'5px'} sx={{ height: '60px' }} justifyContent={'space-between'}>
@@ -77,7 +87,7 @@ export const UserActions = ({ saveImage }: { saveImage: () => Promise<void> }) =
           </IconButton>
         </Tooltip>
         <Tooltip title={TooltipTitle.save} placement="top">
-          <IconButton color="primary" onClick={saveImage}>
+          <IconButton color="primary" onClick={onSaveImage}>
             {ActionsOnConva.saveIcon}
           </IconButton>
         </Tooltip>

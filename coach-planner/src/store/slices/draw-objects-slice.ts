@@ -1,6 +1,7 @@
 import { type PayloadAction, createSlice, createSelector } from '@reduxjs/toolkit';
 import { RootState } from '../store';
 import { ArrowLine, DrawObjectsState, Equipment, LineTypes, Player, PlayerTypes, getObjectWithId } from './constants';
+import { AllDrawType } from '../../components/Conva/helpers';
 
 const initialState: DrawObjectsState = {
   current: null,
@@ -15,6 +16,12 @@ const drawObjectsSlice = createSlice({
   name: 'draw-objects',
   initialState,
   reducers: {
+    setImage(state, action: PayloadAction<AllDrawType>) {
+      console.log(action.payload);
+      state.equipment = action.payload.equipment;
+      state.lines = action.payload.lines;
+      state.players = action.payload.players;
+    },
     addLine(state, action: PayloadAction<ArrowLineProps>) {
       const newLine = getObjectWithId(action.payload);
       if (state.lines) {
@@ -54,10 +61,14 @@ const drawObjectsSlice = createSlice({
       }
     },
     setLineType(state, action: PayloadAction<LineTypes>) {
-      if (state.lines && state.current) state.lines[state.current].line = action.payload;
+      if (state.current) {
+        if (state.lines?.[state.current]) state.lines[state.current].line = action.payload;
+      }
     },
     setLineWidth(state, action: PayloadAction<number>) {
-      if (state.lines && state.current) state.lines[state.current].width = action.payload;
+      if (state.current) {
+        if (state.lines?.[state.current]) state.lines[state.current].width = action.payload;
+      }
     },
     addPlayer(state, action: PayloadAction<PlayerProps>) {
       const newPlayer = getObjectWithId(action.payload);
@@ -104,6 +115,7 @@ export const {
   setPoint,
   addEquipment,
   setRotation,
+  setImage,
 } = drawObjectsSlice.actions;
 
 const selectDraw = (state: RootState) => state.draw;
@@ -118,5 +130,11 @@ export const selectPlyersObject = createSelector([selectDraw], (draw) =>
 export const selectEquipmentObject = createSelector([selectDraw], (draw) =>
   draw.equipment ? Object.values(draw.equipment) : [],
 );
+
+export const getAllDraw = createSelector([selectDraw], (draw) => ({
+  lines: draw.lines,
+  equipment: draw.equipment,
+  players: draw.players,
+}));
 
 export default drawObjectsSlice.reducer;

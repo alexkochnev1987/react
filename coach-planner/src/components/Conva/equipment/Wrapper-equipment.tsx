@@ -1,19 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import { Equipment } from '../../../store/slices/constants';
 import { Group, Transformer } from 'react-konva';
-import { setCurrent, setPoint, setRotation } from '../../../store/slices/draw-objects-slice';
-import { useAppDispatch } from '../../../store/hooks';
+import { selectCurrentId, setColor, setCurrent, setPoint, setRotation } from '../../../store/slices/draw-objects-slice';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { KonvaEventObject } from 'konva/lib/Node';
+import { selectColor } from '../../../store/slices/canvas-slice';
 
-export const WrapperEquipment = ({
-  equipment,
-  current,
-  children,
-}: {
-  equipment: Equipment;
-  current: string | null;
-  children: React.ReactNode;
-}) => {
+export const WrapperEquipment = ({ equipment, children }: { equipment: Equipment; children: React.ReactNode }) => {
+  const current = useAppSelector(selectCurrentId);
+  const color = useAppSelector(selectColor);
   const dispatch = useAppDispatch();
   const trRef = useRef<any>(null);
   const shapeRef = useRef(null);
@@ -36,6 +31,12 @@ export const WrapperEquipment = ({
       }
     }
   }, [current, equipment.id]);
+
+  useEffect(() => {
+    if (current === equipment.id) {
+      dispatch(setColor(color));
+    }
+  }, [current, dispatch, color, equipment.id]);
   return (
     <>
       <Group

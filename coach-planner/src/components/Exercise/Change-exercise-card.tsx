@@ -1,16 +1,17 @@
 import { red } from '@mui/material/colors';
-import { Avatar, Button, Card, CardHeader, CardMedia, Grid } from '@mui/material';
+import { Avatar, Button, Card, CardHeader, Grid } from '@mui/material';
 import { ExerciseResponse, deleteExercise, updateExercise } from '../../db/exercises';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SubmitDialog } from '../dialogs/exercise-dialog/submit-dialog';
 import { useNavigate } from 'react-router-dom';
 import { RouteNames } from '../../router/routes';
-// import { ShowImage } from '../dialogs/exercise-dialog/Show-image';
 import { EditContent } from './Edit-content';
 import { MultipleSelectChip } from './Edit-tags';
 import { ageOptions, deleteDialogContent, tagOptions } from './constants';
 import { Conva } from '../Conva/Conva';
+import { setImage } from '../../store/slices/draw-objects-slice';
+import { useAppDispatch } from '../../store/hooks';
 
 export const ChangeExerciseCard = ({ exercise }: { exercise: ExerciseResponse }) => {
   const navigate = useNavigate();
@@ -24,6 +25,12 @@ export const ChangeExerciseCard = ({ exercise }: { exercise: ExerciseResponse })
     updateExercise(exercise.id, { [fieldName]: content });
   };
 
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    if (exercise.conva) {
+      dispatch(setImage(exercise.conva));
+    }
+  }, [exercise, dispatch]);
   return (
     <Card>
       <SubmitDialog
@@ -52,11 +59,6 @@ export const ChangeExerciseCard = ({ exercise }: { exercise: ExerciseResponse })
       <Grid container padding={1}>
         <Grid item>
           <Conva />
-          <CardMedia component="img" width={'100%'} image={exercise.img} alt={exercise.name} />
-          {/* <CardMedia component="img" width={'100%'} image={exercise.img} alt={exercise.name} />
-          <Grid item xs={12} sm={6}>
-            <ShowImage idExercise={exercise.id} />
-          </Grid> */}
         </Grid>
         <Grid item xs={12} sm={4} md={6} lg={6}>
           <EditContent

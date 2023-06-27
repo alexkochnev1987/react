@@ -1,4 +1,6 @@
 import { Path } from 'react-konva';
+import { Equipment } from '../../../store/slices/constants';
+import { WrapperEquipment } from './Wrapper-equipment';
 
 export const stick = `M46.379,0.368c-1.412-0.783-3.191-0.276-3.974,1.129L15.651,49.494H2.921C1.308,49.494,0,50.796,0,52.404
 s1.308,2.912,2.921,2.91h14.447c0.086,0,0.171-0.005,0.252-0.015c0.045,0,0.085-0.005,0.131-0.015
@@ -9,4 +11,8 @@ c0.027-0.021,0.051-0.044,0.073-0.065c0.03-0.026,0.062-0.053,0.089-0.086c0.049-0.
 c0.046-0.049,0.084-0.105,0.126-0.157c0.079-0.104,0.153-0.215,0.219-0.337l0.037-0.063L47.508,4.327
 C48.297,2.922,47.79,1.148,46.379,0.368z`;
 
-export const Stick = () => <Path data={stick} fill={'black'} scaleX={0.9} scaleY={0.9} />;
+export const Stick = ({ equipment }: { equipment: Equipment }) => (
+  <WrapperEquipment equipment={equipment}>
+    <Path data={stick} fill={equipment.color} />
+  </WrapperEquipment>
+);

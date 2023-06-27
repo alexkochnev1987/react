@@ -14,6 +14,7 @@ import {
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { db, storage } from '../firebase';
 import { DbCollections } from './constants';
+import { AllDrawType } from '../components/Conva/helpers';
 
 export interface ExerciseResponse {
   id: string;
@@ -30,6 +31,7 @@ export interface ExerciseResponse {
   create: string;
   modify?: string;
   coachImage?: string;
+  conva?: AllDrawType;
 }
 
 export type ExerciseResponseKeys = keyof ExerciseResponse;
@@ -43,6 +45,7 @@ export interface UpdateExerciseBody {
   age?: string[];
   link?: string;
   coachImage?: string;
+  conva?: AllDrawType;
 }
 
 export const exerciseCollection = collection(db, DbCollections.exercises);

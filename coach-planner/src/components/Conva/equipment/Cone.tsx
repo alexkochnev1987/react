@@ -1,5 +1,6 @@
 import { Path } from 'react-konva';
 import { Equipment } from '../../../store/slices/constants';
+import { WrapperEquipment } from './Wrapper-equipment';
 
 const shape = `M425.712,465.099l-160-458.667c-3.008-8.576-17.152-8.576-20.139,0l-160,458.667c-0.405,1.131-0.597,2.304-0.597,3.52
 c0,41.472,153.195,42.667,170.667,42.667s170.667-1.195,170.667-42.667C426.309,467.424,426.117,466.229,425.712,465.099z`;
@@ -16,11 +17,11 @@ c18.749,0,34.002-19.585,34.002-43.659C512.891,465.468,497.638,445.883,478.889,44
 
 export const Cone = ({ equipment }: { equipment: Equipment }) => {
   return (
-    <>
+    <WrapperEquipment equipment={equipment}>
       <Path data={top} fill={equipment.color} scaleX={0.055} scaleY={0.055} />
       <Path data={middle} fill={equipment.color} scaleX={0.055} scaleY={0.055} />
       <Path data={base} fill={equipment.color} scaleX={0.055} scaleY={0.055} />
       <Path data={shape} scaleX={0.058} scaleY={0.055} stroke={'black'} strokeWidth={4} />
-    </>
+    </WrapperEquipment>
   );
 };

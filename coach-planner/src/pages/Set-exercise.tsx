@@ -7,5 +7,6 @@ export const SetExercise = () => {
   const params = useParams();
   const id = params.id as string;
   const [exercise] = useDocument(getExerciseDocRef(id));
+
   return exercise && <ChangeExerciseCard exercise={{ id: exercise.id, ...exercise.data() } as ExerciseResponse} />;
 };

@@ -1,4 +1,5 @@
 import { updateExercise, uploadBlob } from '../../db/exercises';
+import { DrawObjectsState } from '../../store/slices/constants';
 
 export const findNearestPoint = (x: number, y: number, points: number[]) => {
   let pointIndex = 0;
@@ -15,9 +16,11 @@ export const findNearestPoint = (x: number, y: number, points: number[]) => {
   return pointIndex;
 };
 
-export const loadFile = async (file: Blob, id: string | undefined) => {
+export type AllDrawType = Omit<DrawObjectsState, 'current'>;
+
+export const loadFile = async (file: Blob, id: string | undefined, conva: AllDrawType) => {
   if (id) {
     const img = await uploadBlob(file, id);
-    await updateExercise(id, { img });
+    await updateExercise(id, { img, conva });
   }
 };

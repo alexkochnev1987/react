@@ -19,7 +19,7 @@ import { useParams } from 'react-router-dom';
 import { UserActionsValues } from '../../store/slices/constants';
 import { addEquipment, addLine, addPlayer, drawLine, setCurrent } from '../../store/slices/draw-objects-slice';
 import { UserActions } from '../draw/User-actions';
-import { loadFile } from './helpers';
+import { AllDrawType, loadFile } from './helpers';
 import { DrawEquipment } from './Draw-equipment';
 
 export const ModifyCurve = () => {
@@ -103,12 +103,12 @@ export const ModifyCurve = () => {
     isDrawing.current = false;
   };
 
-  const handleExport = async () => {
+  const handleExport = async (allDraw: AllDrawType) => {
     const uri = stageRef.current;
     dispatch(setCurrent(null));
     if (uri) {
       const blob = (await uri.toBlob()) as Blob;
-      loadFile(blob, id);
+      loadFile(blob, id, allDraw);
     }
   };
 

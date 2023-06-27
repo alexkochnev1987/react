@@ -1,8 +1,8 @@
 import { Path } from 'react-konva';
-
 import { Equipment } from '../../../store/slices/constants';
+import { DraggableWrapper } from './Draggable-wrapper';
 
-const e = `M495.252,259.902c-2.773-0.589-3.183-2.697-3.183-3.9c0-1.203,0.41-3.311,3.183-3.9
+const tire = `M495.252,259.902c-2.773-0.589-3.183-2.697-3.183-3.9c0-1.203,0.41-3.311,3.183-3.9
 c10.778-2.253,17.775-11.836,16.631-22.767c-1.143-10.94-9.958-18.867-21.035-18.867h-0.026h-0.009
 c-2.833,0-3.678-1.98-3.917-3.166c-0.256-1.178-0.282-3.319,2.313-4.463c10.069-4.437,14.933-15.249,11.563-25.711
 c-3.379-10.47-13.662-16.384-24.661-14.089c-2.782,0.606-4.019-1.186-4.514-2.295c-0.486-1.101-0.956-3.183,1.425-4.89
@@ -49,13 +49,13 @@ C513.027,271.738,506.029,262.155,495.252,259.902z M256.003,375.469c-65.877,0-119
 c0-65.877,53.589-119.467,119.467-119.467c65.877,0,119.467,53.589,119.467,119.467
 C375.469,321.88,321.88,375.469,256.003,375.469z`;
 
-const b = `M12,16c-2.2,0-4-1.8-4-4s1.8-4,4-4s4,1.8,4,4S14.2,16,12,16z`;
+const middle = `M12,16c-2.2,0-4-1.8-4-4s1.8-4,4-4s4,1.8,4,4S14.2,16,12,16z`;
 
 export const Tire = ({ equipment }: { equipment: Equipment }) => {
   return (
-    <>
-      <Path data={e} fill={equipment.color} scaleX={0.055} scaleY={0.055} />
-      <Path data={b} fill="white" scaleX={1.18} scaleY={1.18} stroke={equipment.color} strokeWidth={2} />
-    </>
+    <DraggableWrapper equipment={equipment}>
+      <Path data={tire} fill={equipment.color} scaleX={0.055} scaleY={0.055} />
+      <Path data={middle} fill="white" scaleX={1.18} scaleY={1.18} stroke={equipment.color} strokeWidth={2} />
+    </DraggableWrapper>
   );
 };
