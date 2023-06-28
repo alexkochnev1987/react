@@ -12,7 +12,6 @@ import { TrainingPage } from '../pages/Trainig-page';
 import { ShowEvents } from '../pages/Show-events';
 import { TrainingsPage } from '../pages/Trainings-page';
 import { SetExercise } from '../pages/Set-exercise';
-// import { Conva } from '../components/Conva/Conva';
 
 const PrivateRouter = createBrowserRouter([
   {

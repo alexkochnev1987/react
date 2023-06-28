@@ -1,3 +1,4 @@
+import { ColorModeContext } from '../Theme-provider';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
@@ -9,7 +10,6 @@ import { RouteNames } from '../../router/routes';
 import { Link } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';
-import { ColorModeContext } from '../../App';
 import { useContext } from 'react';
 import { NavigationMenu } from './Navigation-menu';
 

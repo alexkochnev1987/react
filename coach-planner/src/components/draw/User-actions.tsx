@@ -15,9 +15,8 @@ import { lineTypesArray, playerTypesArray, toolsTypesArray } from './constants';
 import { setCurrent } from '../../store/slices/draw-objects-slice';
 import { IconButtonForTool } from './Tools/IconForTool';
 import { EquipmentTypes, UserActionsValues } from '../../store/slices/constants';
-import { SaveImageButtons } from '../Conva/Save-image-button';
 
-export const UserActions = ({ saveImage }: { saveImage: () => Promise<void> }) => {
+export const UserActions = () => {
   const dispatch = useAppDispatch();
   const userAction = useAppSelector(selectUserAction);
   const playerType = useAppSelector(selectPlayerType);
@@ -77,7 +76,6 @@ export const UserActions = ({ saveImage }: { saveImage: () => Promise<void> }) =
           </>
         )}
       </Box>
-      <SaveImageButtons saveImage={saveImage} />
     </Box>
   );
 };

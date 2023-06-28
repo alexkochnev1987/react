@@ -42,6 +42,7 @@ export const WrapperEquipment = ({ equipment, children }: { equipment: Equipment
       <Group
         rotation={equipment.rotation}
         onTouchStart={onClick}
+        onDragStart={onClick}
         onDragEnd={onDragEnd}
         onClick={onClick}
         draggable

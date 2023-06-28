@@ -1,50 +1,16 @@
-import {
-  Timestamp,
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  serverTimestamp,
-  updateDoc,
-  where,
-} from 'firebase/firestore';
-import { ExerciseParamsDefault, IExerciseParams } from '../components/exercise-params/constants';
-import { ExerciseResponse } from './exercises';
+import { collection, doc, getDoc, getDocs, query, serverTimestamp, where } from 'firebase/firestore';
+import { ExerciseParamsDefault } from '../components/exercise-params/constants';
+
 import { db } from '../firebase';
-import { DbCollections } from './constants';
+import {
+  CreateTrainingRequest,
+  DbCollections,
+  ExerciseResponse,
+  TrainingExerciseData,
+  TrainingResponse,
+} from './constants';
 import { v4 as uuidv4 } from 'uuid';
-
-export interface TrainingExerciseData {
-  exercise: ExerciseResponse;
-  params: IExerciseParams;
-  uuid: string;
-}
-
-export interface TrainingResponse {
-  id: string;
-  like?: string[];
-  dislike?: string[];
-  coachId: string;
-  name?: string;
-  description?: string;
-  comments?: string;
-  tag?: string[];
-  age?: string[];
-  link?: string;
-  create: string;
-  modify?: string;
-  coachImage?: string;
-  exercises: TrainingExerciseData[];
-}
-
-export interface CreateTrainingRequest {
-  coachId: string;
-  coachImage?: string;
-  name: string;
-}
+import { addDocFunction, deleteDocFunction, updateDocFunction } from './firestore';
 
 export const trainingsCollection = collection(db, DbCollections.trainings);
 export const getTrainingRef = (id: string | undefined) => {
@@ -58,23 +24,18 @@ export const getTrainingById = async (id: string) => {
   return { id: training.id, ...training.data() } as TrainingResponse;
 };
 
-export const createTraining = async ({ coachId, name }: CreateTrainingRequest) => {
+export const createTraining = ({ coachId, name }: CreateTrainingRequest) => {
   if (!coachId) return;
-  await addDoc(trainingsCollection, {
-    coachId: coachId,
-    name,
-    create: Timestamp.fromDate(new Date()),
-  });
+  addDocFunction(trainingsCollection, { coachId, name });
 };
 
-export const deleteTraining = async (trainingId: string) => {
+export const deleteTraining = (trainingId: string) => {
   const docRef = doc(trainingsCollection, trainingId);
-  await deleteDoc(docRef);
+  deleteDocFunction(docRef);
+  // await deleteDoc(docRef);
 };
 
 export const getTrainingByName = async ({ coachId, name }: CreateTrainingRequest) => {
-  console.log(coachId);
-
   const q = query(trainingsCollection, where('name', '==', name));
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.length ? querySnapshot.docs[0].id : false;
@@ -98,7 +59,7 @@ export const updateTraining = async (id: string, training: Partial<TrainingRespo
     modify: serverTimestamp(),
   };
 
-  await updateDoc(docRef, newTraining);
+  updateDocFunction(docRef, newTraining);
 };
 
 export const addExerciseInTraining = async (exercise: ExerciseResponse, id: string) => {

@@ -1,6 +1,7 @@
 import { Container } from '@mui/material';
 import { MainPage } from '../../pages/Main-page';
 import { Navbar } from '../navbar/Navbar';
+import { Footer } from '../Footer';
 
 export const Layout = () => {
   return (
@@ -8,15 +9,15 @@ export const Layout = () => {
       disableGutters={true}
       sx={{
         display: 'flex',
-        flexDirection: 'column',
-        width: '100%',
         minHeight: '100vh',
         bgcolor: 'background.default',
-        color: 'text.primary',
+        flexDirection: 'column',
+        color: 'text.default',
       }}
     >
       <Navbar />
       <MainPage />
+      <Footer />
     </Container>
   );
 };

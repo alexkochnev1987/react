@@ -1,6 +1,6 @@
 import { red } from '@mui/material/colors';
 import { Avatar, Button, Card, CardHeader, Grid } from '@mui/material';
-import { ExerciseResponse, deleteExercise, updateExercise } from '../../db/exercises';
+import { deleteExercise, updateExercise } from '../../db/exercises';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useEffect, useState } from 'react';
 import { SubmitDialog } from '../dialogs/exercise-dialog/submit-dialog';
@@ -12,6 +12,7 @@ import { ageOptions, deleteDialogContent, tagOptions } from './constants';
 import { Conva } from '../Conva/Conva';
 import { setImage } from '../../store/slices/draw-objects-slice';
 import { useAppDispatch } from '../../store/hooks';
+import { ExerciseResponse } from '../../db/constants';
 
 export const ChangeExerciseCard = ({ exercise }: { exercise: ExerciseResponse }) => {
   const navigate = useNavigate();

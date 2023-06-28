@@ -27,6 +27,8 @@ import {
 } from '../../store/slices/draw-objects-slice';
 import { UserActions } from '../draw/User-actions';
 import { DrawEquipment } from './Draw-equipment';
+import { SaveImageButtons } from './Save-image-button';
+import { Box } from '@mui/material';
 
 export const ModifyCurve = () => {
   const { id } = useParams();
@@ -109,7 +111,7 @@ export const ModifyCurve = () => {
     isDrawing.current = false;
   };
 
-  const handleExport = async () => {
+  const saveImageHandler = async () => {
     const uri = stageRef.current;
     dispatch(setCurrent(null));
     if (uri) {
@@ -120,7 +122,10 @@ export const ModifyCurve = () => {
 
   return (
     <>
-      <UserActions saveImage={handleExport} />
+      <Box display={'flex'} alignItems="center" justifyContent="space-between">
+        <UserActions />
+        <SaveImageButtons saveImage={saveImageHandler} />
+      </Box>
       <Stage
         ref={stageRef}
         width={640}

@@ -34,6 +34,11 @@ const drawObjectsSlice = createSlice({
   name: 'draw-objects',
   initialState,
   reducers: {
+    // saveImage(state, action: PayloadAction<{ file: Blob; id: string | undefined }>) {
+    //   const { players, lines, equipment } = state;
+    //   const { file, id } = action.payload;
+    //   loadFile(file, id, { players, lines, equipment });
+    // },
     setImage(state, action: PayloadAction<AllDrawType>) {
       state.equipment = action.payload.equipment;
       state.lines = action.payload.lines;
@@ -61,6 +66,7 @@ const drawObjectsSlice = createSlice({
       if (state.current) {
         if (state.lines?.[state.current]) state.lines[state.current].points = action.payload;
         if (state.players?.[state.current]) state.players[state.current].point = action.payload;
+        if (state.equipment?.[state.current]) state.equipment[state.current].point = action.payload;
       }
     },
     deleteCurrent(state) {
@@ -117,21 +123,21 @@ const drawObjectsSlice = createSlice({
       }
     },
   },
-  extraReducers: (builder) => {
-    builder
-      .addCase(saveImage.pending, (state) => {
-        // state.loading = true;
-        // state.error = undefined;
-      })
-      .addCase(saveImage.fulfilled, (state, action) => {
-        // state.books = action.payload;
-        // state.loading = false;
-      })
-      .addCase(saveImage.rejected, (state, action) => {
-        // state.error = action.error.message;
-        // state.loading = false;
-      });
-  },
+  // extraReducers: (builder) => {
+  //   builder
+  //     .addCase(saveImage.pending, (state) => {
+  //       // state.loading = true;
+  //       // state.error = undefined;
+  //     })
+  //     .addCase(saveImage.fulfilled, (state, action) => {
+  //       // state.books = action.payload;
+  //       // state.loading = false;
+  //     })
+  //     .addCase(saveImage.rejected, (state, action) => {
+  //       // state.error = action.error.message;
+  //       // state.loading = false;
+  //     });
+  // },
 });
 
 export const {
@@ -148,6 +154,7 @@ export const {
   addEquipment,
   setRotation,
   setImage,
+  // saveImage,
 } = drawObjectsSlice.actions;
 
 const selectDraw = (state: RootState) => state.draw;

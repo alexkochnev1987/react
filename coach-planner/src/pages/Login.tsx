@@ -3,77 +3,112 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { RouteNames } from '../router/routes';
 import GoogleIcon from '@mui/icons-material/Google';
-import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from 'firebase/auth';
 import { useEffect } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { auth } from '../firebase';
+import { Box, Checkbox, FormControlLabel, Grid, Typography } from '@mui/material';
+import { AuthWrapper } from '../components/Auth-wrapper';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { InputComponent } from '../components/forms/Input-component';
 
-type Inputs = {
-  email: string;
-  password: string;
-};
+const schema = yup.object({
+  email: yup.string().email().required(),
+  password: yup.string().min(5).max(25).required(),
+});
+export type LoginFormData = yup.InferType<typeof schema>;
+
+enum FieldDescription {
+  password = 'Min length 5 max 25',
+  email = 'Enter a valid email',
+}
 
 export const Login = () => {
-  const [user] = useAuthState(auth);
+  const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);
+  const [signInWithGoogle, googleUser, googleLoading, googleError] = useSignInWithGoogle(auth);
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm<Inputs>();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+    resolver: yupResolver(schema),
+  });
 
-  const signWithEmail = (email: string, password: string) => {
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        console.log(user);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.error(errorCode, errorMessage);
-      });
+  const signWithEmailHandler = async ({ email, password }: { email: string; password: string }) => {
+    signInWithEmailAndPassword(email, password);
   };
 
-  const onSubmit: SubmitHandler<Inputs> = async ({ email, password }) => {
-    signWithEmail(email, password);
+  const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
+    signWithEmailHandler(data);
   };
 
-  const loginWithGoogle = () => {
-    const provider = new GoogleAuthProvider();
-
-    signInWithPopup(auth, provider)
-      .then((result) => GoogleAuthProvider.credentialFromResult(result))
-      .catch((error) => GoogleAuthProvider.credentialFromError(error));
+  const loginWithGoogleHandler = async () => {
+    signInWithGoogle();
   };
 
   useEffect(() => {
-    if (user) navigate('/');
-  }, [user, navigate]);
+    if (user || googleUser) navigate('/');
+  }, [user, navigate, googleUser]);
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <input
-        {...register('email', { required: true })}
-        placeholder="email"
-        type="email"
-        defaultValue={'alexkochnev1987@gmail.com'}
-      />
+    <AuthWrapper text="Sign in" loading={loading || googleLoading}>
+      <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
+        <InputComponent
+          control={control}
+          description={FieldDescription.email}
+          name="email"
+          type="email"
+          autoComplete="email"
+          label="Email Address"
+        />
+        <InputComponent
+          control={control}
+          description={FieldDescription.password}
+          label="Password"
+          type="password"
+          autoComplete="current-password"
+          name="password"
+        />
+        <Box minHeight={'30px'}>
+          {error && (
+            <Typography component="h4" variant="h4" color={'tomato'}>
+              {error.message}
+            </Typography>
+          )}
 
-      <input
-        {...register('password', { required: true })}
-        placeholder="password"
-        type="password"
-        defaultValue={'alexTest'}
-      />
-
-      <input type="submit" />
-      <Button onClick={() => loginWithGoogle()}>
-        <GoogleIcon />
-      </Button>
-
-      <Button>
-        <Link to={RouteNames.registration}>Go to Registration</Link>
-      </Button>
-
-      <Button>
-        <Link to={RouteNames.user}>Go to User</Link>
-      </Button>
-    </form>
+          {googleError && (
+            <Typography component="h4" variant="h4" color={'tomato'}>
+              {googleError.message}
+            </Typography>
+          )}
+        </Box>
+        <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="Remember me" />
+        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} disabled={loading || googleLoading}>
+          Sign In
+        </Button>
+        <Grid container alignItems={'center'} spacing={4}>
+          <Grid item xs={12} sm={4} md={4}>
+            <Button
+              onClick={loginWithGoogleHandler}
+              disabled={loading || !!errors.email || !!errors.password || googleLoading}
+            >
+              <GoogleIcon />
+              {' Login with google'}
+            </Button>
+          </Grid>
+          <Grid item sm={4} md={4}>
+            <Link to={RouteNames.registration}>{"Don't have an account? Sign Up"}</Link>
+          </Grid>
+          <Grid item xs={12} sm={4} md={4}>
+            <Link to="#">Forgot password?</Link>
+          </Grid>
+        </Grid>
+      </Box>
+    </AuthWrapper>
   );
 };

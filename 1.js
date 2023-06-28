@@ -16,3 +16,5 @@ const a = singleTone.getInstance();
 const b = singleTone2.getInstance();
 
 console.log(a === b);
+
+console.log(Array.apply(null, { length: 9 }));
