@@ -1,27 +1,24 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField,
+} from '@mui/material';
 import React from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';
 import { createUniqueTraining } from '../../db/trainings';
 import { useNavigate } from 'react-router-dom';
-// import { useAppDispatch } from '../../store/hooks';
-// import {
-//   Severity,
-//   ToastrState,
-//   setToastr,
-// } from "../../store/slices/toastr-slice";
-// const createError: ToastrState = {
-//   message: 'Exercise with this name exist',
-//   open: true,
-//   severity: Severity.error,
-// };
 
 export const DialogCreateTraining = () => {
   const [user] = useAuthState(auth);
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState('');
   const navigate = useNavigate();
-  // const dispatch = useAppDispatch();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -48,7 +45,7 @@ export const DialogCreateTraining = () => {
   const title = 'Enter Unique Training Name';
 
   return (
-    <div>
+    <Box px={2}>
       <Button variant="outlined" onClick={handleClickOpen}>
         Create Training
       </Button>
@@ -56,6 +53,7 @@ export const DialogCreateTraining = () => {
         <DialogTitle>{title}</DialogTitle>
         <DialogContent>
           <TextField
+            margin="normal"
             label="Training Name"
             variant="outlined"
             value={name}
@@ -64,6 +62,7 @@ export const DialogCreateTraining = () => {
             }}
           />
         </DialogContent>
+
         <DialogActions>
           <Button onClick={handleClose} color="error">
             Cancel
@@ -73,6 +72,6 @@ export const DialogCreateTraining = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </Box>
   );
 };
