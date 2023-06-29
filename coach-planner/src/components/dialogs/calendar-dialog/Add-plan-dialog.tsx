@@ -1,6 +1,6 @@
-import { Dialog, DialogTitle } from "@mui/material";
-import { CalendarEvent } from "kalend";
-import { EventForm } from "./Event-form";
+import { Dialog, DialogTitle } from '@mui/material';
+import { CalendarEvent } from 'kalend';
+// import { EventForm } from './Event-form';
 
 interface SimpleDialogProps {
   open: boolean;
@@ -15,14 +15,14 @@ export const AddPlanDialog = (props: SimpleDialogProps) => {
     onClose();
   };
 
-  const submitForm = async () => {
-    onClose();
-  };
+  // const submitForm = () => {
+  //   onClose();
+  // };
 
   return (
     <Dialog onClose={handleClose} open={open} fullWidth={true}>
       <DialogTitle>Add training to calendar</DialogTitle>
-      <EventForm submit={submitForm} event={eventParams} />
+      {/* <EventForm submit={submitForm} event={eventParams} close={onClose} /> */}
     </Dialog>
   );
 };

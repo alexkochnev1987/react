@@ -1,5 +1,5 @@
-import React from "react";
+// import React from "react";
 
-export const SettingBar = () => {
-  return <div>Setting-bar</div>;
-};
+// export const SettingBar = () => {
+//   return <div>Setting-bar</div>;
+// };

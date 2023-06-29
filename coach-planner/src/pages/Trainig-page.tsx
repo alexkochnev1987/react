@@ -1,8 +1,9 @@
 import { useDocument } from 'react-firebase-hooks/firestore';
 import { Training } from '../components/training/Training';
 import { useParams } from 'react-router-dom';
-import { TrainingResponse, getTrainingRef } from '../db/trainings';
+import { getTrainingRef } from '../db/trainings';
 import { Stack } from '@mui/material';
+import { TrainingResponse } from '../db/constants';
 
 export const TrainingPage = () => {
   const { id } = useParams();

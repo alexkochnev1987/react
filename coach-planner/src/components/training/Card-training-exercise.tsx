@@ -1,20 +1,11 @@
-import {
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  CardMedia,
-  Collapse,
-  Grid,
-} from "@mui/material";
-
-import { ExerciseResponse } from "../../db/exercises";
-import { ExpandText } from "./ExpandText";
-import { ExerciseParams } from "../exercise-params/exercise-params";
-import { IExerciseParams } from "../exercise-params/constants";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import { ExerciseCardHeader } from "./Exercise-card-header";
-import { useState } from "react";
+import { Button, CardContent, CardHeader, CardMedia, Collapse, Grid } from '@mui/material';
+import { ExpandText } from './ExpandText';
+import { ExerciseParams } from '../exercise-params/exercise-params';
+import { IExerciseParams } from '../exercise-params/constants';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { ExerciseCardHeader } from './Exercise-card-header';
+import { useState } from 'react';
+import { ExerciseResponse } from '../../db/constants';
 
 export const CardTrainingExercise = ({
   exercise,
@@ -51,12 +42,7 @@ export const CardTrainingExercise = ({
       />
       <CardContent>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardMedia
-            component="img"
-            width={"100%"}
-            image={exercise.img}
-            alt={exercise.name}
-          />
+          <CardMedia component="img" width={'100%'} image={exercise.img} alt={exercise.name} />
           <ExerciseParams submit={submitParams} params={params} />
           <Grid container justifyContent="space-between">
             <ExpandText label="Description" text={exercise.description} />

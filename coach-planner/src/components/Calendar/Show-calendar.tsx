@@ -1,24 +1,16 @@
-import Kalend, {
-  CalendarEvent,
-  CalendarView,
-  OnEventClickData,
-  OnNewEventClickData,
-  OnSelectViewData,
-} from "kalend";
-import React, { useCallback, useState } from "react";
-import { AddTrainingDialog } from "../dialogs/calendar-dialog/Add-training-in-plan-dialog";
-import { getEventsCollectionLink, updateEvent } from "../../db/events";
-import { useCollection } from "react-firebase-hooks/firestore";
-import "kalend/dist/styles/index.css";
-import { Typography } from "@mui/material";
-import { getFirstLastDayWeek } from "../../utils/getFirstLastDayOfWeek";
-import { PageChangeData } from "kalend/common/interface";
-import { countMinutesByDate } from "../../utils/countMinutesByDate";
+import Kalend, { CalendarEvent, CalendarView, OnEventClickData, OnNewEventClickData } from 'kalend';
+import React, { useCallback, useState } from 'react';
+import { AddTrainingDialog } from '../dialogs/calendar-dialog/Add-training-in-plan-dialog';
+import { getEventsCollectionLink } from '../../db/events';
+import { useCollection } from 'react-firebase-hooks/firestore';
+import 'kalend/dist/styles/index.css';
+import { countMinutesByDate } from '../../utils/countMinutesByDate';
+import { PageChangeData } from 'kalend/common/interface';
 
 export const ShowCalendar = ({ planId }: { planId: string }) => {
   const [myEvents] = useCollection(getEventsCollectionLink(planId));
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState<Partial<CalendarEvent>>({ color: "blue" });
+  const [name, setName] = useState<Partial<CalendarEvent>>({ color: 'blue' });
   const onEventClick = (data: OnEventClickData) => {
     setName(data);
     setOpen(true);
@@ -28,17 +20,14 @@ export const ShowCalendar = ({ planId }: { planId: string }) => {
     rangeTo: string;
   }>();
   const parseDocumentData = () => {
-    if (myEvents)
-      return myEvents.docs.map(
-        (x) => ({ ...x.data(), id: x.id } as CalendarEvent)
-      );
+    if (myEvents) return myEvents.docs.map((x) => ({ ...x.data(), id: x.id } as CalendarEvent));
   };
   const calendarEvents = useCallback(parseDocumentData, [myEvents]);
   const onNewEventClick = (data: OnNewEventClickData) => {
     const newEvent: Partial<CalendarEvent> = {
-      startAt: data.startAt ? data.startAt : "",
-      endAt: data.endAt ? data.endAt : "",
-      color: "blue",
+      startAt: data.startAt ? data.startAt : '',
+      endAt: data.endAt ? data.endAt : '',
+      color: 'blue',
     };
     setName(newEvent);
     setOpen(true);
@@ -77,10 +66,10 @@ export const ShowCalendar = ({ planId }: { planId: string }) => {
           hourHeight={50}
           initialView={CalendarView.WEEK}
           disabledViews={[CalendarView.DAY]}
-          timeFormat={"24"}
-          weekDayStart={"Monday"}
-          calendarIDsHidden={["work"]}
-          language={"en"}
+          timeFormat={'24'}
+          weekDayStart={'Monday'}
+          calendarIDsHidden={['work']}
+          language={'en'}
           onPageChange={(v: PageChangeData) => {
             setDateRange({ rangeFrom: v.rangeFrom, rangeTo: v.rangeTo });
           }}

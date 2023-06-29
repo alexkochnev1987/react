@@ -2,7 +2,7 @@ import Button from '@mui/material/Button';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { RouteNames } from '../router/routes';
-import GoogleIcon from '@mui/icons-material/Google';
+// import GoogleIcon from '@mui/icons-material/Google';
 import { useEffect } from 'react';
 import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { auth } from '../firebase';
@@ -30,7 +30,7 @@ export const Login = () => {
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    // formState: { errors },
   } = useForm<LoginFormData>({
     defaultValues: {
       email: '',
@@ -47,9 +47,9 @@ export const Login = () => {
     signWithEmailHandler(data);
   };
 
-  const loginWithGoogleHandler = async () => {
-    signInWithGoogle();
-  };
+  // const loginWithGoogleHandler = async () => {
+  //   signInWithGoogle();
+  // };
 
   useEffect(() => {
     if (user || googleUser) navigate('/');
@@ -93,13 +93,14 @@ export const Login = () => {
         </Button>
         <Grid container alignItems={'center'} spacing={4}>
           <Grid item xs={12} sm={4} md={4}>
-            <Button
+            {/* Fix troubles with cors when deploy app and add permission to google account */}
+            {/* <Button
               onClick={loginWithGoogleHandler}
               disabled={loading || !!errors.email || !!errors.password || googleLoading}
             >
               <GoogleIcon />
               {' Login with google'}
-            </Button>
+            </Button> */}
           </Grid>
           <Grid item sm={4} md={4}>
             <Link to={RouteNames.registration}>{"Don't have an account? Sign Up"}</Link>

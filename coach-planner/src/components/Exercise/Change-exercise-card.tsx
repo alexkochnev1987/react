@@ -27,11 +27,13 @@ export const ChangeExerciseCard = ({ exercise }: { exercise: ExerciseResponse })
   };
 
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     if (exercise.conva) {
       dispatch(setImage(exercise.conva));
     }
   }, [exercise, dispatch]);
+
   return (
     <Card>
       <SubmitDialog
@@ -50,7 +52,7 @@ export const ChangeExerciseCard = ({ exercise }: { exercise: ExerciseResponse })
             value={exercise.name}
           />
         }
-        avatar={<Avatar sx={{ bgcolor: red[500] }} aria-label="recipe" src={exercise.coachImage} />}
+        avatar={<Avatar sx={{ bgcolor: red[500] }} src={exercise.coachImage} />}
         action={
           <Button onClick={() => setOpenSubmit(true)} color="error">
             <DeleteForeverIcon />

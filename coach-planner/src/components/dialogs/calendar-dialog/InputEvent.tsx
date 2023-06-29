@@ -1,7 +1,6 @@
-import { TextField } from "@mui/material";
-import { StringFormat } from "firebase/storage";
-import { CalendarEvent } from "kalend";
-import { Control, Controller } from "react-hook-form";
+import { TextField } from '@mui/material';
+import { CalendarEvent } from 'kalend';
+import { Control, Controller } from 'react-hook-form';
 
 export const InputComponent = ({
   name,
@@ -14,11 +13,7 @@ export const InputComponent = ({
 }) => {
   return (
     <>
-      <Controller
-        name={name}
-        control={control}
-        render={({ field }) => <TextField {...field} label={label} />}
-      />
+      <Controller name={name} control={control} render={({ field }) => <TextField {...field} label={label} />} />
     </>
   );
 };

@@ -1,4 +1,3 @@
-import React from 'react';
 import { useAppSelector } from '../../store/hooks';
 import { selectEquipmentObject } from '../../store/slices/draw-objects-slice';
 import { Layer } from 'react-konva';

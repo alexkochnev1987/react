@@ -1,7 +1,7 @@
-import React from "react";
-import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { setWidth } from "../../../store/slices/canvas-slice";
-import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import React from 'react';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { setWidth } from '../../../store/slices/canvas-slice';
+import { MenuItem, Select, type SelectChangeEvent } from '@mui/material';
 
 export const SelectSize = () => {
   const dispatch = useAppDispatch();
@@ -12,7 +12,7 @@ export const SelectSize = () => {
   };
   return (
     <Select value={`${lineWidth}`} label="Age" onChange={handleChange}>
-      {["1", "2", "3", "4"].map((x) => (
+      {['1', '2', '3', '4'].map((x) => (
         <MenuItem value={Number(x)} key={x}>
           {x}
         </MenuItem>

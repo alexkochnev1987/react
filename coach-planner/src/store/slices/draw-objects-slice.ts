@@ -39,6 +39,12 @@ const drawObjectsSlice = createSlice({
     //   const { file, id } = action.payload;
     //   loadFile(file, id, { players, lines, equipment });
     // },
+    setImageNull(state) {
+      state.equipment = null;
+      state.lines = null;
+      state.players = null;
+      state.current = null;
+    },
     setImage(state, action: PayloadAction<AllDrawType>) {
       state.equipment = action.payload.equipment;
       state.lines = action.payload.lines;
@@ -154,7 +160,7 @@ export const {
   addEquipment,
   setRotation,
   setImage,
-  // saveImage,
+  setImageNull,
 } = drawObjectsSlice.actions;
 
 const selectDraw = (state: RootState) => state.draw;

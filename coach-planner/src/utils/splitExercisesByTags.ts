@@ -1,10 +1,7 @@
-import { DocumentData, QuerySnapshot } from "firebase/firestore";
-import { ExerciseResponse } from "../db/exercises";
+import { type DocumentData, QuerySnapshot } from 'firebase/firestore';
+import { ExerciseResponse } from '../db/constants';
 
-export const createObjectWithTagFields = (
-  data: QuerySnapshot<DocumentData>,
-  filterByTag: boolean
-) => {
+export const createObjectWithTagFields = (data: QuerySnapshot<DocumentData>, filterByTag: boolean) => {
   return data.docs.reduce((prev, curr) => {
     const exercise = { ...(curr.data() as ExerciseResponse), id: curr.id };
     const tags = filterByTag ? exercise.tag : exercise.age;
@@ -16,13 +13,11 @@ export const createObjectWithTagFields = (
         });
         return prev;
       } else {
-        prev["noTag"] = prev["noTag"]
-          ? [...prev["noTag"], exercise]
-          : [exercise];
+        prev['noTag'] = prev['noTag'] ? [...prev['noTag'], exercise] : [exercise];
         return prev;
       }
     }
-    prev["noTag"] = prev["noTag"] ? [...prev["noTag"], exercise] : [exercise];
+    prev['noTag'] = prev['noTag'] ? [...prev['noTag'], exercise] : [exercise];
     return prev;
   }, {} as { [key: string]: ExerciseResponse[] });
 };

@@ -1,17 +1,16 @@
-import { CalendarEvent } from "kalend";
-import { CALENDAR_EVENT_TYPE } from "kalend/common/enums";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { SelectColor } from "./SelectEventColor";
-import { Button, TextField } from "@mui/material";
+import { CalendarEvent } from 'kalend';
+import { CALENDAR_EVENT_TYPE } from 'kalend/common/enums';
+import { SubmitHandler, useForm } from 'react-hook-form';
+// import { SelectColor } from './SelectEventColor';
+import { Button } from '@mui/material';
 
-import { InputDate } from "./Input-date";
-import { SelectTraining } from "./Select-training";
-import { createEvent, updateEvent } from "../../../db/events";
-import { useParams } from "react-router-dom";
-import { useCollection } from "react-firebase-hooks/firestore";
-import { trainingsCollection } from "../../../db/trainings";
-import { useState } from "react";
-import { IExerciseParams } from "../../training/Training-params";
+import { InputDate } from './Input-date';
+import { SelectTraining } from './Select-training';
+import { createEvent, updateEvent } from '../../../db/events';
+import { useCollection } from 'react-firebase-hooks/firestore';
+import { trainingsCollection } from '../../../db/trainings';
+
+import { IExerciseParams } from '../../training/Training-params';
 
 interface EventFormProps {
   event: Partial<CalendarEvent>;
@@ -20,32 +19,19 @@ interface EventFormProps {
   id: string;
 }
 
-// export interface CalendarEvent {
-//   id: any;
-//   startAt: string;
-//   endAt: string;
-//   timezoneStartAt?: string;
-//   timezoneEndAt?: string;
-//   summary: string;
-//   color: string;
-//   type?: CALENDAR_EVENT_TYPE;
-//   internalID?: string;
-//   [key: string]: any;
-// }
-
 const colors: string[] = [
-  "blue",
-  "indigo",
-  "orange",
-  "red",
-  "pink",
-  "crimson",
-  "dodgerblue",
-  "brown",
-  "purple",
-  "tomato",
-  "salmon",
-  "gray",
+  'blue',
+  'indigo',
+  'orange',
+  'red',
+  'pink',
+  'crimson',
+  'dodgerblue',
+  'brown',
+  'purple',
+  'tomato',
+  'salmon',
+  'gray',
 ];
 
 export interface MyCalendarEvents extends CalendarEvent {
@@ -54,26 +40,26 @@ export interface MyCalendarEvents extends CalendarEvent {
 }
 
 const initialValue: MyCalendarEvents = {
-  id: "",
-  startAt: "",
-  endAt: "",
-  summary: "",
-  training: "",
+  id: '',
+  startAt: '',
+  endAt: '',
+  summary: '',
+  training: '',
   color: colors[0],
   type: CALENDAR_EVENT_TYPE.EVENT,
 };
 
 export const EventForm = ({ event, submit, close, id }: EventFormProps) => {
-  const [trainings, loading, error] = useCollection(trainingsCollection);
+  const [trainings] = useCollection(trainingsCollection);
   const defaultValues = { ...initialValue, ...event };
   const {
     handleSubmit,
     setValue,
-    control,
-    formState: { errors },
+    // control,
+    // formState: { errors },
   } = useForm<MyCalendarEvents>({
     defaultValues: defaultValues,
-    mode: "all",
+    mode: 'all',
   });
 
   const onSubmit: SubmitHandler<CalendarEvent> = (data) => {
@@ -87,19 +73,9 @@ export const EventForm = ({ event, submit, close, id }: EventFormProps) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {trainings && (
-        <SelectTraining
-          setValue={setValue}
-          id={defaultValues.training}
-          trainings={trainings}
-        />
-      )}
-      <InputDate
-        startAt={defaultValues.startAt}
-        endAt={defaultValues.endAt}
-        setValue={setValue}
-      />
-      <SelectColor control={control} colors={colors} />
+      {trainings && <SelectTraining setValue={setValue} id={defaultValues.training} trainings={trainings} />}
+      <InputDate startAt={defaultValues.startAt} endAt={defaultValues.endAt} setValue={setValue} />
+      {/* <SelectColor control={control} colors={colors} /> */}
       <Button type="submit" variant="contained">
         Save
       </Button>

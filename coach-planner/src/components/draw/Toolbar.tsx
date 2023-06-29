@@ -1,24 +1,21 @@
-import { Button, SwipeableDrawer } from "@mui/material";
-import React, { useState } from "react";
-import { SelectLineType } from "./Tools/Line";
-import { Color } from "./Tools/Color";
-const drawerWidth = 240;
+import { Button, SwipeableDrawer } from '@mui/material';
+import React, { useState } from 'react';
+import { SelectLineType } from './Tools/Line';
+import { Color } from './Tools/Color';
 
 export const Toolbar = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
-  const toggleDrawer =
-    (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
-      if (
-        event &&
-        event.type === "keydown" &&
-        ((event as React.KeyboardEvent).key === "Tab" ||
-          (event as React.KeyboardEvent).key === "Shift")
-      ) {
-        return;
-      }
+  const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+    if (
+      event &&
+      event.type === 'keydown' &&
+      ((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift')
+    ) {
+      return;
+    }
 
-      setOpenDrawer(open);
-    };
+    setOpenDrawer(open);
+  };
   return (
     <>
       <Button
@@ -29,7 +26,7 @@ export const Toolbar = () => {
         Open toolbar
       </Button>
       <SwipeableDrawer
-        anchor={"left"}
+        anchor={'left'}
         open={openDrawer}
         onClose={toggleDrawer(false)}
         onOpen={toggleDrawer(true)}

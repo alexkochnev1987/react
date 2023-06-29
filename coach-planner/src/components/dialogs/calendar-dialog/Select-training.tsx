@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
-import { UseFormSetValue } from "react-hook-form";
-import { MyCalendarEvents } from "./Event-form";
-import { DocumentData, QuerySnapshot } from "firebase/firestore";
-import { LoadTrainingParams } from "./Load-training-params";
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { UseFormSetValue } from 'react-hook-form';
+import { MyCalendarEvents } from './Event-form';
+import { type DocumentData, QuerySnapshot } from 'firebase/firestore';
+import { LoadTrainingParams } from './Load-training-params';
 
 export const SelectTraining = ({
   setValue,
@@ -20,22 +20,22 @@ export const SelectTraining = ({
       name?: string;
     };
 
-    return myTraining?.name ? myTraining.name : "";
+    return myTraining?.name ? myTraining.name : '';
   };
 
   const [trainingId, setTrainingId] = useState(id);
   return (
     <>
       {trainingId && <LoadTrainingParams id={trainingId} />}
-      <FormControl sx={{ width: "100%" }}>
+      <FormControl sx={{ width: '100%' }}>
         <InputLabel>Select training</InputLabel>
         <Select
           value={trainingId}
           onChange={(date) => {
             setTrainingId(date.target.value);
 
-            setValue("summary", selectTrainingName(date.target.value));
-            setValue("training", date.target.value);
+            setValue('summary', selectTrainingName(date.target.value));
+            setValue('training', date.target.value);
           }}
         >
           {trainings &&

@@ -18,6 +18,7 @@ import { EquipmentTypes, UserActionsValues } from '../../store/slices/constants'
 
 export const UserActions = () => {
   const dispatch = useAppDispatch();
+
   const userAction = useAppSelector(selectUserAction);
   const playerType = useAppSelector(selectPlayerType);
   const equipmentType = useAppSelector(selectEquipmentType);

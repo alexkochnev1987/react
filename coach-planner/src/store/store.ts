@@ -1,11 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import toastr from './slices/toastr-slice';
+// import toastr from './slices/toastr-slice';
 import canvas from './slices/canvas-slice';
 import draw from './slices/draw-objects-slice';
 
 export const store = configureStore({
   reducer: {
-    toastr,
+    // toastr,
     canvas,
     draw,
   },

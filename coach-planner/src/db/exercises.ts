@@ -8,10 +8,11 @@ export const exerciseCollection = collection(db, DbCollections.exercises);
 export const getExerciseDocRef = (id: string) => doc(db, DbCollections.exercises, id);
 export const getExercisesByCoachId = (coachId: string) => query(exerciseCollection, where('coachId', '==', coachId));
 
-export const createExercise = (coachId: string | undefined, coachImage: string | null | undefined) => {
+export const createExercise = async (coachId: string | undefined, coachImage?: string | null | undefined) => {
   if (!coachId) return;
   const image = coachImage || '';
-  addDocFunction(exerciseCollection, { coachImage: image, coachId: coachId });
+  const result = await addDocFunction(exerciseCollection, { coachImage: image, coachId: coachId });
+  return result;
 };
 
 export const getExercisesById = async (id: string) => {

@@ -1,29 +1,13 @@
-import {
-  Box,
-  Button,
-  Grid,
-  IconButton,
-  TextField,
-  Tooltip,
-} from "@mui/material";
-import React, { useState } from "react";
-import {
-  ExerciseResponse,
-  ExerciseResponseKeys,
-  updateExercise,
-} from "../../db/exercises";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CancelIcon from "@mui/icons-material/Cancel";
+import { Box, IconButton, TextField } from '@mui/material';
+import React, { useState } from 'react';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 export const EditContent = ({
-  // idExercise,
-  // fieldName,
   callback,
   value,
   label,
 }: {
-  // idExercise: string;
-  // fieldName: ExerciseResponseKeys;
   value: string | undefined;
   label: string;
   callback: (value: string | undefined) => void;
@@ -43,18 +27,10 @@ export const EditContent = ({
   const handleSave = () => {
     setIsEditing(false);
     callback(content);
-    // updateExercise(idExercise, { [fieldName]: content });
   };
   return (
     <Box display="flex">
-      <TextField
-        value={content}
-        onChange={handleInputChange}
-        autoFocus
-        fullWidth
-        label={label}
-        multiline
-      />
+      <TextField value={content} onChange={handleInputChange} fullWidth label={label} multiline />
       {isEditing && (
         <Box>
           <IconButton onClick={handleSave} sx={{ padding: 0 }}>

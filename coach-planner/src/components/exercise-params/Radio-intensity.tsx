@@ -1,14 +1,7 @@
-import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
-import { Control, Controller, FieldErrors } from "react-hook-form";
-import {
-  EnergySupply,
-  ExerciseParamsFormFields,
-  IExerciseParams,
-  LoadIntensity,
-  MyColors,
-  selectOptions,
-} from "./constants";
-import { errorMessage } from "../dialogs/exercise-dialog/constants";
+import { FormControlLabel, Radio, RadioGroup } from '@mui/material';
+import { Control, Controller, FieldErrors } from 'react-hook-form';
+import { EnergySupply, ExerciseParamsFormFields, IExerciseParams, LoadIntensity, MyColors } from './constants';
+import { errorMessage } from '../dialogs/exercise-dialog/constants';
 
 export const RadioIntensity = ({
   mode,
@@ -43,7 +36,7 @@ export const RadioIntensity = ({
         )}
       />
       {errors[x.name] && (
-        <p style={{ color: "red" }} role="alert">
+        <p style={{ color: 'red' }} role="alert">
           {errorMessage}
         </p>
       )}

@@ -1,17 +1,17 @@
-import { IExerciseParams } from "../exercise-params/constants";
+import { IExerciseParams } from '../exercise-params/constants';
 
 import {
-  TrainingExerciseData,
   deleteExerciseInTraining,
   shiftExercise,
   shiftExerciseLeft,
   shiftExerciseRight,
   updateExerciseInTraining,
-} from "../../db/trainings";
-import { CardTrainingExercise } from "./Card-training-exercise";
-import { Button, Fab, IconButton, Stack } from "@mui/material";
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+} from '../../db/trainings';
+import { CardTrainingExercise } from './Card-training-exercise';
+import { IconButton, Stack } from '@mui/material';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import { TrainingExerciseData } from '../../db/constants';
 
 export const ExerciseParamsCard = ({
   trainingId,
@@ -45,20 +45,10 @@ export const ExerciseParamsCard = ({
       params={exercise.params}
     >
       <Stack spacing={1}>
-        <IconButton
-          onClick={shiftExerciseUp}
-          color="primary"
-          size="small"
-          sx={{ width: "30px" }}
-        >
+        <IconButton onClick={shiftExerciseUp} color="primary" size="small" sx={{ width: '30px' }}>
           <ArrowUpwardIcon />
         </IconButton>
-        <IconButton
-          onClick={shiftExerciseDown}
-          color="primary"
-          size="small"
-          sx={{ width: "30px" }}
-        >
+        <IconButton onClick={shiftExerciseDown} color="primary" size="small" sx={{ width: '30px' }}>
           <ArrowDownwardIcon />
         </IconButton>
       </Stack>

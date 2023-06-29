@@ -1,16 +1,17 @@
-import * as React from "react";
-import { Theme, useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Chip from "@mui/material/Chip";
-import { ExerciseResponseKeys, updateExercise } from "../../db/exercises";
-import { IconButton } from "@mui/material";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import CancelIcon from "@mui/icons-material/Cancel";
+import * as React from 'react';
+import { type Theme, useTheme } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { type SelectChangeEvent } from '@mui/material/Select';
+import Chip from '@mui/material/Chip';
+import { updateExercise } from '../../db/exercises';
+import { IconButton } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
+import { ExerciseResponseKeys } from '../../db/constants';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -23,24 +24,7 @@ const MenuProps = {
   },
 };
 
-const names = [
-  "Oliver Hansen",
-  "Van Henry",
-  "April Tucker",
-  "Ralph Hubbard",
-  "Omar Alexander",
-  "Carlos Abbott",
-  "Miriam Wagner",
-  "Bradley Wilkerson",
-  "Virginia Andrews",
-  "Kelly Snyder",
-];
-
-function getStyles(
-  name: string,
-  personName: readonly string[] | undefined,
-  theme: Theme
-) {
+function getStyles(name: string, personName: readonly string[] | undefined, theme: Theme) {
   return {
     fontWeight:
       personName && personName.indexOf(name) === -1
@@ -57,13 +41,7 @@ interface EditTagProps {
   options: string[];
 }
 
-export function MultipleSelectChip({
-  idExercise,
-  fieldName,
-  value,
-  label,
-  options,
-}: EditTagProps) {
+export function MultipleSelectChip({ idExercise, fieldName, value, label, options }: EditTagProps) {
   const theme = useTheme();
   const [isEditing, setIsEditing] = React.useState(false);
   const [selectValue, setSelectValue] = React.useState(value || []);
@@ -81,12 +59,12 @@ export function MultipleSelectChip({
     const {
       target: { value },
     } = event;
-    setSelectValue(typeof value === "string" ? value.split(",") : value);
+    setSelectValue(typeof value === 'string' ? value.split(',') : value);
   };
 
   return (
     <Box display="flex">
-      <FormControl sx={{ width: "100%" }}>
+      <FormControl sx={{ width: '100%' }}>
         <InputLabel>{label}</InputLabel>
         <Select
           multiple
@@ -94,7 +72,7 @@ export function MultipleSelectChip({
           onChange={handleChange}
           input={<OutlinedInput />}
           renderValue={(selected) => (
-            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
               {selected.map((value) => (
                 <Chip key={value} label={value} />
               ))}
@@ -103,11 +81,7 @@ export function MultipleSelectChip({
           MenuProps={MenuProps}
         >
           {options.map((name) => (
-            <MenuItem
-              key={name}
-              value={name}
-              style={getStyles(name, selectValue, theme)}
-            >
+            <MenuItem key={name} value={name} style={getStyles(name, selectValue, theme)}>
               {name}
             </MenuItem>
           ))}

@@ -1,8 +1,8 @@
-import { Box, Container, Grid, Typography } from "@mui/material";
-import { getColorFromParams } from "../../utils/getColorFromParams";
+import { Box, Typography } from '@mui/material';
+import { getColorFromParams } from '../../utils/getColorFromParams';
 export interface IExerciseParams {
   CP: number;
-  "CP+LA": number;
+  'CP+LA': number;
   LA: number;
   O2: number;
   Rest: number;
@@ -10,15 +10,9 @@ export interface IExerciseParams {
 
 export const TrainingParams = ({ params }: { params: IExerciseParams }) => {
   return (
-    <Box
-      display={"flex"}
-      position={"sticky"}
-      top={0}
-      width={"100%"}
-      zIndex={1051}
-    >
+    <Box display={'flex'} position={'sticky'} top={0} width={'100%'} zIndex={1051}>
       {Object.entries(params).map((x) => (
-        <Box bgcolor={getColorFromParams(x[0])} flex={1}>
+        <Box bgcolor={getColorFromParams(x[0])} flex={1} key={x[0]}>
           <Typography variant="caption" paragraph align="center">
             {x[0]}
           </Typography>

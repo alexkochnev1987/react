@@ -9,19 +9,31 @@ import {
   updateDoc,
   getDoc,
 } from 'firebase/firestore';
+import { UpdateExerciseBody } from './constants';
 
-export const addDocFunction = async (collection: CollectionReference<DocumentData>, args: any) => {
+export const addDocFunction = async (
+  collection: CollectionReference<DocumentData>,
+  args: { [key: string]: string | number },
+) => {
   try {
-    await addDoc(collection, {
+    const result = await addDoc(collection, {
       ...args,
       create: Timestamp.fromDate(new Date()),
     });
+    return result;
   } catch (error) {
     console.error(error);
   }
 };
 
-export const updateDocFunction = async (docRef: DocumentReference<DocumentData>, args: any) => {
+export const updateDocFunction = async (
+  docRef: DocumentReference<DocumentData>,
+  args:
+    | {
+        [key: string]: string | number | string[];
+      }
+    | Partial<UpdateExerciseBody>,
+) => {
   try {
     await updateDoc(docRef, {
       ...args,

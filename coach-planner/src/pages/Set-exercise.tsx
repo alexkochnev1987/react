@@ -9,5 +9,7 @@ export const SetExercise = () => {
   const id = params.id as string;
   const [exercise] = useDocument(getExerciseDocRef(id));
 
-  return exercise && <ChangeExerciseCard exercise={{ id: exercise.id, ...exercise.data() } as ExerciseResponse} />;
+  return exercise ? (
+    <ChangeExerciseCard exercise={{ id: exercise.id, ...exercise.data() } as ExerciseResponse} />
+  ) : null;
 };

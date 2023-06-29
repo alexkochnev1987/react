@@ -1,5 +1,5 @@
 import { Card, CardHeader, Fab, SwipeableDrawer } from '@mui/material';
-import { TrainingResponse, deleteTraining } from '../../db/trainings';
+import { deleteTraining } from '../../db/trainings';
 import { ExerciseParamsCard } from './Exercise-params-card';
 import { countEnergySupplyTime } from '../../utils/countEnergySupplyTime';
 
@@ -12,6 +12,7 @@ import { SubmitDialog } from '../dialogs/exercise-dialog/submit-dialog';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { TrainingCardHeader } from './Training-card-header';
 import { Chart } from './Chart';
+import { TrainingResponse } from '../../db/constants';
 
 const deleteTrainingContent = {
   title: 'Вы хотите удалить тренироовку',
@@ -79,7 +80,6 @@ export const Training = ({ training }: { training: TrainingResponse }) => {
             </Fab>
           }
         />
-
         {exercises && exercises.map((x) => <ExerciseParamsCard trainingId={id} key={x.uuid} exercise={x} />)}
       </Card>
     </>

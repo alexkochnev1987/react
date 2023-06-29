@@ -15,7 +15,6 @@ import { Stage as StageType } from 'konva/lib/Stage';
 import { DrawArrowLine } from './Draw-arrow-line';
 import { Vector2d } from 'konva/lib/types';
 import { DrawPlayers } from './Draw-players';
-import { useParams } from 'react-router-dom';
 import { UserActionsValues } from '../../store/slices/constants';
 import {
   addEquipment,
@@ -31,7 +30,6 @@ import { SaveImageButtons } from './Save-image-button';
 import { Box } from '@mui/material';
 
 export const ModifyCurve = () => {
-  const { id } = useParams();
   const dispatch = useAppDispatch();
   const stageRef = useRef<StageType>(null);
   const action = useAppSelector(selectUserAction);
@@ -111,12 +109,12 @@ export const ModifyCurve = () => {
     isDrawing.current = false;
   };
 
-  const saveImageHandler = async () => {
+  const saveImageHandler = async (id: string | undefined) => {
     const uri = stageRef.current;
     dispatch(setCurrent(null));
     if (uri) {
       const file = (await uri.toBlob()) as Blob;
-      dispatch(saveImage({ file, id }));
+      if (id) dispatch(saveImage({ file, id }));
     }
   };
 
