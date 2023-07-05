@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { Box, Button, TextField, Typography } from '@mui/material';
+import { Box, Button, TextField } from '@mui/material';
 import { HintMessage } from './Hint-message';
 import { InputAdornmentComponent } from './Input-adornment';
-import { type AuthError, type UserCredential } from 'firebase/auth';
+import { type UserCredential } from 'firebase/auth';
 const schema = yup.object({
   email: yup.string().email().max(100).required(),
   password: yup.string().min(5).max(30).required(),
@@ -20,12 +20,10 @@ enum FieldDescription {
 export const EmailPasswordForm = ({
   callback,
   loading,
-  error,
   submitText = 'Sign In',
 }: {
   callback: (email: string, password: string) => Promise<UserCredential | undefined>;
   loading: boolean;
-  error: AuthError | undefined;
   submitText?: string;
 }) => {
   const handleClickShowPassword = () => setShow((show) => !show);
@@ -95,16 +93,9 @@ export const EmailPasswordForm = ({
         )}
       />
       <HintMessage error={errors?.password?.message} hint={FieldDescription.password} />
-      <Box minHeight={'30px'}>
-        {error && (
-          <Typography component="p" variant="body2" color={'tomato'}>
-            {error.message}
-          </Typography>
-        )}
-        <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} disabled={loading || !isValid}>
-          {submitText}
-        </Button>
-      </Box>
+      <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} disabled={loading || !isValid}>
+        {submitText}
+      </Button>
     </Box>
   );
 };

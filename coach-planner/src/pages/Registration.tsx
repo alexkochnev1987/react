@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { RouteNames } from '../router/routes';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
@@ -10,21 +10,21 @@ import { useIsUserLogin } from '../hooks/useIsUserLogin';
 
 export const Registration = () => {
   const submitText = 'Sign Up';
+  const linkText = 'Already have an account? Sign in';
   const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth);
 
   useIsUserLogin(user);
   return (
-    <AuthWrapper text="Sign up" loading={loading}>
-      <EmailPasswordForm
-        callback={createUserWithEmailAndPassword}
-        loading={loading}
-        error={error}
-        submitText={submitText}
-      />
-
+    <AuthWrapper text={submitText} loading={loading}>
+      <EmailPasswordForm callback={createUserWithEmailAndPassword} loading={loading} submitText={submitText} />
+      {error && (
+        <Typography component="p" variant="body2" color={'tomato'}>
+          {error.message}
+        </Typography>
+      )}
       <Grid container justifyContent="flex-end">
         <Grid item>
-          <Link to={RouteNames.login}>Already have an account? Sign in</Link>
+          <Link to={RouteNames.login}>{linkText}</Link>
         </Grid>
       </Grid>
     </AuthWrapper>

@@ -10,7 +10,11 @@ import { useIsUserLogin } from '../hooks/useIsUserLogin';
 import { EmailPasswordForm } from '../components/forms/Email-password-form';
 
 export const Login = () => {
-  const [signInWithEmailAndPassword, user, loading, error] = useSignInWithEmailAndPassword(auth);
+  const submitText = 'Sign In';
+  const googleLoginText = 'Login with google';
+  const forgotPassword = 'Forgot password?';
+  const goToRegistrationLinkText = "Don't have an account? Sign Up";
+  const [signInWithEmailAndPassword, user, loading, emailError] = useSignInWithEmailAndPassword(auth);
   const [signInWithGoogle, googleUser, googleLoading, googleError] = useSignInWithGoogle(auth);
 
   const loginWithGoogleHandler = async () => {
@@ -20,24 +24,29 @@ export const Login = () => {
   useIsUserLogin(googleUser);
 
   return (
-    <AuthWrapper text="Sign in" loading={googleLoading || loading}>
-      <EmailPasswordForm callback={signInWithEmailAndPassword} loading={loading} error={error} />
+    <AuthWrapper text={submitText} loading={googleLoading || loading}>
+      <EmailPasswordForm callback={signInWithEmailAndPassword} loading={loading} />
+      {googleError && (
+        <Typography component="h4" variant="h4" color={'tomato'}>
+          {googleError.message}
+        </Typography>
+      )}
+      {emailError && (
+        <Typography component="p" variant="body2" color={'tomato'}>
+          {emailError.message}
+        </Typography>
+      )}
       <Grid container alignItems={'center'} justifyContent="flex-end" spacing={1}>
-        {googleError && (
-          <Typography component="h4" variant="h4" color={'tomato'}>
-            {googleError.message}
-          </Typography>
-        )}
         <Grid item xs={12} sm={4} md={4} textAlign={'end'}>
           <Button onClick={loginWithGoogleHandler} disabled={googleLoading} startIcon={<GoogleIcon />}>
-            {'Login with google'}
+            {googleLoginText}
           </Button>
         </Grid>
         <Grid item xs={12} sm={5} md={5} textAlign={'end'}>
-          <Link to={RouteNames.registration}>{"Don't have an account? Sign Up"}</Link>
+          <Link to={RouteNames.registration}>{goToRegistrationLinkText}</Link>
         </Grid>
         <Grid item xs={12} sm={3} md={3} textAlign={'end'}>
-          <Link to="#">Forgot password?</Link>
+          <Link to="#">{forgotPassword}</Link>
         </Grid>
       </Grid>
     </AuthWrapper>
