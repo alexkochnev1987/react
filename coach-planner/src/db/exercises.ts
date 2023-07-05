@@ -39,6 +39,6 @@ export const uploadBlob = async (file: Blob, id: string) => {
     const url = await getDownloadURL(result.ref);
     return url;
   } catch (error) {
-    console.error(error);
+    console.log(error);
   }
 };

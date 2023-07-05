@@ -40,7 +40,7 @@ export const updateDocFunction = async (
       modify: serverTimestamp(),
     });
   } catch (error) {
-    console.error(error);
+    console.log(error);
   }
 };
 

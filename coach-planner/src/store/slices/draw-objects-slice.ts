@@ -34,11 +34,6 @@ const drawObjectsSlice = createSlice({
   name: 'draw-objects',
   initialState,
   reducers: {
-    // saveImage(state, action: PayloadAction<{ file: Blob; id: string | undefined }>) {
-    //   const { players, lines, equipment } = state;
-    //   const { file, id } = action.payload;
-    //   loadFile(file, id, { players, lines, equipment });
-    // },
     setImageNull(state) {
       state.equipment = null;
       state.lines = null;

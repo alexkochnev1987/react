@@ -5,7 +5,7 @@ import { CardActions, Collapse, IconButton } from '@mui/material';
 import { TreeExerciseCard } from './Tree-exercise-card';
 import { ExerciseResponse } from '../../db/constants';
 
-export const ExpandTag = ({ exercises, tag }: { exercises: ExerciseResponse[]; tag: string }) => {
+export const ExpandTag = ({ exercises, tag }: { exercises: ExerciseResponse[]; tag?: string }) => {
   const [expanded, setExpanded] = useState(false);
   const handleExpandClick = () => setExpanded((x) => !x);
   return (

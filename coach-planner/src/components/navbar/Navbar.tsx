@@ -22,7 +22,7 @@ export function Navbar() {
   return (
     <AppBar position="static">
       <Toolbar>
-        <NavigationMenu />
+        {user && <NavigationMenu />}
         <IconButton onClick={colorMode.toggleColorMode} color="inherit">
           {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
         </IconButton>

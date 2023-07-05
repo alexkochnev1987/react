@@ -10,6 +10,8 @@ export const AuthWrapper = ({ text, loading, children }: { text: string; loading
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        width: '100%',
+        maxWidth: '720px',
       }}
     >
       <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>

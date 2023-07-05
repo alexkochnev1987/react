@@ -21,15 +21,8 @@ const deleteTrainingContent = {
   cancel: 'Отмена',
 };
 
-export const Training = ({ training }: { training: TrainingResponse }) => {
+export const Training = ({ training }: { training?: TrainingResponse }) => {
   const navigate = useNavigate();
-
-  const { id, coachId, exercises, name } = training;
-
-  const deleteMyTraining = () => {
-    deleteTraining(id);
-    navigate(RouteNames.trainings);
-  };
   const [openDialog, setOpenDialog] = useState(false);
 
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -43,6 +36,16 @@ export const Training = ({ training }: { training: TrainingResponse }) => {
     }
 
     setOpenDrawer(open);
+  };
+  if (!training) {
+    console.log('training', training);
+    return null;
+  }
+  const { id, coachId, exercises, name } = training;
+
+  const deleteMyTraining = () => {
+    deleteTraining(id);
+    navigate(RouteNames.trainings);
   };
   const totalTime = Object.values(countEnergySupplyTime(exercises)).reduce((prev, curr) => prev + curr, 0);
 

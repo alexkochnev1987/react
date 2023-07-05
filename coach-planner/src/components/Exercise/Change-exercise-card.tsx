@@ -52,28 +52,32 @@ export const ChangeExerciseCard = ({ exercise }: { exercise: ExerciseResponse })
             value={exercise.name}
           />
         }
-        avatar={<Avatar sx={{ bgcolor: red[500] }} src={exercise.coachImage} />}
+        // avatar={<Avatar sx={{ bgcolor: red[500] }} src={exercise.coachImage} />}
         action={
           <Button onClick={() => setOpenSubmit(true)} color="error">
             <DeleteForeverIcon />
           </Button>
         }
       />
-      <Grid container padding={1}>
+      <Grid container padding={1} spacing={2}>
         <Grid item>
           <Conva />
         </Grid>
-        <Grid item xs={12} sm={4} md={6} lg={6}>
+        <Grid item xs={12}>
           <EditContent
             callback={(value) => updateMyExercise(value, 'description')}
             value={exercise.description}
             label={'Описание упражнения'}
           />
+        </Grid>
+        <Grid item xs={12}>
           <EditContent
             callback={(value) => updateMyExercise(value, 'keyPoints')}
             value={exercise.keyPoints}
             label={'Key points'}
           />
+        </Grid>
+        <Grid item xs={12}>
           <MultipleSelectChip
             idExercise={exercise.id}
             fieldName={'tag'}
@@ -81,7 +85,8 @@ export const ChangeExerciseCard = ({ exercise }: { exercise: ExerciseResponse })
             label={'Tag'}
             options={tagOptions}
           />
-
+        </Grid>
+        <Grid item xs={12}>
           <MultipleSelectChip
             idExercise={exercise.id}
             fieldName={'age'}

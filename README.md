@@ -6,6 +6,10 @@
 
 TypeScript, React, Redux, React Hook Form, React Router Dom, MaterialUI, Firebase, Calend, Conva.
 
+### Деплой:
+
+[coach-planner.web.app](https://coach-planner.web.app/)
+
 ### Реализовано
 
 - [x] Написан readme.md

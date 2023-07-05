@@ -1,18 +1,18 @@
 import { UseControllerProps, useController } from 'react-hook-form';
 import { IconButton, InputAdornment, TextField, Typography } from '@mui/material';
-import { LoginFormData } from '../../pages/Login';
+// import { LoginFormData } from '../../pages/Login';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { useState } from 'react';
 
-interface NewProps extends UseControllerProps<LoginFormData> {
+interface NewProps<TFields extends Record<string,any>> extends UseControllerProps<TFields> {
   description: string;
   type: string;
   autoComplete: string;
   label: string;
 }
 
-export const InputComponent = (props: NewProps) => {
+export const InputComponent = <T extends Record<string,any>>(props: NewProps<T>) => {
   const [show, setShow] = useState(false);
   const {
     field,
