@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import { Box, Button, TextField } from '@mui/material';
 import { HintMessage } from './Hint-message';
 import { InputAdornmentComponent } from './Input-adornment';
 import { type UserCredential } from 'firebase/auth';
+import * as yup from 'yup';
 const schema = yup.object({
   email: yup.string().email().max(100).required(),
   password: yup.string().min(5).max(30).required(),
@@ -37,7 +37,7 @@ export const EmailPasswordForm = ({
     control,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<LoginFormData>({
+  } = useForm({
     defaultValues: {
       email: '',
       password: '',
@@ -46,12 +46,13 @@ export const EmailPasswordForm = ({
     mode: 'all',
   });
 
-  const onSubmit: SubmitHandler<LoginFormData> = async ({ email, password }) => {
-    callback(email, password);
-  };
-
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1, width: '100%' }}>
+    <Box
+      component="form"
+      onSubmit={handleSubmit(({ email, password }) => callback(email, password))}
+      noValidate
+      sx={{ mt: 1, width: '100%' }}
+    >
       <Controller
         name="email"
         control={control}

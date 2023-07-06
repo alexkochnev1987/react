@@ -32,7 +32,7 @@ export const Login = () => {
         </Typography>
       )}
       {emailError && (
-        <Typography component="p" variant="body2" color={'tomato'}>
+        <Typography component="h4" variant="h4" color={'tomato'}>
           {emailError.message}
         </Typography>
       )}

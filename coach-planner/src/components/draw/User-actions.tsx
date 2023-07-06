@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { Box } from '@mui/material';
+import { Box, Button, Tooltip } from '@mui/material';
 import {
   selectEquipmentType,
   selectPlayerType,
@@ -11,8 +11,8 @@ import {
 import { SelectColor } from './Tools/Select-color';
 import { SelectLineType } from './Tools/Line';
 import { SelectSize } from './Tools/Select-size';
-import { lineTypesArray, playerTypesArray, toolsTypesArray } from './constants';
-import { setCurrent } from '../../store/slices/draw-objects-slice';
+import { ActionsOnConva, TooltipTitle, lineTypesArray, playerTypesArray, toolsTypesArray } from './constants';
+import { deleteCurrent, setCurrent } from '../../store/slices/draw-objects-slice';
 import { IconButtonForTool } from './Tools/IconForTool';
 import { EquipmentTypes, UserActionsValues } from '../../store/slices/constants';
 
@@ -33,6 +33,11 @@ export const UserActions = () => {
   return (
     <Box display={'flex'} alignItems={'center'} gap={'5px'} sx={{ height: '60px' }} justifyContent={'space-between'}>
       <Box display={'flex'} sx={{ height: '45px' }} gap={'5px'}>
+        <Tooltip title={TooltipTitle.deleteLine} placement="top">
+          <Button color="primary" onClick={() => dispatch(deleteCurrent())} variant="outlined">
+            {ActionsOnConva.deleteIcon}
+          </Button>
+        </Tooltip>
         {lineTypesArray.map((x) => (
           <IconButtonForTool
             color="primary"
@@ -64,18 +69,15 @@ export const UserActions = () => {
           </>
         )}
 
-        {userAction === UserActionsValues.addEquipment && (
-          <>
-            {toolsTypesArray.map((x) => (
-              <IconButtonForTool
-                isActive={equipmentType === x.value}
-                key={x.value}
-                src={x.svgIcon}
-                onClick={() => setToolActionHandler(x.value)}
-              />
-            ))}
-          </>
-        )}
+        {userAction === UserActionsValues.addEquipment &&
+          toolsTypesArray.map((x) => (
+            <IconButtonForTool
+              isActive={equipmentType === x.value}
+              key={x.value}
+              src={x.svgIcon}
+              onClick={() => setToolActionHandler(x.value)}
+            />
+          ))}
       </Box>
     </Box>
   );

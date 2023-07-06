@@ -18,6 +18,10 @@ const NavRoutes = [
     name: 'Trainings',
     link: RouteNames.trainings,
   },
+  {
+    name: 'Set user',
+    link: RouteNames.user,
+  },
 ];
 
 export const NavigationMenu = () => {

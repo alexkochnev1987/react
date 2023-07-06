@@ -35,7 +35,7 @@ export const lineTypesArray = [
 ];
 
 export const TooltipTitle = {
-  deleteLine: 'Delete line',
+  deleteLine: 'Delete current',
   save: 'Save this image',
   saveAs: 'Create new and save',
 };

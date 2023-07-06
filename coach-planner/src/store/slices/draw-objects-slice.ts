@@ -17,7 +17,7 @@ type EquipmentProps = Omit<Equipment, 'id'>;
 export const loadFile = async (file: Blob, id: string | undefined, conva: AllDrawType) => {
   if (id) {
     const img = await uploadBlob(file, id);
-    await updateExercise(id, { img, conva });
+    await updateExercise(id, { ...img, conva });
   }
 };
 
