@@ -2,9 +2,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { Box, Button, TextField } from '@mui/material';
 import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
-
 import { HintMessage } from './Hint-message';
-import { FieldsArray } from '../../pages/Set-user';
+import { SetUserFields } from './constants-set-user-form';
 
 export const SetUserForm = ({
   callback,
@@ -14,7 +13,7 @@ export const SetUserForm = ({
 }: {
   callback: (data: any) => void;
   schema: yup.ObjectSchema<any>;
-  fields: FieldsArray[];
+  fields: SetUserFields[];
   defaultValues: { [key: string]: any };
 }) => {
   const submitText = 'Save';

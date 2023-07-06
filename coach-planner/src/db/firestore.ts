@@ -8,6 +8,7 @@ import {
   serverTimestamp,
   updateDoc,
   getDoc,
+  setDoc,
 } from 'firebase/firestore';
 import { UpdateExerciseBody } from './constants';
 
@@ -17,6 +18,21 @@ export const addDocFunction = async (
 ) => {
   try {
     const result = await addDoc(collection, {
+      ...args,
+      create: Timestamp.fromDate(new Date()),
+    });
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const setDocFunction = async (
+  collection: DocumentReference<DocumentData>,
+  args: { [key: string]: string | number },
+) => {
+  try {
+    const result = await setDoc(collection, {
       ...args,
       create: Timestamp.fromDate(new Date()),
     });

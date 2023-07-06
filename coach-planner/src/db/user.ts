@@ -1,7 +1,8 @@
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { db, storage, userId } from '../firebase';
 import { DbCollections } from './constants';
-import { collection, doc, setDoc } from 'firebase/firestore';
+import { type DocumentData, DocumentSnapshot, collection, doc } from 'firebase/firestore';
+import { setDocFunction, updateDocFunction } from './firestore';
 
 export interface UserData {
   img: string;
@@ -11,11 +12,44 @@ export interface UserData {
   surName: string;
 }
 
+export class CustomUser {
+  img: string;
+  name: string;
+  age: number;
+  team: string;
+  surName: string;
+  constructor({ img, name, age, team, surName }: Partial<UserData>) {
+    this.img = img || '';
+    this.name = name || '';
+    this.age = age || 18;
+    this.team = team || '';
+    this.surName = surName || '';
+  }
+}
+
+const userConverter = {
+  toFirestore: (user: CustomUser) => {
+    return {
+      img: user.img || '',
+      name: user.name || '',
+      age: user.age || '',
+      team: user.team || '',
+      surName: user.surName || '',
+    };
+  },
+  fromFirestore: (snapshot: DocumentSnapshot<DocumentData>) => {
+    const data = snapshot.data() as CustomUser;
+    return new CustomUser(data);
+  },
+};
 export const userCollection = collection(db, DbCollections.users);
 export const plansCollection = collection(db, DbCollections.plans);
-export const userDocRef = doc(userCollection, `${localStorage.getItem(userId)}`);
+export const userDocRef = doc(userCollection, `${localStorage.getItem(userId)}`).withConverter(userConverter);
+export const createUser = (data: Partial<CustomUser>) => {
+  setDocFunction(userDocRef, data);
+};
 export const updateUser = async (data: Partial<UserData>) => {
-  await setDoc(userDocRef, { ...data });
+  await updateDocFunction(userDocRef, { ...data });
 };
 
 export const uploadImg = async (file: File) => {
@@ -26,4 +60,13 @@ export const uploadImg = async (file: File) => {
 
   const url = await getDownloadURL(result.ref);
   return url;
+};
+
+export const loadFileSetLink = async (user: CustomUser | undefined, image: File) => {
+  const img = await uploadImg(image);
+  if (user) {
+    await updateUser({ img });
+  } else {
+    await createUser({ img });
+  }
 };
