@@ -1,6 +1,5 @@
 import { Container } from '@mui/material';
-import { MainPage } from '../../pages/Main-page';
-import { Navbar } from '../navbar/Navbar';
+import { Outlet } from 'react-router-dom';
 import { Footer } from '../Footer';
 
 export const Layout = () => {
@@ -8,15 +7,14 @@ export const Layout = () => {
     <Container
       disableGutters={true}
       sx={{
-        display: 'flex',
         minHeight: '100vh',
         bgcolor: 'background.default',
-        flexDirection: 'column',
         color: 'text.default',
+        display: 'flex',
+        flexDirection: 'column',
       }}
     >
-      <Navbar />
-      <MainPage />
+      <Outlet />
       <Footer />
     </Container>
   );

@@ -4,13 +4,16 @@ import { Controller, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { HintMessage } from './Hint-message';
 import { SetUserFields } from './constants-set-user-form';
+import { ReactNode } from 'react';
 
 export const SetUserForm = ({
   callback,
   schema,
   fields,
   defaultValues,
+  children,
 }: {
+  children?: ReactNode;
   callback: (data: any) => void;
   schema: yup.ObjectSchema<any>;
   fields: SetUserFields[];
@@ -29,6 +32,7 @@ export const SetUserForm = ({
 
   return (
     <Box component="form" onSubmit={handleSubmit(callback)} noValidate sx={{ mt: 1, width: '100%' }}>
+      {children}
       {fields.map((x) => {
         const error = errors?.[x.name]?.message;
         return (

@@ -12,6 +12,7 @@ import { setImageNull } from '../store/slices/draw-objects-slice';
 import { useState } from 'react';
 import { type DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
 import { RouteNames } from '../router/routes';
+import { SearchBar } from '../components/Search-bar/Search-bar';
 
 export const Exercise = () => {
   const navigate = useNavigate();
@@ -41,6 +42,7 @@ export const Exercise = () => {
         <Button variant="outlined" onClick={() => setShowAll((state) => !state)}>
           {showAll ? 'Show only my Exercises' : 'Show All Exercises'}
         </Button>
+        <SearchBar />
       </Container>
       <Box gap={1} padding={1} flex={1} alignSelf={'stretch'}>
         {error && (

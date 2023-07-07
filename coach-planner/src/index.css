@@ -1,11 +1,4 @@
-body * {
+body {
   margin: 0;
   box-sizing: border-box;
-  /* display: flex; */
-  /* place-items: center; */
-  /* min-height: 100vh; */
-}
-#root {
-  width: 100%;
-  min-height: 100vh;
 }

@@ -5,6 +5,7 @@ export const setUserSchema = yup.object({
   surName: yup.string().max(100),
   team: yup.string().max(100),
   age: yup.number().min(0).max(140),
+  img: yup.string(),
 });
 
 export type SetUserFormData = yup.InferType<typeof setUserSchema>;
