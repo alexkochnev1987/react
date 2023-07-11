@@ -1,38 +1,22 @@
-// class SingleTone {
-//   static instance;
-//   constructor() {}
+function sostavChisla(massivChisel, chislo) {
+  const results = [];
 
-//   getInstance() {
-//     if (!SingleTone.instance) {
-//       SingleTone.instance = new SingleTone();
-//     }
-//     return SingleTone.instance;
-//   }
-// }
+  function backtrack(combination, start, target) {
+    if (target < 0) return;
+    if (target === 0) {
+      results.push([...combination]);
+      return;
+    }
 
-// const singleTone = new SingleTone();
-// const singleTone2 = new SingleTone();
-// const a = singleTone.getInstance();
-// const b = singleTone2.getInstance();
+    for (let i = start; i < massivChisel.length; i++) {
+      if (i > start && massivChisel[i] === massivChisel[i - 1]) continue;
+      combination.push(massivChisel[i]);
+      backtrack(combination, i + 1, target - massivChisel[i]);
+      combination.pop();
+    }
+  }
 
-// console.log(a === b);
-
-// console.log(Array.apply(null, { length: 9 }));
-const a = 1;
-
-// const b = {
-//   a: 1,
-//   valueOf: () => {
-//     return 1;
-//   },
-// };
-
-// a.__proto__.f = function () {
-//   return this;
-// };
-// console.log(a.f());
-
-// const b = " NaN";
-console.log(a.__proto__ === Object.prototype);
-
-// console.log(b.f());
+  massivChisel.sort((a, b) => a - b);
+  backtrack([], 0, chislo);
+  return results;
+}

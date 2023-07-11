@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { ChangeExerciseCard } from '../components/Exercise/Change-exercise-card';
 import { ExerciseResponse } from '../db/constants';
 
-export const SetExercise = () => {
+const SetExercise = () => {
   const params = useParams();
   const id = params.id as string;
   const [exercise] = useDocument(getExerciseDocRef(id));
@@ -13,3 +13,5 @@ export const SetExercise = () => {
     <ChangeExerciseCard exercise={{ id: exercise.id, ...exercise.data() } as ExerciseResponse} />
   ) : null;
 };
+
+export default SetExercise;

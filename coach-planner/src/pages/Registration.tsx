@@ -8,7 +8,7 @@ import { AuthWrapper } from '../components/Auth-wrapper';
 import { EmailPasswordForm } from '../components/forms/Email-password-form';
 import { useIsUserLogin } from '../hooks/useIsUserLogin';
 
-export const Registration = () => {
+const Registration = () => {
   const submitText = 'Sign Up';
   const linkText = 'Already have an account? Sign in';
   const [createUserWithEmailAndPassword, user, loading, error] = useCreateUserWithEmailAndPassword(auth);
@@ -30,3 +30,5 @@ export const Registration = () => {
     </AuthWrapper>
   );
 };
+
+export default Registration;

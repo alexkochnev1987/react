@@ -1,11 +1,17 @@
 import { Outlet } from 'react-router-dom';
 import { Navbar } from '../components/navbar/Navbar';
+import { Suspense } from 'react';
+import { CircularProgress } from '@mui/material';
 
-export const UserPage = () => {
+const UserPage = () => {
   return (
     <>
       <Navbar />
-      <Outlet />
+      <Suspense fallback={<CircularProgress />}>
+        <Outlet />
+      </Suspense>
     </>
   );
 };
+
+export default UserPage;

@@ -7,7 +7,7 @@ import { useDocument } from 'react-firebase-hooks/firestore';
 import { FirebaseError } from '../components/Firebase-error';
 import { DocumentSnapshot } from 'firebase/firestore';
 
-export const SetUser = () => {
+const SetUser = () => {
   const mainText = 'Set user data';
   const [userData, loading, error] = useDocument(userDocRef);
   const setData = (userData: DocumentSnapshot<CustomUser> | undefined) => {
@@ -45,3 +45,5 @@ export const SetUser = () => {
     </Container>
   );
 };
+
+export default SetUser;

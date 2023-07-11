@@ -9,7 +9,7 @@ import { AuthWrapper } from '../components/Auth-wrapper';
 import { useIsUserLogin } from '../hooks/useIsUserLogin';
 import { EmailPasswordForm } from '../components/forms/Email-password-form';
 
-export const Login = () => {
+const Login = () => {
   const submitText = 'Sign In';
   const googleLoginText = 'Login with google';
   const forgotPassword = 'Forgot password?';
@@ -52,3 +52,5 @@ export const Login = () => {
     </AuthWrapper>
   );
 };
+
+export default Login;

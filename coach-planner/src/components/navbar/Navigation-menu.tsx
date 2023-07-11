@@ -50,7 +50,6 @@ export const NavigationMenu = () => {
         <MenuIcon />
       </IconButton>
       <Menu
-        id="fade-menu"
         MenuListProps={{
           'aria-labelledby': 'fade-button',
         }}

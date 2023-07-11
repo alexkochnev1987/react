@@ -6,7 +6,7 @@ import { Link, MenuItem } from '@mui/material';
 import { DialogCreateTraining } from '../components/training/Dialog-create-training';
 import { RouteNames } from '../router/routes';
 
-export const TrainingsPage = () => {
+const TrainingsPage = () => {
   const [trainings] = useCollection(trainingsCollection);
 
   return (
@@ -23,3 +23,5 @@ export const TrainingsPage = () => {
     </div>
   );
 };
+
+export default TrainingsPage;

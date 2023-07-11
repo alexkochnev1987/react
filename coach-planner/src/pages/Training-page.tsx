@@ -5,7 +5,7 @@ import { getTrainingRef } from '../db/trainings';
 import { Stack } from '@mui/material';
 import { TrainingResponse } from '../db/constants';
 
-export const TrainingPage = () => {
+const TrainingPage = () => {
   const { id } = useParams();
   const [value] = useDocument(getTrainingRef(id));
 
@@ -17,3 +17,5 @@ export const TrainingPage = () => {
     </>
   );
 };
+
+export default TrainingPage;

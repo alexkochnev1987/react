@@ -1,4 +1,4 @@
-import { ThemeProviderComponent } from './components/Theme-provider';
+import { ThemeProviderComponent } from './theme/ThemeProviderComponent';
 import { MyRouterProvider } from './router/router-provider';
 import { Provider } from 'react-redux';
 import './index.css';

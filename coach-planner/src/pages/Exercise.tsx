@@ -14,7 +14,7 @@ import { type DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
 import { RouteNames } from '../router/routes';
 import { SearchBar } from '../components/Search-bar/Search-bar';
 
-export const Exercise = () => {
+const Exercise = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [showAll, setShowAll] = useState(true);
@@ -60,3 +60,5 @@ export const Exercise = () => {
     </>
   );
 };
+
+export default Exercise;

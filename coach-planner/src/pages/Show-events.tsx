@@ -5,7 +5,7 @@ import { getPlanDocRef, updatePlan } from '../db/plans';
 import { Card, CardHeader } from '@mui/material';
 import { EditContent } from '../components/Exercise/Edit-content';
 
-export const ShowEvents = () => {
+const ShowEvents = () => {
   const params = useParams();
   const id = params.id as string;
   const [calendar] = useDocument(getPlanDocRef(id));
@@ -32,3 +32,5 @@ export const ShowEvents = () => {
     </Card>
   );
 };
+
+export default ShowEvents;

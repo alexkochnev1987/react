@@ -2,7 +2,7 @@ import { Container } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import { Footer } from '../Footer';
 
-export const Layout = () => {
+const Layout = () => {
   return (
     <Container
       disableGutters={true}
@@ -19,3 +19,5 @@ export const Layout = () => {
     </Container>
   );
 };
+
+export default Layout;

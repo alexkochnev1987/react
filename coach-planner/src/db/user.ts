@@ -1,7 +1,7 @@
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { db, storage, userId } from '../firebase';
 import { DbCollections } from './constants';
-import { type DocumentData, DocumentSnapshot, collection, doc, where, query } from 'firebase/firestore';
+import { type DocumentData, DocumentSnapshot, collection, doc } from 'firebase/firestore';
 import { setDocFunction, updateDocFunction } from './firestore';
 
 export interface UserData {
@@ -43,13 +43,10 @@ const userConverter = {
   },
 };
 export const userCollection = collection(db, DbCollections.users).withConverter(userConverter);
-// export const plansCollection = collection(db, DbCollections.plans);
 export const userDocRef = doc(userCollection, `${localStorage.getItem(userId)}`).withConverter(userConverter);
 export const setUser = (data: Partial<CustomUser>) => {
   setDocFunction(userDocRef, data);
 };
-
-export const q = query(userCollection, where('name', '>=', 'W'));
 
 export const updateUser = async (data: Partial<UserData>) => {
   await updateDocFunction(userDocRef, { ...data });

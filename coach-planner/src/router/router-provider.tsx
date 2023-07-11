@@ -1,24 +1,32 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
 import { RequireAuth } from '../components/hoc/Require-auth';
-import { Layout } from '../components/layout/Layout';
-import ErrorPage from '../pages/Error-page';
-import { Exercise } from '../pages/Exercise';
-import { Login } from '../pages/Login';
-import { Plan } from '../pages/Plan';
-import { Registration } from '../pages/Registration';
-import { UserPage } from '../pages/User-page';
 import { RouteNames } from './routes';
-import { TrainingPage } from '../pages/Trainig-page';
-import { ShowEvents } from '../pages/Show-events';
-import { TrainingsPage } from '../pages/Trainings-page';
-import { SetExercise } from '../pages/Set-exercise';
-import { SetUser } from '../pages/Set-user';
+import Layout from '../components/layout/Layout';
+import UserPage from '../pages/User-page';
+import Exercise from '../pages/Exercise';
+import { CircularProgress } from '@mui/material';
+
+const ErrorPageAsync = lazy(() => import('../pages/Error-page'));
+const ExerciseAsync = lazy(() => import('../pages/Exercise'));
+const SetUserAsync = lazy(() => import('../pages/Set-user'));
+const SetExerciseAsync = lazy(() => import('../pages/Set-exercise'));
+const PlanAsync = lazy(() => import('../pages/Plan'));
+const ShowEventsAsync = lazy(() => import('../pages/Show-events'));
+const TrainingsPageAsync = lazy(() => import('../pages/Trainings-page'));
+const TrainingPageAsync = lazy(() => import('../pages/Training-page'));
+const LoginAsync = lazy(() => import('../pages/Login'));
+const RegistrationAsync = lazy(() => import('../pages/Registration'));
 
 const PrivateRouter = createBrowserRouter([
   {
     path: '/',
     element: <Layout />,
-    errorElement: <ErrorPage />,
+    errorElement: (
+      <Suspense fallback={<CircularProgress />}>
+        <ErrorPageAsync />
+      </Suspense>
+    ),
     children: [
       {
         path: '/',
@@ -31,41 +39,49 @@ const PrivateRouter = createBrowserRouter([
           { path: '/', element: <Exercise /> },
           {
             path: RouteNames.myExercises,
-            element: <Exercise />,
+            element: <ExerciseAsync />,
           },
           {
             path: RouteNames.user,
-            element: <SetUser />,
+            element: <SetUserAsync />,
           },
           {
             path: RouteNames.myExercises + RouteNames.id,
-            element: <SetExercise />,
+            element: <SetExerciseAsync />,
           },
           {
             path: RouteNames.plan,
-            element: <Plan />,
+            element: <PlanAsync />,
           },
           {
             path: RouteNames.plan + RouteNames.id,
-            element: <ShowEvents />,
+            element: <ShowEventsAsync />,
           },
           {
             path: RouteNames.trainings,
-            element: <TrainingsPage />,
+            element: <TrainingsPageAsync />,
           },
           {
             path: RouteNames.trainings + RouteNames.id,
-            element: <TrainingPage />,
+            element: <TrainingPageAsync />,
           },
         ],
       },
       {
         path: RouteNames.login,
-        element: <Login />,
+        element: (
+          <Suspense fallback={<CircularProgress />}>
+            <LoginAsync />
+          </Suspense>
+        ),
       },
       {
         path: RouteNames.registration,
-        element: <Registration />,
+        element: (
+          <Suspense fallback={<CircularProgress />}>
+            <RegistrationAsync />
+          </Suspense>
+        ),
       },
     ],
   },

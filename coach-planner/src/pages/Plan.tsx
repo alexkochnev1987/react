@@ -15,7 +15,7 @@ const deleteDialogContent = {
   cancel: 'Отмена',
 };
 
-export const Plan = () => {
+const Plan = () => {
   const [user] = useAuthState(auth);
   const [plans] = useCollection(plansCollection);
   const [openDialog, setOpenDialog] = useState(false);
@@ -63,3 +63,5 @@ export const Plan = () => {
     </div>
   );
 };
+
+export default Plan;
