@@ -3,13 +3,13 @@ import { Avatar, Button, Card, CardHeader, CardMedia, Chip, Grid } from '@mui/ma
 import { red } from '@mui/material/colors';
 import { ExpandText } from './training/ExpandText';
 import { NavLink } from 'react-router-dom';
-import { RouteNames } from '../router/routes';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import { SubmitDialog } from './dialogs/exercise-dialog/submit-dialog';
 import { useState } from 'react';
-import { deleteDialogContent } from './Exercise/constants';
+import { deleteDialogContent } from '../widgets/EditExerciseCard/lib/constants';
 import { ExerciseResponse } from '../db/constants';
+import { RoutePath } from '@/app/providers/RouterProvider/lib/constants';
 
 export const ExerciseCard = ({ exercise }: { exercise: ExerciseResponse }) => {
   const [openSubmit, setOpenSubmit] = useState(false);
@@ -38,7 +38,7 @@ export const ExerciseCard = ({ exercise }: { exercise: ExerciseResponse }) => {
             <Button onClick={() => setOpenSubmit(true)} color="error">
               <DeleteForeverIcon />
             </Button>
-            <NavLink to={RouteNames.myExercises + '/' + exercise.id} style={{ textDecoration: 'none' }}>
+            <NavLink to={RoutePath.exercise + RoutePath.main + exercise.id} style={{ textDecoration: 'none' }}>
               <Button>
                 <ModeEditOutlineIcon />
               </Button>

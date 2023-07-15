@@ -3,7 +3,7 @@ import { ShowCalendar } from '../components/Calendar/Show-calendar';
 import { useParams } from 'react-router-dom';
 import { getPlanDocRef, updatePlan } from '../db/plans';
 import { Card, CardHeader } from '@mui/material';
-import { EditContent } from '../components/Exercise/Edit-content';
+import { EditContent } from '../features/EditContent/ui/Edit-content';
 
 const ShowEvents = () => {
   const params = useParams();

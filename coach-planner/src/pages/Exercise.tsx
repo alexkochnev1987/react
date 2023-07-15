@@ -11,8 +11,9 @@ import { useAppDispatch } from '../store/hooks';
 import { setImageNull } from '../store/slices/draw-objects-slice';
 import { useState } from 'react';
 import { type DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
-import { RouteNames } from '../router/routes';
-import { SearchBar } from '../components/Search-bar/Search-bar';
+
+import { SearchBar } from '../features/SearchBar/ui/SearchBar';
+import { RoutePath } from '@/app/providers/RouterProvider/lib/constants';
 
 const Exercise = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ const Exercise = () => {
   const createNewExercise = async () => {
     const newExercise = await createExercise(user?.uid, user?.photoURL);
     dispatch(setImageNull());
-    if (newExercise) navigate(`${RouteNames.myExercises}/${newExercise?.id}`);
+    if (newExercise) navigate(`${RoutePath.exercise}/${newExercise?.id}`);
   };
 
   const reduceFunction = (previousValue: JSX.Element[], currentValue: QueryDocumentSnapshot<DocumentData>) => {

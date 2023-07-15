@@ -3,11 +3,11 @@ import { createPlan, deletePlan, plansCollection } from '../db/plans';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { NavLink, Outlet } from 'react-router-dom';
 import { Button, IconButton, Link } from '@mui/material';
-import { RouteNames } from '../router/routes';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { SubmitDialog } from '../components/dialogs/exercise-dialog/submit-dialog';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../firebase';
+import { RoutePath } from '@/app/providers/RouterProvider/lib/constants';
 const deleteDialogContent = {
   title: 'Вы хотите удалить план',
   message: 'План будет удалено безвозвратно',
@@ -43,7 +43,7 @@ const Plan = () => {
         plans.docs.map((x) => (
           <span key={x.id}>
             <Button>
-              <Link component={NavLink} to={RouteNames.plan + '/' + x.id}>
+              <Link component={NavLink} to={RoutePath.plan + RoutePath.main + x.id}>
                 {(x.data() as { name: string }).name}
               </Link>
             </Button>

@@ -14,7 +14,6 @@ export enum ColorTypes {
   blue = 'blue',
   black = 'black',
   green = 'green',
-  white = 'white',
 }
 export enum UserActionsValues {
   select = 'select',

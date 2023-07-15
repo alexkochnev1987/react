@@ -1,6 +1,5 @@
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
-import { RouteNames } from '../router/routes';
 import GoogleIcon from '@mui/icons-material/Google';
 import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { auth } from '../firebase';
@@ -8,6 +7,7 @@ import { Grid, Typography } from '@mui/material';
 import { AuthWrapper } from '../components/Auth-wrapper';
 import { useIsUserLogin } from '../hooks/useIsUserLogin';
 import { EmailPasswordForm } from '../components/forms/Email-password-form';
+import { RoutePath } from '@/app/providers/RouterProvider/lib/constants';
 
 const Login = () => {
   const submitText = 'Sign In';
@@ -43,7 +43,7 @@ const Login = () => {
           </Button>
         </Grid>
         <Grid item xs={12} sm={5} md={5} textAlign={'end'}>
-          <Link to={RouteNames.registration}>{goToRegistrationLinkText}</Link>
+          <Link to={RoutePath.registration}>{goToRegistrationLinkText}</Link>
         </Grid>
         <Grid item xs={12} sm={3} md={3} textAlign={'end'}>
           <Link to="#">{forgotPassword}</Link>

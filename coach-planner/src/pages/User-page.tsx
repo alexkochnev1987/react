@@ -1,7 +1,8 @@
 import { Outlet } from 'react-router-dom';
-import { Navbar } from '../components/navbar/Navbar';
+
 import { Suspense } from 'react';
 import { CircularProgress } from '@mui/material';
+import { Navbar } from '@/widgets/Navbar';
 
 const UserPage = () => {
   return (

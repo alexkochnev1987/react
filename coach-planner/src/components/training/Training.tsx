@@ -5,7 +5,6 @@ import { countEnergySupplyTime } from '../../utils/countEnergySupplyTime';
 
 import { ExerciseTree } from '../tree/Exercise-tree';
 import { useNavigate } from 'react-router-dom';
-import { RouteNames } from '../../router/routes';
 import { useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import { SubmitDialog } from '../dialogs/exercise-dialog/submit-dialog';
@@ -13,6 +12,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { TrainingCardHeader } from './Training-card-header';
 import { Chart } from './Chart';
 import { TrainingResponse } from '../../db/constants';
+import { RoutePath } from '@/app/providers/RouterProvider/lib/constants';
 
 const deleteTrainingContent = {
   title: 'Вы хотите удалить тренироовку',
@@ -38,14 +38,13 @@ export const Training = ({ training }: { training?: TrainingResponse }) => {
     setOpenDrawer(open);
   };
   if (!training) {
-    console.log('training', training);
     return null;
   }
   const { id, coachId, exercises, name } = training;
 
   const deleteMyTraining = () => {
     deleteTraining(id);
-    navigate(RouteNames.trainings);
+    navigate(RoutePath.trainings);
   };
   const totalTime = Object.values(countEnergySupplyTime(exercises)).reduce((prev, curr) => prev + curr, 0);
 

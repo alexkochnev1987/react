@@ -1,4 +1,4 @@
-import { AllDrawType } from '../components/Conva/helpers';
+import { AllDrawType } from '../features/DrawExercise/lib/helpers';
 import { IExerciseParams } from '../components/exercise-params/constants';
 
 export enum DbCollections {

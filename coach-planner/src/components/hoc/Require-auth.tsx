@@ -3,8 +3,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Navigate, useLocation } from 'react-router-dom';
 import { auth, userId } from '../../firebase';
-import { RouteNames } from '../../router/routes';
 import ErrorPage from '../../pages/Error-page';
+import { RoutePath } from '@/app/providers/RouterProvider/lib/constants';
 
 export const RequireAuth = ({ children }: { children: JSX.Element }) => {
   const location = useLocation();
@@ -16,7 +16,7 @@ export const RequireAuth = ({ children }: { children: JSX.Element }) => {
         <CircularProgress />
       </Box>
     );
-  if (!user) return <Navigate to={RouteNames.login} state={{ from: location }} />;
+  if (!user) return <Navigate to={RoutePath.login} state={{ from: location }} />;
 
   if (user) {
     localStorage.setItem(userId, user.uid);
