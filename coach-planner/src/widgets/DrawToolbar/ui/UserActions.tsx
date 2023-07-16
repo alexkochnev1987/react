@@ -1,12 +1,6 @@
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { useAppDispatch } from '../../../store/hooks';
 import { Box, SelectChangeEvent } from '@mui/material';
 import {
-  selectColor,
-  selectEquipmentType,
-  selectLineType,
-  selectLineWidth,
-  selectPlayerType,
-  selectUserAction,
   setColor,
   setEquipmentType,
   setLineType,
@@ -20,19 +14,29 @@ import { ColorTypes, EquipmentTypes, LineTypes, PlayerTypes, UserActionsValues }
 import { ToolIconButton } from '@/shared/ui/ToolIconButton/ui/ToolIconButton';
 import { RenderButtonList } from '@/entities/DrawActionButtons/RenderButtonList';
 import { SelectLine, SelectTypes } from '@/entities/SelectLine/ui/SelectLine';
-import { SaveImageButtons } from '@/entities/DrawActionButtons/SaveImageButton';
+import { ReactNode } from 'react';
 
-export const UserActions = ({ saveImageHandler }: { saveImageHandler: (id: string | undefined) => Promise<void> }) => {
+export const UserActions = ({
+  action,
+  color,
+  lineType,
+  width,
+  type,
+  equipment,
+  children,
+}: {
+  action: UserActionsValues;
+  color: ColorTypes;
+  lineType: LineTypes;
+  width: number;
+  type: PlayerTypes;
+  equipment: EquipmentTypes;
+  children?: ReactNode;
+}) => {
   const dispatch = useAppDispatch();
-  const lineType = useAppSelector(selectLineType);
-  const size = useAppSelector(selectLineWidth);
-  const color = useAppSelector(selectColor);
-  const userAction = useAppSelector(selectUserAction);
-  const playerType = useAppSelector(selectPlayerType);
-  const equipmentType = useAppSelector(selectEquipmentType);
 
   const setUserActionHandler = (value: UserActionsValues) => {
-    if (userAction !== value) dispatch(setCurrent(null));
+    if (action !== value) dispatch(setCurrent(null));
     dispatch(setUserAction(value));
   };
   const setToolActionHandler = (value: EquipmentTypes) => {
@@ -54,35 +58,34 @@ export const UserActions = ({ saveImageHandler }: { saveImageHandler: (id: strin
     dispatch(setColor(e.target.value as ColorTypes));
   };
 
+  const onDeleteElement = () => {
+    dispatch(deleteCurrent());
+  };
+
   return (
     <Box display={'flex'} alignItems={'center'} gap={'5px'} sx={{ height: '55px' }} justifyContent={'space-between'}>
       <Box display={'flex'} gap={'5px'}>
-        <ToolIconButton
-          color="error"
-          onClick={() => dispatch(deleteCurrent())}
-          toolTipTitle={TooltipTitle.deleteLine}
-          isActive={false}
-        >
+        <ToolIconButton color="error" onClick={onDeleteElement} toolTipTitle={TooltipTitle.deleteLine} isActive={false}>
           {ActionsOnConva.deleteIcon}
         </ToolIconButton>
-        <RenderButtonList arr={lineTypesArray} callback={setUserActionHandler} data={userAction} />
+        <RenderButtonList arr={lineTypesArray} callback={setUserActionHandler} data={action} />
         <SelectLine onChange={onChangeColor} value={color} selectType={SelectTypes.COLOR} />
-        {userAction === UserActionsValues.addPlayer && (
-          <RenderButtonList arr={playerTypesArray} callback={playerTypeHandler} data={playerType} />
+        {action === UserActionsValues.addPlayer && (
+          <RenderButtonList arr={playerTypesArray} callback={playerTypeHandler} data={type} />
         )}
 
-        {(userAction === UserActionsValues.draw || userAction === UserActionsValues.select) && (
+        {(action === UserActionsValues.draw || action === UserActionsValues.select) && (
           <>
             <SelectLine onChange={onChangeLineType} value={lineType} selectType={SelectTypes.LINE} />
-            <SelectLine onChange={onChangeSize} value={`${size}`} selectType={SelectTypes.SIZE} />
+            <SelectLine onChange={onChangeSize} value={`${width}`} selectType={SelectTypes.SIZE} />
           </>
         )}
 
-        {userAction === UserActionsValues.addEquipment && (
-          <RenderButtonList arr={toolsTypesArray} callback={setToolActionHandler} data={equipmentType} />
+        {action === UserActionsValues.addEquipment && (
+          <RenderButtonList arr={toolsTypesArray} callback={setToolActionHandler} data={equipment} />
         )}
       </Box>
-      <SaveImageButtons saveImage={saveImageHandler} />
+      {children}
     </Box>
   );
 };

@@ -1,7 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import { Equipment } from '../../../store/slices/constants';
 import { Group, Transformer } from 'react-konva';
-import { selectCurrentId, setColor, setCurrent, setPoint, setRotation } from '../../../store/slices/draw-objects-slice';
+import {
+  selectCurrentId,
+  setColor,
+  setCurrent,
+  setPoint,
+  setRotation,
+  setScale,
+} from '../../../store/slices/draw-objects-slice';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { KonvaEventObject } from 'konva/lib/Node';
 import { selectColor } from '../../../store/slices/canvas-slice';
@@ -46,13 +53,13 @@ export const WrapperEquipment = ({ equipment, children }: { equipment: Equipment
         onDragEnd={onDragEnd}
         onClick={onClick}
         draggable
-        x={equipment.point[0] - 10}
-        y={equipment.point[1] - 10}
-        width={20}
-        height={20}
+        x={equipment.point[0]}
+        y={equipment.point[1]}
+        scale={equipment.scale}
         ref={shapeRef}
         onTransformEnd={(e) => {
           dispatch(setRotation(e.target.rotation()));
+          dispatch(setScale(e.target.scale()));
         }}
       >
         {children}

@@ -1,22 +1,26 @@
-function sostavChisla(massivChisel, chislo) {
-  const results = [];
-
-  function backtrack(combination, start, target) {
-    if (target < 0) return;
-    if (target === 0) {
-      results.push([...combination]);
-      return;
-    }
-
-    for (let i = start; i < massivChisel.length; i++) {
-      if (i > start && massivChisel[i] === massivChisel[i - 1]) continue;
-      combination.push(massivChisel[i]);
-      backtrack(combination, i + 1, target - massivChisel[i]);
-      combination.pop();
-    }
-  }
-
-  massivChisel.sort((a, b) => a - b);
-  backtrack([], 0, chislo);
-  return results;
+async function getData() {
+  const response = await fetch("https://jsonplaceholder.typicode.com/users");
+  const json = await response.json();
+  return json;
 }
+
+function* fetchUsers() {
+  const x = yield getData(8);
+  const y = yield getData(9);
+  return [x, y];
+}
+
+function runner(generatorFunction) {
+  const iterator = generatorFunction();
+
+  function nextStep(resolvedValue) {
+    const { value: nextIteratorValue, done } = iterator.next(resolvedValue);
+    if (done) return nextIteratorValue;
+    return nextIteratorValue.then(nextStep);
+  }
+  return Promise.resolve().then(nextStep);
+}
+
+runner(fetchUsers).then((value) => {
+  console.log(value);
+});

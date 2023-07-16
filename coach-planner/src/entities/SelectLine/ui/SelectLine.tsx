@@ -1,6 +1,8 @@
 import { ColorTypes, LineTypes } from '@/store/slices/constants';
 import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { FC } from 'react';
+import { ReactComponent as Line } from '@/shared/assets/icons/line.svg';
+import { selectLineDashArray } from '../lib/selectLineDashArray';
 
 export enum SelectTypes {
   LINE = 'line',
@@ -18,16 +20,17 @@ const lineTypesArray = [
   LineTypes.forward,
   LineTypes.forwardPuck,
   LineTypes.pass,
+  LineTypes.backwardPuck,
   // LineTypes.backward,
-  // LineTypes.backwardPuck,
   // LineTypes.shot,
 ];
+
 const colorTypesArray = [ColorTypes.black, ColorTypes.blue, ColorTypes.green, ColorTypes.red];
 
 export const SelectLine: FC<SelectLineProps> = ({ selectType, value, onChange }) => {
   const width: Record<SelectTypes, number> = {
     [SelectTypes.COLOR]: 50,
-    [SelectTypes.LINE]: 150,
+    [SelectTypes.LINE]: 100,
     [SelectTypes.SIZE]: 50,
   };
 
@@ -45,7 +48,7 @@ export const SelectLine: FC<SelectLineProps> = ({ selectType, value, onChange })
     )),
     [SelectTypes.LINE]: lineTypesArray.map((x) => (
       <MenuItem value={x} key={x}>
-        {x}
+        <Line strokeDasharray={selectLineDashArray(x).join(' ')} />
       </MenuItem>
     )),
     [SelectTypes.SIZE]: ['1', '2', '3', '4'].map((x) => (

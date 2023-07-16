@@ -3,6 +3,7 @@ import { RootState } from '../store';
 import { ArrowLine, DrawObjectsState, Equipment, LineTypes, Player, PlayerTypes, getObjectWithId } from './constants';
 import { AllDrawType } from '../../features/DrawExercise/lib/helpers';
 import { updateExercise, uploadBlob } from '../../db/exercises';
+import { Vector2d } from 'konva/lib/types';
 
 const initialState: DrawObjectsState = {
   current: null,
@@ -13,6 +14,7 @@ const initialState: DrawObjectsState = {
 type PlayerProps = Omit<Player, 'id'>;
 type ArrowLineProps = Omit<ArrowLine, 'id'>;
 type EquipmentProps = Omit<Equipment, 'id'>;
+type ScaleFieldType = Equipment['scale'];
 
 export const loadFile = async (file: Blob, id: string | undefined, conva: AllDrawType) => {
   if (id) {
@@ -123,6 +125,13 @@ const drawObjectsSlice = createSlice({
         if (state.equipment?.[state.current]) state.equipment[state.current].rotation = action.payload;
       }
     },
+    setScale(state, action: PayloadAction<ScaleFieldType>) {
+      if (state.current) {
+        if (state.equipment?.[state.current]) {
+          state.equipment[state.current].scale = action.payload;
+        }
+      }
+    },
   },
 });
 
@@ -141,6 +150,7 @@ export const {
   setRotation,
   setImage,
   setImageNull,
+  setScale,
 } = drawObjectsSlice.actions;
 
 const selectDraw = (state: RootState) => state.draw;

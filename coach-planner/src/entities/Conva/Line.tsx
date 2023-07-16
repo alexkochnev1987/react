@@ -8,7 +8,8 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { selectColor, selectLineType, selectLineWidth, selectUserAction } from '../../store/slices/canvas-slice';
 import { setColor, setCurrent, setLineType, setLineWidth, setPoint } from '../../store/slices/draw-objects-slice';
 import { findNearestPoint } from '../../features/DrawExercise/lib/helpers';
-import { ArrowLine, LineTypes, UserActionsValues } from '../../store/slices/constants';
+import { ArrowLine, UserActionsValues } from '../../store/slices/constants';
+import { selectLineDashArray } from '../SelectLine/lib/selectLineDashArray';
 
 export const LineComponent = ({ current, line }: { line: ArrowLine; current: string | null }) => {
   const userAction = useAppSelector(selectUserAction);
@@ -67,20 +68,6 @@ export const LineComponent = ({ current, line }: { line: ArrowLine; current: str
     }
   };
 
-  const setLineDash = (line: LineTypes) => {
-    if (line === LineTypes.pass) {
-      return [0.5, 15];
-    }
-    if (line === LineTypes.forwardPuck) {
-      return [0.5, 10, 15, 10];
-    }
-
-    if (line === LineTypes.backwardPuck) {
-      return [4, 10, 4, 10, 25, 10];
-    }
-    return [];
-  };
-
   useEffect(() => {
     if (current === line.id) {
       dispatch(setLineType(lineType));
@@ -112,7 +99,7 @@ export const LineComponent = ({ current, line }: { line: ArrowLine; current: str
         fill={line.color}
         pointerLength={20}
         pointerWidth={20}
-        dash={setLineDash(line.line)}
+        dash={selectLineDashArray(line.line)}
         onClick={selectCurrent}
         onTouchStart={selectCurrent}
         onDblTap={(e) => onDbClick(e, line.points)}

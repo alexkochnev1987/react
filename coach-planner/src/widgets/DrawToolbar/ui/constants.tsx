@@ -14,6 +14,7 @@ import { ReactComponent as Cone } from '@/shared/assets/icons/cone.svg';
 import { ReactComponent as Stick } from '@/shared/assets/icons/stick.svg';
 import { EquipmentTypes, PlayerTypes, UserActionsValues } from '../../../store/slices/constants';
 import { ReactComponent as Ball } from '@/shared/assets/icons/tennis-ball.svg';
+import { ReactComponent as GoalIcon } from '@/shared/assets/icons/goal.svg';
 
 export const lineTypesArray = [
   {
@@ -85,5 +86,9 @@ export const toolsTypesArray = [
   {
     icon: <Tire />,
     value: EquipmentTypes.tire,
+  },
+  {
+    icon: <GoalIcon />,
+    value: EquipmentTypes.goal,
   },
 ];

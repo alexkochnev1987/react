@@ -1,5 +1,5 @@
 import { Stage, Layer } from 'react-konva';
-import { useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import { KonvaEventObject } from 'konva/lib/Node';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import {
@@ -22,7 +22,8 @@ import {
   saveImage,
   setCurrent,
 } from '../../../store/slices/draw-objects-slice';
-import { UserActions } from '@/widgets/DrawToolbar/ui/User-actions';
+import { UserActions } from '@/widgets/DrawToolbar/ui/UserActions';
+import { SaveImageButtons } from '@/entities/DrawActionButtons/SaveImageButton';
 
 const convaWidth = 800,
   convaHeight = 400;
@@ -107,18 +108,20 @@ export const DrawExercise = () => {
     isDrawing.current = false;
   };
 
-  const saveImageHandler = async (id: string | undefined) => {
+  const saveImageHandler = useCallback(async (id: string | undefined) => {
     const uri = stageRef.current;
     dispatch(setCurrent(null));
     if (uri) {
       const file = (await uri.toBlob()) as Blob;
       if (id) dispatch(saveImage({ file, id }));
     }
-  };
+  }, []);
 
   return (
     <>
-      <UserActions saveImageHandler={saveImageHandler} />
+      <UserActions {...{ action, color, lineType, width, type, equipment }}>
+        <SaveImageButtons saveImage={saveImageHandler} />
+      </UserActions>
       <Stage
         ref={stageRef}
         width={convaWidth}

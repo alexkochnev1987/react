@@ -1,4 +1,5 @@
 import { uuidv4 } from '@firebase/util';
+import { Vector2d } from 'konva/lib/types';
 
 export enum LineTypes {
   forward = 'forward',
@@ -64,6 +65,7 @@ export interface Player {
 
 export interface Equipment {
   rotation: number;
+  scale?: Vector2d | undefined;
   point: number[];
   color: string;
   type: EquipmentTypes;
@@ -76,6 +78,7 @@ export enum EquipmentTypes {
   tire = 'tire',
   ball = 'ball',
   cone = 'cone',
+  goal = 'goal',
 }
 
 export interface DrawObjectsState {
