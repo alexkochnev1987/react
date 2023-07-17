@@ -42,14 +42,15 @@ const userConverter = {
     return new CustomUser(data);
   },
 };
-export const userCollection = collection(db, DbCollections.users).withConverter(userConverter);
-export const userDocRef = doc(userCollection, `${localStorage.getItem(userId)}`).withConverter(userConverter);
+export const getUserCollection = () => collection(db, DbCollections.users).withConverter(userConverter);
+export const getUserDocRef = () =>
+  doc(getUserCollection(), `${localStorage.getItem(userId)}`).withConverter(userConverter);
 export const setUser = (data: Partial<CustomUser>) => {
-  setDocFunction(userDocRef, data);
+  setDocFunction(getUserDocRef(), data);
 };
 
 export const updateUser = async (data: Partial<UserData>) => {
-  await updateDocFunction(userDocRef, { ...data });
+  await updateDocFunction(getUserDocRef(), { ...data });
 };
 
 export const uploadImg = async (file: File) => {

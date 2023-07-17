@@ -1,8 +1,8 @@
 import React, { ChangeEvent, useState } from 'react';
 import { Box, FormControlLabel, Paper, Radio, RadioGroup, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { SearchInput } from '../../../shared/ui/SearchInput';
-import { CustomUser, userCollection } from '../../../db/user';
+import { SearchInput } from '@/shared/ui/SearchInput';
+import { CustomUser, getUserCollection } from '../../../db/user';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { FirebaseError } from '../../../components/Firebase-error';
 import { type DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
@@ -18,7 +18,7 @@ export const SearchBar = () => {
     setValue('');
   };
   const [filterBy, setFilterBy] = useState('name');
-  const [users, loading, error] = useCollection(userCollection);
+  const [users, loading, error] = useCollection(getUserCollection());
 
   const onChangeInput = async (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setValue(e.target.value);

@@ -1,7 +1,7 @@
 import { collection, doc, getDoc, getDocs, query, serverTimestamp, where } from 'firebase/firestore';
 import { ExerciseParamsDefault } from '../components/exercise-params/constants';
 
-import { db } from '../firebase';
+import { db, userId } from '../firebase';
 import {
   CreateTrainingRequest,
   DbCollections,
@@ -10,9 +10,11 @@ import {
   TrainingResponse,
 } from './constants';
 import { v4 as uuidv4 } from 'uuid';
-import { addDocFunction, deleteDocFunction, updateDocFunction } from './firestore';
+import { addDocFunction, deleteDocFunction, initPath, updateDocFunction } from './firestore';
 
-export const trainingsCollection = collection(db, DbCollections.trainings);
+const trainingsPath = initPath + DbCollections.trainings;
+export const trainingsCollection = collection(db, trainingsPath);
+
 export const getTrainingRef = (id: string | undefined) => {
   if (!id) throw Error('Exercise ID is undefined');
   return doc(trainingsCollection, id);

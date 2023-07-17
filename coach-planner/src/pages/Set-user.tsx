@@ -2,14 +2,14 @@ import { CircularProgress, Container, Paper, Typography } from '@mui/material';
 import { SetUserForm } from '../components/forms/Set-user-form';
 import { SetUserFields, setUserDefaultData, setUserSchema } from '../components/forms/constants-set-user-form';
 import { LoadImage } from '../components/forms/Load-image';
-import { CustomUser, setUser, updateUser, userDocRef } from '../db/user';
+import { CustomUser, getUserDocRef, setUser, updateUser } from '../db/user';
 import { useDocument } from 'react-firebase-hooks/firestore';
 import { FirebaseError } from '../components/Firebase-error';
 import { DocumentSnapshot } from 'firebase/firestore';
 
 const SetUser = () => {
   const mainText = 'Set user data';
-  const [userData, loading, error] = useDocument(userDocRef);
+  const [userData, loading, error] = useDocument(getUserDocRef());
   const setData = (userData: DocumentSnapshot<CustomUser> | undefined) => {
     return userData?.data() ? updateUser : setUser;
   };

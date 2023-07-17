@@ -10,7 +10,15 @@ import {
   getDoc,
   setDoc,
 } from 'firebase/firestore';
-import { UpdateExerciseBody } from './constants';
+import { DbCollections, UpdateExerciseBody } from './constants';
+import { userId } from '@/firebase';
+const getUserUiid = () => {
+  const userUiid = localStorage.getItem(userId);
+
+  return userUiid ? '/' + userUiid + '/' : '/';
+};
+
+export const initPath = `${DbCollections.users}${getUserUiid()}`;
 
 export const addDocFunction = async (
   collection: CollectionReference<DocumentData>,

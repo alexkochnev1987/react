@@ -3,7 +3,6 @@ import { RootState } from '../store';
 import { ArrowLine, DrawObjectsState, Equipment, LineTypes, Player, PlayerTypes, getObjectWithId } from './constants';
 import { AllDrawType } from '../../features/DrawExercise/lib/helpers';
 import { updateExercise, uploadBlob } from '../../db/exercises';
-import { Vector2d } from 'konva/lib/types';
 
 const initialState: DrawObjectsState = {
   current: null,

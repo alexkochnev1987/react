@@ -7,6 +7,7 @@ import Exercise from '@/pages/Exercise';
 
 import UserPage from '@/pages/User-page';
 import { CircularProgress } from '@mui/material';
+
 const ErrorPageAsync = lazy(() => import('@/pages/Error-page'));
 const ExerciseAsync = lazy(() => import('@/pages/Exercise'));
 const SetUserAsync = lazy(() => import('@/pages/Set-user'));

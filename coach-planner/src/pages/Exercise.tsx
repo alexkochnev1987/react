@@ -1,5 +1,4 @@
-import { createExercise, exerciseCollection } from '../db/exercises';
-
+import { createExercise, getExerciseCollection } from '../db/exercises';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { ExerciseCard } from '../components/Exercise-card';
 import { Box, Button, CircularProgress, Container, Typography } from '@mui/material';
@@ -11,7 +10,6 @@ import { useAppDispatch } from '../store/hooks';
 import { setImageNull } from '../store/slices/draw-objects-slice';
 import { useState } from 'react';
 import { type DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
-
 import { SearchBar } from '../features/SearchBar/ui/SearchBar';
 import { RoutePath } from '@/app/providers/RouterProvider/lib/constants';
 
@@ -21,7 +19,8 @@ const Exercise = () => {
   const [showAll, setShowAll] = useState(true);
   const buttonLabel = 'Create new exercise';
   const [user] = useAuthState(auth);
-  const [value, loading, error] = useCollection(exerciseCollection);
+  const collection = getExerciseCollection();
+  const [value, loading, error] = useCollection(collection);
   const createNewExercise = async () => {
     const newExercise = await createExercise(user?.uid, user?.photoURL);
     dispatch(setImageNull());
