@@ -10,11 +10,14 @@ import { useState } from 'react';
 import { deleteDialogContent } from '../widgets/EditExerciseCard/lib/constants';
 import { ExerciseResponse } from '../db/constants';
 import { RoutePath } from '@/app/providers/RouterProvider/lib/constants';
+import { useAppSelector } from '@/store/hooks';
+import { selectUser } from '@/store/slices/userSlice';
 
 export const ExerciseCard = ({ exercise }: { exercise: ExerciseResponse }) => {
   const [openSubmit, setOpenSubmit] = useState(false);
+  const userUiid = useAppSelector(selectUser);
   const deleteMyExercise = () => {
-    deleteExercise(exercise.id);
+    deleteExercise(userUiid, exercise.id);
   };
 
   return (

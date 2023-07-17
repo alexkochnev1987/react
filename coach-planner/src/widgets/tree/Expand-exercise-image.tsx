@@ -5,6 +5,8 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import AddIcon from '@mui/icons-material/Add';
 import { addExerciseInTraining } from '../../db/trainings';
 import { ExerciseResponse } from '../../db/constants';
+import { useAppSelector } from '@/store/hooks';
+import { selectUser } from '@/store/slices/userSlice';
 
 export const ExpandExerciseImage = ({
   exercise,
@@ -14,9 +16,10 @@ export const ExpandExerciseImage = ({
   exercise: ExerciseResponse;
 }) => {
   const [expanded, setExpanded] = useState(false);
+  const userUiid = useAppSelector(selectUser);
   const handleExpandClick = () => setExpanded((x) => !x);
   const addExerciseToTraining = () => {
-    trainingId && addExerciseInTraining(exercise, trainingId);
+    trainingId && addExerciseInTraining(userUiid, exercise, trainingId);
   };
 
   return (

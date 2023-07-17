@@ -6,12 +6,15 @@ import { CustomUser, getUserDocRef, setUser, updateUser } from '../db/user';
 import { useDocument } from 'react-firebase-hooks/firestore';
 import { FirebaseError } from '../components/Firebase-error';
 import { DocumentSnapshot } from 'firebase/firestore';
+import { useAppSelector } from '@/store/hooks';
+import { selectUser } from '@/store/slices/userSlice';
 
 const SetUser = () => {
   const mainText = 'Set user data';
-  const [userData, loading, error] = useDocument(getUserDocRef());
+  const userUiid = useAppSelector(selectUser);
+  const [userData, loading, error] = useDocument(getUserDocRef(userUiid));
   const setData = (userData: DocumentSnapshot<CustomUser> | undefined) => {
-    return userData?.data() ? updateUser : setUser;
+    return userData?.data() ? (data: any) => updateUser(userUiid, data) : (data: any) => setUser(userUiid, data);
   };
   if (loading) {
     return <CircularProgress />;
@@ -34,7 +37,7 @@ const SetUser = () => {
         <Typography component="h1" variant="h4" align="center">
           {mainText}
         </Typography>
-        <LoadImage user={userData?.data()} />
+        <LoadImage user={userData?.data()} userUiid={userUiid} />
         <SetUserForm
           schema={setUserSchema}
           fields={SetUserFields}

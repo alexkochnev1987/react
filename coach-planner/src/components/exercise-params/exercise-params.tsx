@@ -9,11 +9,12 @@ import {
   LoadIntensity,
 } from './constants';
 import { InputNumberComponent } from './Input-number';
-import { Button, ClickAwayListener, Container, FormControlLabel, Grid, Switch, Typography } from '@mui/material';
+import { Box, Button, ClickAwayListener, Container, FormControlLabel, Grid, Switch, Typography } from '@mui/material';
 import { setEnergySupply } from '../../utils/setEnergySupply';
 import { countExerciseTime } from '../../utils/countExerciseTime';
 import { SelectComponent } from './Select-componet';
 import { setRest } from '../../utils/setRest';
+import { EditContentButtons } from '@/entities/EditContentButtons';
 
 export const energyOptions = [EnergySupply.CP, EnergySupply.CPLa, EnergySupply.LA, EnergySupply.O2, EnergySupply.Rest];
 
@@ -79,26 +80,24 @@ export const ExerciseParams = ({
 
   return (
     <ClickAwayListener onClickAway={handleBlur}>
-      <form onFocus={handleFocus} onSubmit={handleSubmit(onSubmit)} ref={refForm}>
-        <Grid container spacing={1}>
-          <Grid item xs={12}>
-            <Typography variant="h6" textAlign="center">
-              <FormControlLabel
-                control={<Switch checked={modeManual} onChange={handleChange} />}
-                label={modeManual ? 'Мануал' : 'Авто'}
-              />
-              Total:{totalTime} min
-            </Typography>
-          </Grid>
-          <Grid item xs={6}>
+      <form onFocus={handleFocus} onSubmit={handleSubmit(onSubmit)} ref={refForm} style={{ minWidth: '320px' }}>
+        <Box display={'flex'} justifyContent={'space-around'}>
+          <FormControlLabel
+            control={<Switch checked={modeManual} onChange={handleChange} />}
+            label={modeManual ? 'Manual' : 'Auto'}
+          />
+          <Typography variant="h6" textAlign="center">
+            Total:{totalTime} min
+          </Typography>
+        </Box>
+        <Box display={'flex'}>
+          <Box display={'flex'} flexDirection={'column'} sx={{ paddingTop: '10px', gap: '10px' }}>
             <SelectComponent
               label="Intensity"
               items={intensityOptions}
               callback={(value) => setValue('loadIntensity', value)}
               value={getValues('loadIntensity')}
             />
-          </Grid>
-          <Grid item xs={6}>
             <SelectComponent
               label="Energy"
               manual={!modeManual}
@@ -106,27 +105,23 @@ export const ExerciseParams = ({
               callback={(value) => setValue('energySupply', value as EnergySupply)}
               value={getValues('energySupply')}
             />
-          </Grid>
-          <Grid item xs={12}>
-            <Grid container spacing={1}>
-              {ExerciseParamsArray.map((x) => (
-                <Grid item xs={3} key={x.name}>
-                  <InputNumberComponent mode={modeManual} x={x} control={control} errors={errors} />
-                </Grid>
-              ))}
-            </Grid>
-          </Grid>
-          {formActive && (
-            <Container disableGutters>
-              <Button variant="contained" color="error" onClick={handleBlur}>
-                Отмена
-              </Button>
-              <Button type="submit" variant="contained" color="success">
-                Сохранить
-              </Button>
-            </Container>
-          )}
-        </Grid>
+          </Box>
+          <Box display={'flex'} flexWrap={'wrap'}>
+            {ExerciseParamsArray.map((x) => (
+              <Box sx={{ paddingLeft: '10px', paddingTop: '10px' }} key={x.name}>
+                <InputNumberComponent mode={modeManual} x={x} control={control} errors={errors} />
+              </Box>
+            ))}
+          </Box>
+        </Box>
+        <Box display={'flex'} justifyContent={'center'} gap={'10px'} sx={{ paddingTop: '10px' }}>
+          <Button variant="contained" color="error" onClick={handleBlur} disabled={!formActive}>
+            Cancel
+          </Button>
+          <Button type="submit" variant="contained" color="success" disabled={!formActive}>
+            Save
+          </Button>
+        </Box>
       </form>
     </ClickAwayListener>
   );

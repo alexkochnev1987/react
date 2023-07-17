@@ -4,14 +4,14 @@ import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { CustomUser, loadFileSetLink } from '../../db/user';
 
-export const LoadImage = ({ user }: { user: CustomUser | undefined }) => {
+export const LoadImage = ({ userUiid, user }: { userUiid: string; user: CustomUser | undefined }) => {
   const [loading, setLoading] = useState(false);
   const handleFileUpload = async (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target?.files;
     if (files) {
       const file = files[0];
       setLoading(true);
-      await loadFileSetLink(user, file);
+      await loadFileSetLink(userUiid, user, file);
       setLoading(false);
     }
   };

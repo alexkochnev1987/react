@@ -1,5 +1,6 @@
 import { AllDrawType } from '../features/DrawExercise/lib/helpers';
 import { IExerciseParams } from '../components/exercise-params/constants';
+import { Timestamp } from 'firebase/firestore';
 
 export enum DbCollections {
   exercises = 'exercises',
@@ -21,8 +22,8 @@ export interface ExerciseResponse {
   tag?: string[];
   age?: string[];
   link?: string;
-  create: string;
-  modify?: string;
+  create: Timestamp;
+  modify?: Timestamp;
   coachImage?: string;
   conva?: AllDrawType;
   imgRef?: string;

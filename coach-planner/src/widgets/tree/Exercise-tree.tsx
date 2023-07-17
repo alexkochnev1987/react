@@ -1,19 +1,25 @@
 import { useCollection } from 'react-firebase-hooks/firestore';
-import { getExercisesByCoachId } from '../../db/exercises';
-import { createObjectWithTagFields } from '../../utils/splitExercisesByTags';
-import { List, Stack, Switch, Typography } from '@mui/material';
+import { splitExercisesByTag } from './splitExercisesByTags';
+import { CircularProgress, List, Stack, Switch, Typography } from '@mui/material';
 import { ExpandTag } from './Expand-tag';
 import { useState } from 'react';
+import { getExerciseCollection } from '@/db/exercises';
+import { FirebaseError } from '../../components/Firebase-error';
 
 export const ExerciseTree = ({ coachId }: { coachId: string }) => {
-  const [exercises, loading, error] = useCollection(getExercisesByCoachId(coachId));
+  const [exercises, loading, error] = useCollection(getExerciseCollection(coachId));
 
   const [checked, setChecked] = useState(true);
 
   const handleChange = () => {
     setChecked((state) => !state);
   };
-
+  if (loading) {
+    return <CircularProgress />;
+  }
+  if (error) {
+    return <FirebaseError error={error} />;
+  }
   return (
     <>
       <Stack direction="row" spacing={1} alignItems="center">
@@ -23,10 +29,10 @@ export const ExerciseTree = ({ coachId }: { coachId: string }) => {
       </Stack>
       <List sx={{ width: 250, bgcolor: 'background.paper' }}>
         {exercises &&
-          Object.entries(createObjectWithTagFields(exercises, checked))
+          Object.entries(splitExercisesByTag(exercises, checked))
             .filter((x) => (x ? true : false))
-            .map((x) => {
-              return <ExpandTag tag={x[0]} exercises={x[1]} key={x[0]} />;
+            .map(([key, value]) => {
+              return <ExpandTag tag={key} exercises={value} key={key} />;
             })}
       </List>
     </>

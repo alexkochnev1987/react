@@ -1,7 +1,7 @@
 import { collection, doc, getDoc, getDocs, query, serverTimestamp, where } from 'firebase/firestore';
 import { ExerciseParamsDefault } from '../components/exercise-params/constants';
 
-import { db, userId } from '../firebase';
+import { db } from '../firebase';
 import {
   CreateTrainingRequest,
   DbCollections,
@@ -10,35 +10,34 @@ import {
   TrainingResponse,
 } from './constants';
 import { v4 as uuidv4 } from 'uuid';
-import { addDocFunction, deleteDocFunction, initPath, updateDocFunction } from './firestore';
+import { addDocFunction, deleteDocFunction, getInitPath, updateDocFunction } from './firestore';
 
-const trainingsPath = initPath + DbCollections.trainings;
-export const trainingsCollection = collection(db, trainingsPath);
+const getTrainingsPath = (userUiid: string) => getInitPath(userUiid) + DbCollections.trainings;
+export const getTrainingsCollection = (userUiid: string) => collection(db, getTrainingsPath(userUiid));
 
-export const getTrainingRef = (id: string | undefined) => {
+export const getTrainingRef = (userUiid: string, id: string | undefined) => {
   if (!id) throw Error('Exercise ID is undefined');
-  return doc(trainingsCollection, id);
+  return doc(getTrainingsCollection(userUiid), id);
 };
 
-export const getTrainingById = async (id: string) => {
-  const docRef = getTrainingRef(id);
+export const getTrainingById = async (userUiid: string, id: string) => {
+  const docRef = getTrainingRef(userUiid, id);
   const training = await getDoc(docRef);
   return { id: training.id, ...training.data() } as TrainingResponse;
 };
 
 export const createTraining = ({ coachId, name }: CreateTrainingRequest) => {
   if (!coachId) return;
-  addDocFunction(trainingsCollection, { coachId, name });
+  addDocFunction(getTrainingsCollection(coachId), { coachId, name });
 };
 
-export const deleteTraining = (trainingId: string) => {
-  const docRef = doc(trainingsCollection, trainingId);
+export const deleteTraining = (userUiid: string, trainingId: string) => {
+  const docRef = doc(getTrainingsCollection(userUiid), trainingId);
   deleteDocFunction(docRef);
-  // await deleteDoc(docRef);
 };
 
 export const getTrainingByName = async ({ coachId, name }: CreateTrainingRequest) => {
-  const q = query(trainingsCollection, where('name', '==', name));
+  const q = query(getTrainingsCollection(coachId), where('name', '==', name));
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.length ? querySnapshot.docs[0].id : false;
 };
@@ -53,8 +52,8 @@ export const createUniqueTraining = async ({ coachId, name }: CreateTrainingRequ
   return trainingId;
 };
 
-export const updateTraining = async (id: string, training: Partial<TrainingResponse>) => {
-  const docRef = getTrainingRef(id);
+export const updateTraining = async (userUiid: string, id: string, training: Partial<TrainingResponse>) => {
+  const docRef = getTrainingRef(userUiid, id);
 
   const newTraining = {
     ...training,
@@ -64,27 +63,27 @@ export const updateTraining = async (id: string, training: Partial<TrainingRespo
   updateDocFunction(docRef, newTraining);
 };
 
-export const addExerciseInTraining = async (exercise: ExerciseResponse, id: string) => {
-  const { exercises } = await getTrainingById(id);
+export const addExerciseInTraining = async (userUiid: string, exercise: ExerciseResponse, id: string) => {
+  const { exercises } = await getTrainingById(exercise.coachId, id);
 
   const newArray = Array.isArray(exercises)
     ? [...exercises, { exercise, params: ExerciseParamsDefault, uuid: uuidv4() }]
     : [{ exercise, params: ExerciseParamsDefault, uuid: uuidv4() }];
-  updateTraining(id, { exercises: newArray });
+  updateTraining(userUiid, id, { exercises: newArray });
 };
 
-export const updateExerciseInTraining = async (exercise: TrainingExerciseData, id: string) => {
-  const { exercises } = await getTrainingById(id);
+export const updateExerciseInTraining = async (userUiid: string, exercise: TrainingExerciseData, id: string) => {
+  const { exercises } = await getTrainingById(userUiid, id);
 
   const newArray = [...exercises].map((x) => (x.uuid === exercise.uuid ? exercise : x));
 
-  updateTraining(id, { exercises: newArray });
+  updateTraining(userUiid, id, { exercises: newArray });
 };
 
-export const deleteExerciseInTraining = async (uuid: string, id: string) => {
-  const { exercises } = await getTrainingById(id);
+export const deleteExerciseInTraining = async (userUiid: string, uuid: string, id: string) => {
+  const { exercises } = await getTrainingById(userUiid, id);
   const newArray = [...exercises].filter((x) => x.uuid !== uuid);
-  updateTraining(id, { exercises: newArray });
+  updateTraining(userUiid, id, { exercises: newArray });
 };
 
 export const shiftExerciseRight = (exercises: TrainingExerciseData[], exerciseUuid: string) => {
@@ -111,8 +110,13 @@ export const shiftExerciseLeft = (exercises: TrainingExerciseData[], exerciseUui
   return exercises;
 };
 
-export const shiftExercise = async (trainingId: string, uuidExercise: string, callback: typeof shiftExerciseLeft) => {
-  const { exercises } = await getTrainingById(trainingId);
+export const shiftExercise = async (
+  userUiid: string,
+  trainingId: string,
+  uuidExercise: string,
+  callback: typeof shiftExerciseLeft,
+) => {
+  const { exercises } = await getTrainingById(userUiid, trainingId);
   const newArray = callback(exercises, uuidExercise);
-  updateTraining(trainingId, { exercises: newArray });
+  updateTraining(userUiid, trainingId, { exercises: newArray });
 };

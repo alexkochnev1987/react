@@ -10,12 +10,15 @@ import { useDocument } from 'react-firebase-hooks/firestore';
 import { FirebaseError } from '@/components/Firebase-error';
 import { useThemes } from '@/app/providers/ThemeProvider/lib/useThemes';
 import { getUserDocRef } from '@/db/user';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { selectUser, setUser } from '@/store/slices/userSlice';
 
 export function Navbar() {
   const GREETINGS = 'Hello ';
   const NO_NAME = 'Nouname';
   const APP_NAME = 'CoachPlanner';
-  const [userData, loading, error] = useDocument(getUserDocRef());
+  const userUiid = useAppSelector(selectUser);
+  const [userData, loading, error] = useDocument(getUserDocRef(userUiid));
   const { mode, toggleThemeMode } = useThemes();
 
   if (error) {
@@ -23,7 +26,6 @@ export function Navbar() {
   }
 
   const signOut = () => {
-    localStorage.removeItem(userId);
     auth.signOut();
   };
 

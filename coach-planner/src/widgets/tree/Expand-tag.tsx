@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { CardActions, Collapse, IconButton } from '@mui/material';
-import { TreeExerciseCard } from './Tree-exercise-card';
 import { ExerciseResponse } from '../../db/constants';
+import { useParams } from 'react-router-dom';
+import { ExpandExerciseImage } from './Expand-exercise-image';
 
 export const ExpandTag = ({ exercises, tag }: { exercises: ExerciseResponse[]; tag?: string }) => {
   const [expanded, setExpanded] = useState(false);
+  const { id } = useParams();
   const handleExpandClick = () => setExpanded((x) => !x);
   return (
     <>
@@ -17,7 +19,9 @@ export const ExpandTag = ({ exercises, tag }: { exercises: ExerciseResponse[]; t
         {tag}
       </CardActions>
       <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <TreeExerciseCard exercises={exercises} />
+        {exercises.map((exercise) => (
+          <ExpandExerciseImage exercise={exercise} trainingId={id} key={exercise.id} />
+        ))}
       </Collapse>
     </>
   );

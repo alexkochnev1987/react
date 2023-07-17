@@ -1,4 +1,4 @@
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 
 export const SelectComponent = ({
   callback,
@@ -14,24 +14,22 @@ export const SelectComponent = ({
   manual?: boolean;
 }) => {
   return (
-    <div>
-      <FormControl sx={{ width: "100%" }}>
-        <InputLabel>{label}</InputLabel>
-        <Select
-          size="small"
-          disabled={manual}
-          value={value}
-          onChange={(date) => {
-            callback(date.target.value);
-          }}
-        >
-          {items.map((x) => (
-            <MenuItem key={x} value={x}>
-              {x}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-    </div>
+    <FormControl size="small" sx={{ width: '100px' }}>
+      <InputLabel>{label}</InputLabel>
+      <Select
+        label={label}
+        disabled={manual}
+        value={value}
+        onChange={(date) => {
+          callback(date.target.value);
+        }}
+      >
+        {items.map((x) => (
+          <MenuItem key={x} value={x}>
+            {x}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 };

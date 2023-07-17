@@ -1,9 +1,8 @@
-import { Card, CardHeader, Fab, SwipeableDrawer } from '@mui/material';
+import { Box, Card, CardHeader, Fab, Grid, SwipeableDrawer, useTheme } from '@mui/material';
 import { deleteTraining } from '../../db/trainings';
 import { ExerciseParamsCard } from './Exercise-params-card';
 import { countEnergySupplyTime } from '../../utils/countEnergySupplyTime';
 
-import { ExerciseTree } from '../tree/Exercise-tree';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
@@ -13,6 +12,7 @@ import { TrainingCardHeader } from './Training-card-header';
 import { Chart } from './Chart';
 import { TrainingResponse } from '../../db/constants';
 import { RoutePath } from '@/app/providers/RouterProvider/lib/constants';
+import { ExerciseTree } from '@/widgets/tree/Exercise-tree';
 
 const deleteTrainingContent = {
   title: 'Вы хотите удалить тренироовку',
@@ -21,10 +21,10 @@ const deleteTrainingContent = {
   cancel: 'Отмена',
 };
 
-export const Training = ({ training }: { training?: TrainingResponse }) => {
+export const Training = ({ training }: { training: TrainingResponse }) => {
   const navigate = useNavigate();
+  const { id, coachId, exercises, name } = training;
   const [openDialog, setOpenDialog] = useState(false);
-
   const [openDrawer, setOpenDrawer] = useState(false);
   const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
@@ -37,20 +37,18 @@ export const Training = ({ training }: { training?: TrainingResponse }) => {
 
     setOpenDrawer(open);
   };
-  if (!training) {
-    return null;
-  }
-  const { id, coachId, exercises, name } = training;
 
   const deleteMyTraining = () => {
-    deleteTraining(id);
+    deleteTraining(training.coachId, id);
     navigate(RoutePath.trainings);
   };
   const totalTime = Object.values(countEnergySupplyTime(exercises)).reduce((prev, curr) => prev + curr, 0);
-
+  const theme = useTheme();
   return (
     <>
-      <Chart params={countEnergySupplyTime(exercises)} />
+      <SwipeableDrawer anchor={'right'} open={openDrawer} onClose={toggleDrawer(false)} onOpen={toggleDrawer(true)}>
+        {<ExerciseTree coachId={coachId} />}
+      </SwipeableDrawer>
       <SubmitDialog
         content={deleteTrainingContent}
         open={openDialog}
@@ -60,29 +58,31 @@ export const Training = ({ training }: { training?: TrainingResponse }) => {
         }}
       />
       <Card sx={{ overflow: 'visible' }}>
-        <SwipeableDrawer anchor={'right'} open={openDrawer} onClose={toggleDrawer(false)} onOpen={toggleDrawer(true)}>
-          {<ExerciseTree coachId={coachId} />}
-        </SwipeableDrawer>
-        <CardHeader
-          style={{
-            position: 'sticky',
-            top: '100px',
-            background: 'white',
-            zIndex: 1051,
-          }}
-          avatar={
+        <Grid
+          container
+          position={'sticky'}
+          sx={{ top: 0, background: theme.palette.background.paper, zIndex: theme.zIndex.appBar }}
+        >
+          <Grid item xs={1} textAlign={'center'} margin={'auto'}>
             <Fab size="small" onClick={() => setOpenDialog(true)} color="error">
               <DeleteForeverIcon />
             </Fab>
-          }
-          title={<TrainingCardHeader name={name} time={totalTime} />}
-          action={
+          </Grid>
+          <Grid item xs={5} textAlign={'center'} margin={'auto'}>
+            <TrainingCardHeader name={name} time={totalTime} />
+          </Grid>
+          <Grid item xs={5}>
+            <Chart params={countEnergySupplyTime(exercises)} />
+          </Grid>
+          <Grid item xs={1} textAlign={'center'} margin={'auto'}>
             <Fab onClick={toggleDrawer(true)} color="primary" size="small">
               <AddIcon />
             </Fab>
-          }
-        />
-        {exercises && exercises.map((x) => <ExerciseParamsCard trainingId={id} key={x.uuid} exercise={x} />)}
+          </Grid>
+        </Grid>
+        {exercises.map((x) => (
+          <ExerciseParamsCard coachId={coachId} trainingId={id} key={x.uuid} exercise={x} />
+        ))}
       </Card>
     </>
   );

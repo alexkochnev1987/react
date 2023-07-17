@@ -43,14 +43,13 @@ const userConverter = {
   },
 };
 export const getUserCollection = () => collection(db, DbCollections.users).withConverter(userConverter);
-export const getUserDocRef = () =>
-  doc(getUserCollection(), `${localStorage.getItem(userId)}`).withConverter(userConverter);
-export const setUser = (data: Partial<CustomUser>) => {
-  setDocFunction(getUserDocRef(), data);
+export const getUserDocRef = (userUiid: string) => doc(getUserCollection(), userUiid).withConverter(userConverter);
+export const setUser = (userUiid: string, data: Partial<CustomUser>) => {
+  setDocFunction(getUserDocRef(userUiid), data);
 };
 
-export const updateUser = async (data: Partial<UserData>) => {
-  await updateDocFunction(getUserDocRef(), { ...data });
+export const updateUser = async (userUiid: string, data: Partial<UserData>) => {
+  await updateDocFunction(getUserDocRef(userUiid), { ...data });
 };
 
 export const uploadImg = async (file: File) => {
@@ -61,11 +60,11 @@ export const uploadImg = async (file: File) => {
   return url;
 };
 
-export const loadFileSetLink = async (user: CustomUser | undefined, image: File) => {
+export const loadFileSetLink = async (userUiid: string, user: CustomUser | undefined, image: File) => {
   const img = await uploadImg(image);
   if (user) {
-    await updateUser({ img });
+    await updateUser(userUiid, { img });
   } else {
-    await setUser({ img });
+    await setUser(userUiid, { img });
   }
 };

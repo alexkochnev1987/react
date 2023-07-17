@@ -1,7 +1,7 @@
 import { type DocumentData, QuerySnapshot } from 'firebase/firestore';
-import { ExerciseResponse } from '../db/constants';
+import { ExerciseResponse } from '../../db/constants';
 
-export const createObjectWithTagFields = (data: QuerySnapshot<DocumentData>, filterByTag: boolean) => {
+export const splitExercisesByTag = (data: QuerySnapshot<DocumentData>, filterByTag: boolean) => {
   return data.docs.reduce((prev, curr) => {
     const exercise = { ...(curr.data() as ExerciseResponse), id: curr.id };
     const tags = filterByTag ? exercise.tag : exercise.age;

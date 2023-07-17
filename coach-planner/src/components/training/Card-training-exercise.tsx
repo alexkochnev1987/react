@@ -1,11 +1,21 @@
-import { Button, CardContent, CardHeader, CardMedia, Collapse, Grid } from '@mui/material';
+import {
+  Box,
+  Button,
+  CardContent,
+  CardHeader,
+  CardMedia,
+  Chip,
+  Collapse,
+  Grid,
+  IconButton,
+  Typography,
+} from '@mui/material';
 import { ExpandText } from './ExpandText';
 import { ExerciseParams } from '../exercise-params/exercise-params';
 import { IExerciseParams } from '../exercise-params/constants';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { ExerciseCardHeader } from './Exercise-card-header';
-import { useState } from 'react';
 import { ExerciseResponse } from '../../db/constants';
+import dayjs from 'dayjs';
 
 export const CardTrainingExercise = ({
   exercise,
@@ -20,36 +30,52 @@ export const CardTrainingExercise = ({
   params: IExerciseParams;
   children?: React.ReactNode;
 }) => {
-  const [expanded, setExpanded] = useState(false);
-  const handleExpandClick = () => setExpanded((x) => !x);
+  const parseDate = (date: Date) => {
+    const dt = dayjs(date);
+    const formatted = dt.format('DD/MM/YYYY');
+    return formatted;
+  };
   return (
     <>
-      <CardHeader
-        action={
-          <Button onClick={deleteExercise} color="error">
-            <DeleteForeverIcon />
-          </Button>
-        }
-        title={
-          <ExerciseCardHeader
-            name={exercise.name}
-            params={params}
-            expanded={expanded}
-            handleExpandClick={handleExpandClick}
-          />
-        }
-        avatar={children}
-      />
-      <CardContent>
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardMedia component="img" width={'100%'} image={exercise.img} alt={exercise.name} />
-          <ExerciseParams submit={submitParams} params={params} />
-          <Grid container justifyContent="space-between">
-            <ExpandText label="Description" text={exercise.description} />
-            <ExpandText label="Key points" text={exercise.keyPoints} />
+      <Grid container spacing={2} padding={0}>
+        <Grid item xs={7} container>
+          <Grid item xs={1} container direction="column" justifyContent="space-evenly" alignItems="center">
+            <IconButton onClick={deleteExercise} color="error" size="small">
+              <DeleteForeverIcon />
+            </IconButton>
+            {children}
           </Grid>
-        </Collapse>
-      </CardContent>
+          <Grid item xs={5}>
+            <Typography variant="h5" color={'primary'}>
+              {exercise.name}
+            </Typography>
+            <Typography variant="body1">
+              Tag:
+              {exercise.tag?.map((tag) => (
+                <Chip label={tag} key={tag} size="small" />
+              ))}
+            </Typography>
+            <Typography variant="body1">Created:{parseDate(exercise.create.toDate())}</Typography>
+            {exercise.modify && <Typography variant="body1">Modify:{parseDate(exercise.modify?.toDate())}</Typography>}
+            <Typography variant="body1">
+              Age:{' '}
+              {exercise.age?.map((age) => (
+                <Chip label={age} key={age} size="small" />
+              ))}
+            </Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <ExerciseParams submit={submitParams} params={params} />
+          </Grid>
+          <Grid item xs={12}>
+            <ExpandText label="Key points" text={exercise.keyPoints} />
+            <ExpandText label="Description" text={exercise.description} />
+          </Grid>
+        </Grid>
+        <Grid item xs={5}>
+          <CardMedia component="img" image={exercise.img} alt={exercise.name} />
+        </Grid>
+      </Grid>
     </>
   );
 };

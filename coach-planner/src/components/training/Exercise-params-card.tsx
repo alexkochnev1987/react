@@ -8,7 +8,7 @@ import {
   updateExerciseInTraining,
 } from '../../db/trainings';
 import { CardTrainingExercise } from './Card-training-exercise';
-import { IconButton, Stack } from '@mui/material';
+import { Box, IconButton, Stack } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { TrainingExerciseData } from '../../db/constants';
@@ -16,25 +16,27 @@ import { TrainingExerciseData } from '../../db/constants';
 export const ExerciseParamsCard = ({
   trainingId,
   exercise,
+  coachId,
 }: {
+  coachId: string;
   trainingId: string;
   exercise: TrainingExerciseData;
 }) => {
   const submitParams = (data: IExerciseParams) => {
     const newExercise = { ...exercise, params: data };
-    updateExerciseInTraining(newExercise, trainingId);
+    updateExerciseInTraining(coachId, newExercise, trainingId);
   };
 
   const deleteExercise = () => {
-    deleteExerciseInTraining(exercise.uuid, trainingId);
+    deleteExerciseInTraining(coachId, exercise.uuid, trainingId);
   };
 
   const shiftExerciseUp = () => {
-    shiftExercise(trainingId, exercise.uuid, shiftExerciseLeft);
+    shiftExercise(coachId, trainingId, exercise.uuid, shiftExerciseLeft);
   };
 
   const shiftExerciseDown = () => {
-    shiftExercise(trainingId, exercise.uuid, shiftExerciseRight);
+    shiftExercise(coachId, trainingId, exercise.uuid, shiftExerciseRight);
   };
 
   return (
@@ -44,14 +46,14 @@ export const ExerciseParamsCard = ({
       submitParams={submitParams}
       params={exercise.params}
     >
-      <Stack spacing={1}>
-        <IconButton onClick={shiftExerciseUp} color="primary" size="small" sx={{ width: '30px' }}>
+      <Box textAlign={'center'}>
+        <IconButton onClick={shiftExerciseUp} color="primary" size="small">
           <ArrowUpwardIcon />
         </IconButton>
-        <IconButton onClick={shiftExerciseDown} color="primary" size="small" sx={{ width: '30px' }}>
+        <IconButton onClick={shiftExerciseDown} color="primary" size="small">
           <ArrowDownwardIcon />
         </IconButton>
-      </Stack>
+      </Box>
     </CardTrainingExercise>
   );
 };

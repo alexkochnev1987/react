@@ -1,7 +1,7 @@
-import { TextField } from "@mui/material";
-import { Control, Controller, FieldErrors } from "react-hook-form";
-import { errorMessage } from "../dialogs/exercise-dialog/constants";
-import { IExerciseParams, ExerciseParamsFormFields } from "./constants";
+import { TextField } from '@mui/material';
+import { Control, Controller, FieldErrors } from 'react-hook-form';
+import { errorMessage } from '../dialogs/exercise-dialog/constants';
+import { IExerciseParams, ExerciseParamsFormFields } from './constants';
 
 export const InputNumberComponent = ({
   mode,
@@ -22,10 +22,10 @@ export const InputNumberComponent = ({
         rules={{ required: true }}
         render={({ field }) => (
           <TextField
-            disabled={mode ? false : x.name === "rest"}
+            disabled={mode ? false : x.name === 'rest'}
             size="small"
             type="number"
-            sx={{ width: "100%" }}
+            sx={{ width: '110px' }}
             inputProps={{ min: 0 }}
             {...field}
             error={!!errors[x.name]}
@@ -34,7 +34,7 @@ export const InputNumberComponent = ({
         )}
       />
       {errors[x.name] && (
-        <p style={{ color: "red" }} role="alert">
+        <p style={{ color: 'red' }} role="alert">
           {errorMessage}
         </p>
       )}

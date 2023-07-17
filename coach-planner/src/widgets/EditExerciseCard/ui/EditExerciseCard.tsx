@@ -4,32 +4,28 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useEffect, useState } from 'react';
 import { SubmitDialog } from '../../../components/dialogs/exercise-dialog/submit-dialog';
 import { useNavigate } from 'react-router-dom';
-import { EditContent } from '../../../features/EditContent/ui/Edit-content';
-import {
-  ageOptions,
-  deleteDialogContent,
-  editContentFieldArray,
-  editTagsFieldArray,
-  tagOptions,
-} from '../lib/constants';
+import { EditContent } from '@/features/EditContent/ui/Edit-content';
+import { deleteDialogContent, editContentFieldArray, editTagsFieldArray } from '../lib/constants';
 import { setImage } from '../../../store/slices/draw-objects-slice';
-import { useAppDispatch } from '../../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { ExerciseResponse } from '../../../db/constants';
 import { RoutePath } from '@/app/providers/RouterProvider/lib/constants';
 import { EditTags } from '@/features/EditTags/ui/EditTags';
 import { AllDrawType } from '@/features/DrawExercise/lib/helpers';
 import { DrawExercise } from '@/features/DrawExercise/ui/DrawExercise';
+import { selectUser } from '@/store/slices/userSlice';
 
 export const EditExerciseCard = ({ exercise }: { exercise: ExerciseResponse }) => {
   const navigate = useNavigate();
+  const userUiid = useAppSelector(selectUser);
   const [openSubmit, setOpenSubmit] = useState(false);
   const deleteMyExercise = () => {
+    deleteExercise(userUiid, exercise.id);
     navigate(RoutePath.exercise);
-    deleteExercise(exercise.id);
   };
 
   const updateMyExercise = (content: string | AllDrawType | string[] | undefined, fieldName: string) => {
-    updateExercise(exercise.id, { [fieldName]: content });
+    updateExercise(userUiid, exercise.id, { [fieldName]: content });
   };
 
   const dispatch = useAppDispatch();

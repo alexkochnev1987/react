@@ -2,44 +2,40 @@ import { collection, doc, getDoc, query, where } from 'firebase/firestore';
 import { deleteObject, getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { db, storage, userId } from '../firebase';
 import { DbCollections, ExerciseResponse, UpdateExerciseBody } from './constants';
-import { addDocFunction, deleteDocFunction, initPath, updateDocFunction } from './firestore';
+import { addDocFunction, deleteDocFunction, getInitPath, updateDocFunction } from './firestore';
 
-const exercisePath = initPath + DbCollections.exercises;
-
-export const getExerciseCollection = () => collection(db, exercisePath);
-
-export const getExerciseDocRef = (id: string) => doc(getExerciseCollection(), id);
-export const getExercisesByCoachId = (coachId: string) =>
-  query(getExerciseCollection(), where('coachId', '==', coachId));
+const exercisePath = (userUiid: string) => getInitPath(userUiid) + DbCollections.exercises;
+export const getExerciseCollection = (userUiid: string) => collection(db, exercisePath(userUiid));
+export const getExerciseDocRef = (userUiid: string, id: string) => doc(getExerciseCollection(userUiid), id);
 
 export const createExercise = async (coachId: string | undefined, coachImage?: string | null | undefined) => {
   if (!coachId) return;
   const image = coachImage || '';
-  const result = await addDocFunction(getExerciseCollection(), { coachImage: image, coachId: coachId });
+  const result = await addDocFunction(getExerciseCollection(coachId), { coachImage: image, coachId: coachId });
   return result;
 };
 
-export const getExercisesById = async (id: string) => {
-  const docRef = getExerciseDocRef(id);
+export const getExercisesById = async (userUiid: string, id: string) => {
+  const docRef = getExerciseDocRef(userUiid, id);
   const response = await getDoc(docRef);
 
   return { id: response.id, ...response.data() } as ExerciseResponse;
 };
 
-export const updateExercise = (id: string, exercise: Partial<UpdateExerciseBody>) => {
-  const docRef = getExerciseDocRef(id);
+export const updateExercise = (userUiid: string, id: string, exercise: Partial<UpdateExerciseBody>) => {
+  const docRef = getExerciseDocRef(userUiid, id);
   updateDocFunction(docRef, exercise);
 };
 
-export const deleteExercise = (id: string) => {
-  const docRef = getExerciseDocRef(id);
-  deleteImage(id);
+export const deleteExercise = (userUiid: string, id: string) => {
+  const docRef = getExerciseDocRef(userUiid, id);
+  deleteImage(userUiid, id);
   deleteDocFunction(docRef);
 };
 
-export const uploadBlob = async (file: Blob, id: string) => {
+export const uploadBlob = async (userUiid: string, file: Blob, id: string) => {
   try {
-    const link = `${localStorage.getItem(userId)}/${id}`;
+    const link = `${userUiid}/${id}`;
     const fileRef = ref(storage, link);
     const result = await uploadBytes(fileRef, file);
     const img = await getDownloadURL(result.ref);
@@ -49,8 +45,8 @@ export const uploadBlob = async (file: Blob, id: string) => {
   }
 };
 
-export const deleteImage = async (id: string) => {
-  const link = `${localStorage.getItem(userId)}/${id}`;
+export const deleteImage = async (userUiid: string, id: string) => {
+  const link = `${userUiid}/${id}`;
   const fileRef = ref(storage, link);
   try {
     await deleteObject(fileRef);
