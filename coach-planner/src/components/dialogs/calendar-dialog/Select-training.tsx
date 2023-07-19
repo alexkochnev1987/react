@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Box, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { UseFormSetValue } from 'react-hook-form';
 import { MyCalendarEvents } from './Event-form';
 import { type DocumentData, QuerySnapshot } from 'firebase/firestore';
@@ -25,11 +25,12 @@ export const SelectTraining = ({
 
   const [trainingId, setTrainingId] = useState(id);
   return (
-    <>
+    <Box display={'flex'} flexDirection={'column'} gap={2}>
       {trainingId && <LoadTrainingParams id={trainingId} />}
-      <FormControl sx={{ width: '100%' }}>
+      <FormControl fullWidth>
         <InputLabel>Select training</InputLabel>
         <Select
+          label={'Select training'}
           value={trainingId}
           onChange={(date) => {
             setTrainingId(date.target.value);
@@ -46,6 +47,6 @@ export const SelectTraining = ({
             ))}
         </Select>
       </FormControl>
-    </>
+    </Box>
   );
 };

@@ -4,7 +4,7 @@ import { parseDate } from '@/shared/lib/parseDate';
 import { DescriptionField } from '@/shared/ui/DescriptionField';
 import { EditTrainingTags } from '@/shared/ui/EditTrainingTag';
 import { countEnergySupplyTime } from '@/utils/countEnergySupplyTime';
-import { Box, Chip, Grid, TextField, Typography } from '@mui/material';
+import { Box, Chip, Fab, Grid, TextField, Typography } from '@mui/material';
 import { FC } from 'react';
 import { ageOptions, tagOptions } from '../EditExerciseCard/lib/constants';
 import { EditTrainingField } from '@/shared/ui/EditTrainingField';
@@ -24,6 +24,7 @@ export const TrainingCardParams: FC<TrainingCardParamsProps> = ({ training, colo
   const updateTrainingAge = (name: string[]) => updateMyTraining(name, 'age');
   const updateTrainingTags = (name: string[]) => updateMyTraining(name, 'tag');
   const totalTime = Object.values(countEnergySupplyTime(training.exercises)).reduce((prev, curr) => prev + curr, 0);
+
   return (
     <Grid container spacing={1}>
       <Grid item xs>

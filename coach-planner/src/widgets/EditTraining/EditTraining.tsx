@@ -10,7 +10,7 @@ import { SubmitDialog } from '../../components/dialogs/exercise-dialog/submit-di
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { Chart } from '../../features/Chart/Chart';
 import { TrainingResponse } from '../../db/constants';
-import { RoutePath } from '@/app/providers/RouterProvider/lib/constants';
+import { RoutePath } from '@/app/providers/RouterProvider/config/constants';
 import { ExerciseTree } from '@/widgets/Tree/Exercise-tree';
 import { TrainingCardParams } from '../SetTrainingCard/TrainingCardParams';
 

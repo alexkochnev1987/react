@@ -1,25 +1,17 @@
 import { CalendarEvent } from 'kalend';
 import { CALENDAR_EVENT_TYPE } from 'kalend/common/enums';
-import { SubmitHandler, useForm } from 'react-hook-form';
-// import { SelectColor } from './SelectEventColor';
-import { Button } from '@mui/material';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
+import { Box, Button, DialogActions, Grid, MenuItem, Select, TextField } from '@mui/material';
 import { InputDate } from './Input-date';
 import { SelectTraining } from './Select-training';
 import { createEvent, updateEvent } from '../../../db/events';
 import { useCollection } from 'react-firebase-hooks/firestore';
-
-import { IExerciseParams } from '../../training/Training-params';
 import { getTrainingsCollection } from '@/db/trainings';
 import { useAppSelector } from '@/store/hooks';
 import { selectUser } from '@/store/slices/userSlice';
-
-interface EventFormProps {
-  event: Partial<CalendarEvent>;
-  submit: () => void;
-  close: () => void;
-  id: string;
-}
+import { IExerciseParams } from '@/components/exercise-params/constants';
+import { getPlansCollection } from '@/db/plans';
 
 const colors: string[] = [
   'blue',
@@ -50,15 +42,21 @@ const initialValue: MyCalendarEvents = {
   color: colors[0],
   type: CALENDAR_EVENT_TYPE.EVENT,
 };
+interface EventFormProps {
+  event: Partial<CalendarEvent>;
+  submit: () => void;
+  close: () => void;
+  calendarId: string;
+  userUiid: string;
+}
 
-export const EventForm = ({ event, submit, close, id }: EventFormProps) => {
-  const userUiid = useAppSelector(selectUser);
+export const EventForm = ({ event, submit, close, calendarId, userUiid }: EventFormProps) => {
   const [trainings] = useCollection(getTrainingsCollection(userUiid));
   const defaultValues = { ...initialValue, ...event };
   const {
     handleSubmit,
     setValue,
-    // control,
+    control,
     // formState: { errors },
   } = useForm<MyCalendarEvents>({
     defaultValues: defaultValues,
@@ -67,24 +65,45 @@ export const EventForm = ({ event, submit, close, id }: EventFormProps) => {
 
   const onSubmit: SubmitHandler<CalendarEvent> = (data) => {
     if (data.id) {
-      updateEvent(id, data);
+      updateEvent(userUiid, calendarId, data);
       return submit();
     }
-    createEvent(id, data);
+    createEvent(userUiid, calendarId, data);
     submit();
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {trainings && <SelectTraining setValue={setValue} id={defaultValues.training} trainings={trainings} />}
-      <InputDate startAt={defaultValues.startAt} endAt={defaultValues.endAt} setValue={setValue} />
-      {/* <SelectColor control={control} colors={colors} /> */}
-      <Button type="submit" variant="contained">
-        Save
-      </Button>
-      <Button type="button" variant="outlined" onClick={close}>
-        Cancel
-      </Button>
+      <Grid container p={1} spacing={1}>
+        <Grid item xs={12}>
+          {trainings && <SelectTraining setValue={setValue} id={defaultValues.training} trainings={trainings} />}
+        </Grid>
+        <Grid item xs={12}>
+          <InputDate startAt={defaultValues.startAt} endAt={defaultValues.endAt} setValue={setValue}>
+            <Controller
+              name="color"
+              control={control}
+              render={({ field }) => (
+                <TextField select label="Color" {...field} sx={{ minWidth: '80px' }}>
+                  {colors.map((color) => (
+                    <MenuItem value={color} key={color}>
+                      <Box width={`20px`} height={`20px`} bgcolor={color} borderRadius={'50%'} />
+                    </MenuItem>
+                  ))}
+                </TextField>
+              )}
+            />
+          </InputDate>
+        </Grid>
+      </Grid>
+      <DialogActions>
+        <Button type="submit" variant="contained">
+          Save
+        </Button>
+        <Button type="button" variant="outlined" onClick={close}>
+          Cancel
+        </Button>
+      </DialogActions>
     </form>
   );
 };

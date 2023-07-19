@@ -9,7 +9,7 @@ import { SubmitDialog } from './dialogs/exercise-dialog/submit-dialog';
 import { useState } from 'react';
 import { deleteDialogContent } from '../widgets/EditExerciseCard/lib/constants';
 import { ExerciseResponse } from '../db/constants';
-import { RoutePath } from '@/app/providers/RouterProvider/lib/constants';
+import { RoutePath } from '@/app/providers/RouterProvider/config/constants';
 import { useAppSelector } from '@/store/hooks';
 import { selectUser } from '@/store/slices/userSlice';
 

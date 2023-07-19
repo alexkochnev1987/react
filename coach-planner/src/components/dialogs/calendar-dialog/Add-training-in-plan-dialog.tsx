@@ -1,17 +1,20 @@
-import { Button, Dialog, DialogTitle } from "@mui/material";
-import { CalendarEvent } from "kalend";
-import { EventForm } from "./Event-form";
-import { useParams } from "react-router-dom";
-import { deleteEvent } from "../../../db/events";
+import { Button, Dialog, DialogContent, DialogTitle } from '@mui/material';
+import { CalendarEvent } from 'kalend';
+import { EventForm } from './Event-form';
+import { useParams } from 'react-router-dom';
+import { deleteEvent } from '../../../db/events';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { useAppSelector } from '@/store/hooks';
+import { selectUser } from '@/store/slices/userSlice';
 
 interface SimpleDialogProps {
   open: boolean;
   onClose: () => void;
   eventParams: Partial<CalendarEvent>;
-  // submit: () => void;
 }
 
 export const AddTrainingDialog = (props: SimpleDialogProps) => {
+  const userUiid = useAppSelector(selectUser);
   const { id } = useParams();
   const { onClose, open, eventParams } = props;
 
@@ -25,26 +28,31 @@ export const AddTrainingDialog = (props: SimpleDialogProps) => {
 
   const deleteMyEvent = () => {
     const eventId = eventParams?.id;
-    if (id && eventId) deleteEvent(id, eventId);
+    if (id && eventId) deleteEvent(userUiid, id, eventId);
     onClose();
   };
 
   return (
     <Dialog onClose={handleClose} open={open} fullWidth={true}>
-      <DialogTitle>
+      <DialogTitle textAlign={'center'}>
         Add training to calendar
-        <Button variant="contained" color="error" onClick={deleteMyEvent}>
-          Delete
+        <Button
+          onClick={deleteMyEvent}
+          color="error"
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+          }}
+        >
+          <DeleteForeverIcon />
         </Button>
       </DialogTitle>
-      {id && (
-        <EventForm
-          submit={submitForm}
-          event={eventParams}
-          close={onClose}
-          id={id}
-        />
-      )}
+      <DialogContent>
+        {id && (
+          <EventForm submit={submitForm} event={eventParams} close={onClose} calendarId={id} userUiid={userUiid} />
+        )}
+      </DialogContent>
     </Dialog>
   );
 };

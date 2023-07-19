@@ -6,9 +6,12 @@ import { useCollection } from 'react-firebase-hooks/firestore';
 import 'kalend/dist/styles/index.css';
 import { countMinutesByDate } from '../../utils/countMinutesByDate';
 import { PageChangeData } from 'kalend/common/interface';
+import { useAppSelector } from '@/store/hooks';
+import { selectUser } from '@/store/slices/userSlice';
 
 export const ShowCalendar = ({ planId }: { planId: string }) => {
-  const [myEvents] = useCollection(getEventsCollectionLink(planId));
+  const userUiid = useAppSelector(selectUser);
+  const [myEvents] = useCollection(getEventsCollectionLink(userUiid, planId));
   const [open, setOpen] = useState(false);
   const [name, setName] = useState<Partial<CalendarEvent>>({ color: 'blue' });
   const onEventClick = (data: OnEventClickData) => {

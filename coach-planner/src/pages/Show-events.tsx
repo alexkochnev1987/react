@@ -6,13 +6,16 @@ import { Card, CardHeader } from '@mui/material';
 import { EditContent } from '../features/EditContent/ui/Edit-content';
 import { AllDrawType } from '@/features/DrawExercise/lib/helpers';
 import { Timestamp } from 'firebase/firestore';
+import { useAppSelector } from '@/store/hooks';
+import { selectUser } from '@/store/slices/userSlice';
 
 const ShowEvents = () => {
   const params = useParams();
+  const userUiid = useAppSelector(selectUser);
   const id = params.id as string;
-  const [calendar] = useDocument(getPlanDocRef(id));
+  const [calendar] = useDocument(getPlanDocRef(userUiid, id));
   const editPlanName = (name: string | string[] | AllDrawType | undefined | Timestamp) => {
-    if (name && typeof name === 'string') updatePlan(id, name);
+    if (name && typeof name === 'string') updatePlan(userUiid, id, name);
   };
 
   return (

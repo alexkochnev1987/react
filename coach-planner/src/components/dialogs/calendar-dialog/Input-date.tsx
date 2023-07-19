@@ -1,17 +1,18 @@
-import { TextField } from '@mui/material';
-import React, { useState } from 'react';
+import { Box, Grid, TextField } from '@mui/material';
+import React, { ReactNode, useState } from 'react';
 import { UseFormSetValue } from 'react-hook-form';
 import { MyCalendarEvents } from './Event-form';
 
-export const InputDate = ({
-  startAt,
-  endAt,
-  setValue,
-}: {
+import { FC } from 'react';
+
+interface InputDateProps {
   startAt: string;
   endAt?: string;
   setValue: UseFormSetValue<MyCalendarEvents>;
-}) => {
+  children?: ReactNode;
+}
+
+export const InputDate: FC<InputDateProps> = ({ startAt, endAt, setValue, children }) => {
   const [date, setDate] = useState(new Date(startAt).toISOString().slice(0, 10));
   const [time, setTime] = useState(new Date(startAt).toLocaleTimeString());
   const setDurationFirsTime = () => {
@@ -53,10 +54,11 @@ export const InputDate = ({
   };
 
   return (
-    <>
-      <TextField type="date" label="Date" value={date} onChange={onChangeDate} />
-      <TextField type="time" label="Start time" value={time} onChange={onChangeTime} />
+    <Box sx={{ display: 'flex' }} gap={1}>
+      <TextField type="date" label="Date" value={date} onChange={onChangeDate} sx={{ minWidth: '140px' }} />
+      <TextField sx={{ minWidth: '120px' }} type="time" label="Start time" value={time} onChange={onChangeTime} />
       <TextField
+        sx={{ minWidth: '80px' }}
         type="number"
         value={duration}
         label="Duration"
@@ -66,6 +68,7 @@ export const InputDate = ({
         }}
         onChange={onChangeDuration}
       />
-    </>
+      {children}
+    </Box>
   );
 };

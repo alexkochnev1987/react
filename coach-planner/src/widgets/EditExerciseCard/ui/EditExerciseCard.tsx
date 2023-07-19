@@ -9,7 +9,7 @@ import { deleteDialogContent, editContentFieldArray, editTagsFieldArray } from '
 import { setImage } from '../../../store/slices/draw-objects-slice';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { ExerciseResponse } from '../../../db/constants';
-import { RoutePath } from '@/app/providers/RouterProvider/lib/constants';
+import { RoutePath } from '@/app/providers/RouterProvider/config/constants';
 import { EditTags } from '@/features/EditTags/ui/EditTags';
 import { AllDrawType } from '@/features/DrawExercise/lib/helpers';
 import { DrawExercise } from '@/features/DrawExercise/ui/DrawExercise';

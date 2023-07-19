@@ -1,20 +1,17 @@
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
-import { Avatar, Box, CircularProgress, IconButton, Link, Menu, MenuItem, Typography, useTheme } from '@mui/material';
+import { Box, IconButton, Link, Typography } from '@mui/material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { auth, userId } from '@/firebase';
 import { useDocument } from 'react-firebase-hooks/firestore';
 import { FirebaseError } from '@/components/Firebase-error';
 import { useThemes } from '@/app/providers/ThemeProvider/lib/useThemes';
 import { getUserDocRef } from '@/db/user';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { selectUser, setUser } from '@/store/slices/userSlice';
-import { DialogCreateTraining } from '@/components/training/Dialog-create-training';
+import { useAppSelector } from '@/store/hooks';
+import { selectUser } from '@/store/slices/userSlice';
 import { NavLink, useLocation } from 'react-router-dom';
-import { RoutePath } from '@/app/providers/RouterProvider/lib/constants';
-import { useState } from 'react';
+import { RoutePath } from '@/app/providers/RouterProvider/config/constants';
 import { UserMenu } from './UserMenu';
 const NavRoutes = [
   {
@@ -22,17 +19,13 @@ const NavRoutes = [
     link: RoutePath.exercise,
   },
   {
-    name: 'Plan',
+    name: 'Plans',
     link: RoutePath.plan,
   },
   {
     name: 'Trainings',
     link: RoutePath.trainings,
   },
-  // {
-  //   name: 'Set user',
-  //   link: RoutePath.user,
-  // },
 ];
 
 export function Navbar() {
@@ -55,8 +48,6 @@ export function Navbar() {
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           {APP_NAME}
         </Typography>
-
-        {/* <NavigationMenu /> */}
         <Box sx={{ flexGrow: 1, display: 'flex' }}>
           {NavRoutes.map((page) => (
             <Button key={page.name} color="inherit">

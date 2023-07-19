@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';
 import { createExercise } from '../../db/exercises';
-import { RoutePath } from '@/app/providers/RouterProvider/lib/constants';
+import { RoutePath } from '@/app/providers/RouterProvider/config/constants';
 import { ToolIconButton } from '@/shared/ui/ToolIconButton/ui/ToolIconButton';
 
 export const SaveImageButtons = ({ saveImage }: { saveImage: (id: string | undefined) => Promise<void> }) => {

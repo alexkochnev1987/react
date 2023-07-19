@@ -6,27 +6,36 @@ import { EditContentButtons } from '@/entities/EditContentButtons';
 interface EditFieldProps {
   children: ReactNode;
   onSubmit: (input: string) => void;
-  startValue: string;
+  startValue: string | undefined;
   label: string;
   small?: boolean;
 }
 
 export const EditTrainingField: FC<EditFieldProps> = ({ children, onSubmit, startValue, label, small }) => {
   const [edit, setEdit] = useState(false);
-  const [value, setValue] = useState(startValue);
+  const [value, setValue] = useState(startValue || '');
 
   const onSubmitHandler = () => {
     setEdit(false);
     onSubmit(value);
   };
 
+  const setEditFalse = () => {
+    setValue(startValue || '');
+    setEdit(false);
+  };
+
+  const setEditTrue = () => {
+    setEdit(true);
+  };
+
   return (
     <Box display={'flex'} sx={{ width: '100%' }}>
       {edit ? (
-        <EditContentButtons handleCancel={() => setEdit(false)} handleSave={onSubmitHandler} />
+        <EditContentButtons handleCancel={setEditFalse} handleSave={onSubmitHandler} />
       ) : (
         <Box>
-          <IconButton onClick={() => setEdit(true)}>
+          <IconButton onClick={setEditTrue}>
             <EditIcon sx={small ? { fontSize: '12px' } : { fontSize: '24px' }} />
           </IconButton>
         </Box>
@@ -34,6 +43,9 @@ export const EditTrainingField: FC<EditFieldProps> = ({ children, onSubmit, star
       {edit ? (
         <TextField
           fullWidth
+          type="textarea"
+          multiline={small ? true : false}
+          maxRows={4}
           label={label}
           variant="outlined"
           value={value}

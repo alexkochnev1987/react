@@ -4,7 +4,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { Navigate, useLocation } from 'react-router-dom';
 import { auth } from '../../firebase';
 import ErrorPage from '../../pages/Error-page';
-import { RoutePath } from '@/app/providers/RouterProvider/lib/constants';
+import { RoutePath } from '@/app/providers/RouterProvider/config/constants';
 import { useAppDispatch } from '@/store/hooks';
 import { setUser } from '@/store/slices/userSlice';
 

@@ -28,6 +28,11 @@ export const EditTrainingTags: FC<EditTagProps> = ({
     onSubmit(tagsValue);
   };
 
+  const setEditFalse = () => {
+    setTagsValue(startValue || []);
+    setEdit(false);
+  };
+
   const onTagsChange = (tags: string[]) => {
     setTagsValue(tags);
   };

@@ -6,7 +6,7 @@ import { AuthWrapper } from '../components/Auth-wrapper';
 
 import { EmailPasswordForm } from '../components/forms/Email-password-form';
 import { useIsUserLogin } from '../hooks/useIsUserLogin';
-import { RoutePath } from '@/app/providers/RouterProvider/lib/constants';
+import { RoutePath } from '@/app/providers/RouterProvider/config/constants';
 
 const Registration = () => {
   const submitText = 'Sign Up';

@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
-import { createPlan, deletePlan, plansCollection } from '../db/plans';
+import { useState } from 'react';
+import { deletePlan, getPlansCollection } from '../db/plans';
 import { useCollection } from 'react-firebase-hooks/firestore';
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { Button, IconButton, Link } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { SubmitDialog } from '../components/dialogs/exercise-dialog/submit-dialog';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../firebase';
-import { RoutePath } from '@/app/providers/RouterProvider/lib/constants';
+
+import { RoutePath } from '@/app/providers/RouterProvider/config/constants';
+import { useAppSelector } from '@/store/hooks';
+import { selectUser } from '@/store/slices/userSlice';
+import { getEventsCollectionLink } from '@/db/events';
 const deleteDialogContent = {
   title: 'Вы хотите удалить план',
   message: 'План будет удалено безвозвратно',
@@ -16,21 +18,17 @@ const deleteDialogContent = {
 };
 
 const Plan = () => {
-  const [user] = useAuthState(auth);
-  const [plans] = useCollection(plansCollection);
+  const userUiid = useAppSelector(selectUser);
+  const [plans, loading, error] = useCollection(getPlansCollection(userUiid));
   const [openDialog, setOpenDialog] = useState(false);
   const [planId, setPlanId] = useState('');
   const deleteMyPlan = () => {
     setOpenDialog(false);
-    deletePlan(planId);
-  };
-
-  const createMyPlan = () => {
-    if (user) createPlan(user.uid, 'My plan');
+    deletePlan(userUiid, planId);
   };
 
   return (
-    <div style={{ height: '100vh' }}>
+    <>
       <SubmitDialog
         content={deleteDialogContent}
         open={openDialog}
@@ -58,9 +56,7 @@ const Plan = () => {
             </IconButton>
           </span>
         ))}
-      <Button onClick={createMyPlan}>Create new plan</Button>
-      <Outlet />
-    </div>
+    </>
   );
 };
 

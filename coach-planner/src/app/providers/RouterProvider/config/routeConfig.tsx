@@ -3,12 +3,11 @@ import { createBrowserRouter } from 'react-router-dom';
 import { RoutePath } from './constants';
 import { RequireAuth } from '@/components/hoc/Require-auth';
 import Layout from '@/components/layout/Layout';
-import Exercise from '@/pages/Exercise';
 
 import UserPage from '@/pages/User-page';
 import { CircularProgress } from '@mui/material';
+import ErrorPage from '@/pages/Error-page';
 
-const ErrorPageAsync = lazy(() => import('@/pages/Error-page'));
 const ExerciseAsync = lazy(() => import('@/pages/Exercise'));
 const SetUserAsync = lazy(() => import('@/pages/Set-user'));
 const SetExerciseAsync = lazy(() => import('@/pages/Set-exercise'));
@@ -23,11 +22,7 @@ export const Router = createBrowserRouter([
   {
     path: RoutePath.main,
     element: <Layout />,
-    errorElement: (
-      <Suspense fallback={<CircularProgress />}>
-        <ErrorPageAsync />
-      </Suspense>
-    ),
+    errorElement: <ErrorPage />,
     children: [
       {
         path: RoutePath.main,
@@ -37,7 +32,7 @@ export const Router = createBrowserRouter([
           </RequireAuth>
         ),
         children: [
-          { path: RoutePath.main, element: <Exercise /> },
+          { path: RoutePath.main, element: <ExerciseAsync /> },
           {
             path: RoutePath.exercise,
             element: <ExerciseAsync />,

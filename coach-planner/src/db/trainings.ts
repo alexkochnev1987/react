@@ -26,9 +26,10 @@ export const getTrainingById = async (userUiid: string, id: string) => {
   return { id: training.id, ...training.data() } as TrainingResponse;
 };
 
-export const createTraining = ({ coachId, name }: CreateTrainingRequest) => {
+export const createTraining = async (coachId: string) => {
   if (!coachId) return;
-  addDocFunction(getTrainingsCollection(coachId), { coachId, name });
+  const training = await addDocFunction(getTrainingsCollection(coachId), { coachId, name: 'Enter Training name' });
+  return training?.id;
 };
 
 export const deleteTraining = (userUiid: string, trainingId: string) => {
@@ -40,16 +41,6 @@ export const getTrainingByName = async ({ coachId, name }: CreateTrainingRequest
   const q = query(getTrainingsCollection(coachId), where('name', '==', name));
   const querySnapshot = await getDocs(q);
   return querySnapshot.docs.length ? querySnapshot.docs[0].id : false;
-};
-
-export const createUniqueTraining = async ({ coachId, name }: CreateTrainingRequest) => {
-  const exist = await getTrainingByName({ coachId, name });
-  if (exist) {
-    throw Error('Training wit this name exist');
-  }
-  createTraining({ coachId, name });
-  const trainingId = await getTrainingByName({ coachId, name });
-  return trainingId;
 };
 
 export const updateTraining = async (userUiid: string, id: string, training: Partial<TrainingResponse>) => {
