@@ -6,11 +6,12 @@ import CancelIcon from '@mui/icons-material/Cancel';
 interface EditContentButtonsProps {
   handleSave: () => void;
   handleCancel: () => void;
+  flex?: boolean;
 }
 
-export const EditContentButtons: FC<EditContentButtonsProps> = ({ handleSave, handleCancel }) => {
+export const EditContentButtons: FC<EditContentButtonsProps> = ({ handleSave, handleCancel, flex }) => {
   return (
-    <Box>
+    <Box display={flex ? 'flex' : 'block'}>
       <IconButton onClick={handleSave} sx={{ padding: 0 }}>
         <CheckCircleIcon color="success" />
       </IconButton>

@@ -1,18 +1,18 @@
-import { Box, Card, CardHeader, Fab, Grid, SwipeableDrawer, useTheme } from '@mui/material';
+import { Card, Fab, Grid, SwipeableDrawer, useTheme } from '@mui/material';
 import { deleteTraining } from '../../db/trainings';
-import { ExerciseParamsCard } from './Exercise-params-card';
+import { ExerciseParamsCard } from '../SetTrainingCard/Exercise-params-card';
 import { countEnergySupplyTime } from '../../utils/countEnergySupplyTime';
 
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
-import { SubmitDialog } from '../dialogs/exercise-dialog/submit-dialog';
+import { SubmitDialog } from '../../components/dialogs/exercise-dialog/submit-dialog';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { TrainingCardHeader } from './Training-card-header';
-import { Chart } from './Chart';
+import { Chart } from '../../features/Chart/Chart';
 import { TrainingResponse } from '../../db/constants';
 import { RoutePath } from '@/app/providers/RouterProvider/lib/constants';
-import { ExerciseTree } from '@/widgets/tree/Exercise-tree';
+import { ExerciseTree } from '@/widgets/Tree/Exercise-tree';
+import { TrainingCardParams } from '../SetTrainingCard/TrainingCardParams';
 
 const deleteTrainingContent = {
   title: 'Вы хотите удалить тренироовку',
@@ -21,7 +21,7 @@ const deleteTrainingContent = {
   cancel: 'Отмена',
 };
 
-export const Training = ({ training }: { training: TrainingResponse }) => {
+export const EditTraining = ({ training }: { training: TrainingResponse }) => {
   const navigate = useNavigate();
   const { id, coachId, exercises, name } = training;
   const [openDialog, setOpenDialog] = useState(false);
@@ -42,7 +42,7 @@ export const Training = ({ training }: { training: TrainingResponse }) => {
     deleteTraining(training.coachId, id);
     navigate(RoutePath.trainings);
   };
-  const totalTime = Object.values(countEnergySupplyTime(exercises)).reduce((prev, curr) => prev + curr, 0);
+
   const theme = useTheme();
   return (
     <>
@@ -57,32 +57,40 @@ export const Training = ({ training }: { training: TrainingResponse }) => {
           setOpenDialog(false);
         }}
       />
-      <Card sx={{ overflow: 'visible' }}>
+      <Card sx={{ overflow: 'visible', position: 'relative' }}>
         <Grid
           container
           position={'sticky'}
-          sx={{ top: 0, background: theme.palette.background.paper, zIndex: theme.zIndex.appBar }}
+          padding={1}
+          spacing={1}
+          m={0}
+          sx={{
+            width: '100%',
+            top: 0,
+            background: theme.palette.background.paper,
+            zIndex: theme.zIndex.appBar,
+            boxSizing: 'border-box',
+          }}
         >
-          <Grid item xs={1} textAlign={'center'} margin={'auto'}>
+          <Grid item textAlign={'center'} margin={'auto'}>
             <Fab size="small" onClick={() => setOpenDialog(true)} color="error">
               <DeleteForeverIcon />
             </Fab>
           </Grid>
-          <Grid item xs={5} textAlign={'center'} margin={'auto'}>
-            <TrainingCardHeader name={name} time={totalTime} />
+          <Grid item xs={7}>
+            <TrainingCardParams training={training} color="primary" />
           </Grid>
-          <Grid item xs={5}>
+          <Grid item xs={3}>
             <Chart params={countEnergySupplyTime(exercises)} />
           </Grid>
-          <Grid item xs={1} textAlign={'center'} margin={'auto'}>
+          <Grid item xs={0.5} textAlign={'center'} margin={'auto'}>
             <Fab onClick={toggleDrawer(true)} color="primary" size="small">
               <AddIcon />
             </Fab>
           </Grid>
         </Grid>
-        {exercises.map((x) => (
-          <ExerciseParamsCard coachId={coachId} trainingId={id} key={x.uuid} exercise={x} />
-        ))}
+        {exercises &&
+          exercises.map((x) => <ExerciseParamsCard coachId={coachId} trainingId={id} key={x.uuid} exercise={x} />)}
       </Card>
     </>
   );

@@ -14,6 +14,7 @@ import { EditTags } from '@/features/EditTags/ui/EditTags';
 import { AllDrawType } from '@/features/DrawExercise/lib/helpers';
 import { DrawExercise } from '@/features/DrawExercise/ui/DrawExercise';
 import { selectUser } from '@/store/slices/userSlice';
+import { Timestamp } from 'firebase/firestore';
 
 export const EditExerciseCard = ({ exercise }: { exercise: ExerciseResponse }) => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ export const EditExerciseCard = ({ exercise }: { exercise: ExerciseResponse }) =
     navigate(RoutePath.exercise);
   };
 
-  const updateMyExercise = (content: string | AllDrawType | string[] | undefined, fieldName: string) => {
+  const updateMyExercise = (content: string | AllDrawType | string[] | undefined | Timestamp, fieldName: string) => {
     updateExercise(userUiid, exercise.id, { [fieldName]: content });
   };
 

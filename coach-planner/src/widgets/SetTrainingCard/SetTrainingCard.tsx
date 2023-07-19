@@ -1,23 +1,12 @@
-import {
-  Box,
-  Button,
-  CardContent,
-  CardHeader,
-  CardMedia,
-  Chip,
-  Collapse,
-  Grid,
-  IconButton,
-  Typography,
-} from '@mui/material';
-import { ExpandText } from './ExpandText';
-import { ExerciseParams } from '../exercise-params/exercise-params';
-import { IExerciseParams } from '../exercise-params/constants';
+import { CardMedia, Chip, Grid, IconButton, Typography } from '@mui/material';
+import { ExpandText } from '../../shared/ui/ExpandText';
+import { ExerciseParams } from '../../components/exercise-params/exercise-params';
+import { IExerciseParams } from '../../components/exercise-params/constants';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { ExerciseResponse } from '../../db/constants';
-import dayjs from 'dayjs';
+import { parseDate } from '@/shared/lib/parseDate';
 
-export const CardTrainingExercise = ({
+export const SetTrainingCard = ({
   exercise,
   deleteExercise,
   submitParams,
@@ -30,11 +19,6 @@ export const CardTrainingExercise = ({
   params: IExerciseParams;
   children?: React.ReactNode;
 }) => {
-  const parseDate = (date: Date) => {
-    const dt = dayjs(date);
-    const formatted = dt.format('DD/MM/YYYY');
-    return formatted;
-  };
   return (
     <>
       <Grid container spacing={2} padding={0}>
@@ -49,7 +33,7 @@ export const CardTrainingExercise = ({
             <Typography variant="h5" color={'primary'}>
               {exercise.name}
             </Typography>
-            <Typography variant="body1">
+            <Typography variant="body1" component={'div'}>
               Tag:
               {exercise.tag?.map((tag) => (
                 <Chip label={tag} key={tag} size="small" />
@@ -57,7 +41,7 @@ export const CardTrainingExercise = ({
             </Typography>
             <Typography variant="body1">Created:{parseDate(exercise.create.toDate())}</Typography>
             {exercise.modify && <Typography variant="body1">Modify:{parseDate(exercise.modify?.toDate())}</Typography>}
-            <Typography variant="body1">
+            <Typography variant="body1" component={'div'}>
               Age:{' '}
               {exercise.age?.map((age) => (
                 <Chip label={age} key={age} size="small" />

@@ -36,7 +36,7 @@ export const DialogCreateTraining = () => {
   const title = 'Enter Unique Training Name';
 
   return (
-    <Box px={2}>
+    <>
       <Button variant="outlined" onClick={handleClickOpen}>
         Create Training
       </Button>
@@ -63,6 +63,6 @@ export const DialogCreateTraining = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </Box>
+    </>
   );
 };

@@ -1,13 +1,16 @@
 import React from 'react';
 import { useDocument } from 'react-firebase-hooks/firestore';
-import { Chart } from '../../training/Chart';
+import { Chart } from '../../../features/Chart/Chart';
 import { countEnergySupplyTime } from '../../../utils/countEnergySupplyTime';
 import { type DocumentData, DocumentSnapshot } from 'firebase/firestore';
 import { getTrainingRef } from '../../../db/trainings';
 import { TrainingResponse } from '../../../db/constants';
+import { useAppSelector } from '@/store/hooks';
+import { selectUser } from '@/store/slices/userSlice';
 
 export const LoadTrainingParams = ({ id }: { id: string }) => {
-  const [training] = useDocument(getTrainingRef(id));
+  const userUiid = useAppSelector(selectUser);
+  const [training] = useDocument(getTrainingRef(userUiid, id));
   const parseDocData = (value: DocumentSnapshot<DocumentData>) =>
     ({ id: value.id, ...value.data() } as TrainingResponse);
   if (training) {

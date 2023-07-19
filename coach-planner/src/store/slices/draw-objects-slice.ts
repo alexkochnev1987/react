@@ -15,22 +15,23 @@ type ArrowLineProps = Omit<ArrowLine, 'id'>;
 type EquipmentProps = Omit<Equipment, 'id'>;
 type ScaleFieldType = Equipment['scale'];
 
-export const loadFile = async (file: Blob, id: string | undefined, conva: AllDrawType) => {
+export const loadFile = async (userUiid: string, file: Blob, id: string | undefined, conva: AllDrawType) => {
   if (id) {
-    const img = await uploadBlob(file, id);
-    await updateExercise(id, { ...img, conva });
+    const img = await uploadBlob(userUiid, file, id);
+    await updateExercise(userUiid, id, { ...img, conva });
   }
 };
 
-export const saveImage = createAsyncThunk<string, { file: Blob; id: string | undefined }, { rejectValue: string }>(
-  'draw/saveImage',
-  async ({ file, id }, thunkApi) => {
-    const state = thunkApi.getState() as RootState;
-    const { players, lines, equipment } = state.draw;
-    loadFile(file, id, { players, lines, equipment });
-    return '';
-  },
-);
+export const saveImage = createAsyncThunk<
+  string,
+  { userUiid: string; file: Blob; id: string | undefined },
+  { rejectValue: string }
+>('draw/saveImage', async ({ userUiid, file, id }, thunkApi) => {
+  const state = thunkApi.getState() as RootState;
+  const { players, lines, equipment } = state.draw;
+  loadFile(userUiid, file, id, { players, lines, equipment });
+  return '';
+});
 const drawObjectsSlice = createSlice({
   name: 'draw-objects',
   initialState,

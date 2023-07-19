@@ -8,9 +8,11 @@ import { InputDate } from './Input-date';
 import { SelectTraining } from './Select-training';
 import { createEvent, updateEvent } from '../../../db/events';
 import { useCollection } from 'react-firebase-hooks/firestore';
-import { trainingsCollection } from '../../../db/trainings';
 
 import { IExerciseParams } from '../../training/Training-params';
+import { getTrainingsCollection } from '@/db/trainings';
+import { useAppSelector } from '@/store/hooks';
+import { selectUser } from '@/store/slices/userSlice';
 
 interface EventFormProps {
   event: Partial<CalendarEvent>;
@@ -50,7 +52,8 @@ const initialValue: MyCalendarEvents = {
 };
 
 export const EventForm = ({ event, submit, close, id }: EventFormProps) => {
-  const [trainings] = useCollection(trainingsCollection);
+  const userUiid = useAppSelector(selectUser);
+  const [trainings] = useCollection(getTrainingsCollection(userUiid));
   const defaultValues = { ...initialValue, ...event };
   const {
     handleSubmit,

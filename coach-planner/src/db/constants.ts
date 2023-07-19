@@ -60,8 +60,8 @@ export interface TrainingResponse {
   tag?: string[];
   age?: string[];
   link?: string;
-  create: string;
-  modify?: string;
+  create: Timestamp;
+  modify?: Timestamp;
   coachImage?: string;
   exercises: TrainingExerciseData[];
 }

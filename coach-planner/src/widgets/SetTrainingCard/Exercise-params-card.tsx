@@ -1,4 +1,4 @@
-import { IExerciseParams } from '../exercise-params/constants';
+import { IExerciseParams } from '../../components/exercise-params/constants';
 
 import {
   deleteExerciseInTraining,
@@ -7,11 +7,11 @@ import {
   shiftExerciseRight,
   updateExerciseInTraining,
 } from '../../db/trainings';
-import { CardTrainingExercise } from './Card-training-exercise';
-import { Box, IconButton, Stack } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import { TrainingExerciseData } from '../../db/constants';
+import { SetTrainingCard } from './SetTrainingCard';
 
 export const ExerciseParamsCard = ({
   trainingId,
@@ -40,7 +40,7 @@ export const ExerciseParamsCard = ({
   };
 
   return (
-    <CardTrainingExercise
+    <SetTrainingCard
       exercise={exercise.exercise}
       deleteExercise={deleteExercise}
       submitParams={submitParams}
@@ -54,6 +54,6 @@ export const ExerciseParamsCard = ({
           <ArrowDownwardIcon />
         </IconButton>
       </Box>
-    </CardTrainingExercise>
+    </SetTrainingCard>
   );
 };

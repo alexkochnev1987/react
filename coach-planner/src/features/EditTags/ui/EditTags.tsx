@@ -2,11 +2,12 @@ import { FC, useState } from 'react';
 import { Autocomplete, Box, InputProps, TextField } from '@mui/material';
 import { AllDrawType } from '@/features/DrawExercise/lib/helpers';
 import { EditContentButtons } from '@/entities/EditContentButtons/ui/EditContentButtons';
+import { Timestamp } from 'firebase/firestore';
 
 interface TagInputProps extends InputProps {
   defaultTags: string[];
   placeholder: string;
-  tags: string | AllDrawType | string[] | undefined;
+  tags: string | AllDrawType | string[] | undefined | Timestamp;
   callback: (x: string[]) => void;
 }
 

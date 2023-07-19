@@ -10,7 +10,7 @@ import {
   selectPlayerType,
   selectUserAction,
 } from '../../../store/slices/canvas-slice';
-import { DrawEntities } from '../../../widgets/DrawEntities/DrawEntities';
+import { DrawEntities } from '../../DrawEntities/DrawEntities';
 import { Stage as StageType } from 'konva/lib/Stage';
 import { Vector2d } from 'konva/lib/types';
 import { UserActionsValues } from '../../../store/slices/constants';
@@ -22,8 +22,9 @@ import {
   saveImage,
   setCurrent,
 } from '../../../store/slices/draw-objects-slice';
-import { UserActions } from '@/widgets/DrawToolbar/ui/UserActions';
+import { UserActions } from '@/features/DrawToolbar/ui/UserActions';
 import { SaveImageButtons } from '@/entities/DrawActionButtons/SaveImageButton';
+import { selectUser } from '@/store/slices/userSlice';
 
 const convaWidth = 800,
   convaHeight = 400;
@@ -31,6 +32,7 @@ const convaWidth = 800,
 export const DrawExercise = () => {
   const dispatch = useAppDispatch();
   const stageRef = useRef<StageType>(null);
+  const userUiid = useAppSelector(selectUser);
   const action = useAppSelector(selectUserAction);
   const color = useAppSelector(selectColor);
   const lineType = useAppSelector(selectLineType);
@@ -113,7 +115,7 @@ export const DrawExercise = () => {
     dispatch(setCurrent(null));
     if (uri) {
       const file = (await uri.toBlob()) as Blob;
-      if (id) dispatch(saveImage({ file, id }));
+      if (id) dispatch(saveImage({ userUiid, file, id }));
     }
   }, []);
 

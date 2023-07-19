@@ -5,12 +5,13 @@ import { getPlanDocRef, updatePlan } from '../db/plans';
 import { Card, CardHeader } from '@mui/material';
 import { EditContent } from '../features/EditContent/ui/Edit-content';
 import { AllDrawType } from '@/features/DrawExercise/lib/helpers';
+import { Timestamp } from 'firebase/firestore';
 
 const ShowEvents = () => {
   const params = useParams();
   const id = params.id as string;
   const [calendar] = useDocument(getPlanDocRef(id));
-  const editPlanName = (name: string | string[] | AllDrawType | undefined) => {
+  const editPlanName = (name: string | string[] | AllDrawType | undefined | Timestamp) => {
     if (name && typeof name === 'string') updatePlan(id, name);
   };
 

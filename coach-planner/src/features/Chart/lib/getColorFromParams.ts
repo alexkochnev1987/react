@@ -1,5 +1,5 @@
-import { colors } from "@mui/material";
-import { EnergySupply } from "../components/exercise-params/constants";
+import { colors } from '@mui/material';
+import { EnergySupply } from '../../../components/exercise-params/constants';
 
 export const getColorFromParams = (param: string) => {
   switch (param) {

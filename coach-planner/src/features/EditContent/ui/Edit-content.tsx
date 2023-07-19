@@ -2,15 +2,16 @@ import { Box, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import { EditContentButtons } from '@/entities/EditContentButtons';
 import { AllDrawType } from '@/features/DrawExercise/lib/helpers';
+import { Timestamp } from 'firebase/firestore';
 
 export const EditContent = ({
   callback,
   value,
   label,
 }: {
-  value: string | undefined | string[] | AllDrawType;
+  value: string | undefined | string[] | AllDrawType | Timestamp;
   label: string;
-  callback: (value: string | undefined | string[] | AllDrawType) => void;
+  callback: (value: string | undefined | string[] | AllDrawType | Timestamp) => void;
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [content, setContent] = useState(value);

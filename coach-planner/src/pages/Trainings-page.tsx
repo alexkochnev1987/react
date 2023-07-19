@@ -1,12 +1,14 @@
 import { useCollection } from 'react-firebase-hooks/firestore';
-import { NavLink } from 'react-router-dom';
 import { CircularProgress, Link, MenuItem } from '@mui/material';
-import { DialogCreateTraining } from '../components/training/Dialog-create-training';
-import { RoutePath } from '@/app/providers/RouterProvider/lib/constants';
-import { getTrainingsCollection } from '@/db/trainings';
+import { deleteTraining, getTrainingsCollection } from '@/db/trainings';
 import { useAppSelector } from '@/store/hooks';
 import { selectUser } from '@/store/slices/userSlice';
 import { FirebaseError } from '@/components/Firebase-error';
+import { DocumentData, QuerySnapshot } from 'firebase/firestore';
+import { TrainingCard } from '@/widgets/TrainingCard/TrainingCard';
+import { TrainingResponse } from '@/db/constants';
+import { SubmitDialog } from '@/components/dialogs/exercise-dialog/submit-dialog';
+import { useState } from 'react';
 
 const TrainingsPage = () => {
   const userUiid = useAppSelector(selectUser);
@@ -18,19 +20,13 @@ const TrainingsPage = () => {
     return <FirebaseError error={error} />;
   }
 
-  return (
-    <div>
-      <DialogCreateTraining />
-      {trainings &&
-        trainings.docs.map((x) => (
-          <MenuItem key={x.id}>
-            <Link component={NavLink} to={RoutePath.trainings + RoutePath.main + x.id}>
-              {(x.data() as { name: string }).name}
-            </Link>
-          </MenuItem>
-        ))}
-    </div>
-  );
+  const parseTrainings = (trainings: QuerySnapshot<DocumentData> | undefined) => {
+    if (!trainings) return null;
+    const parsed = trainings.docs.map((training) => ({ id: training.id, ...training.data() } as TrainingResponse));
+    return parsed.map((training) => <TrainingCard training={training} />);
+  };
+
+  return <>{parseTrainings(trainings)}</>;
 };
 
 export default TrainingsPage;

@@ -1,6 +1,6 @@
 import { Box, Button, Tooltip } from '@mui/material';
 
-import { ActionsOnConva, TooltipTitle } from '../../widgets/DrawToolbar/ui/constants';
+import { ActionsOnConva, TooltipTitle } from '../../features/DrawToolbar/ui/constants';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '../../firebase';

@@ -1,7 +1,7 @@
 import { deleteExercise } from '../db/exercises';
 import { Avatar, Button, Card, CardHeader, CardMedia, Chip, Grid } from '@mui/material';
 import { red } from '@mui/material/colors';
-import { ExpandText } from './training/ExpandText';
+import { ExpandText } from '../shared/ui/ExpandText';
 import { NavLink } from 'react-router-dom';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
