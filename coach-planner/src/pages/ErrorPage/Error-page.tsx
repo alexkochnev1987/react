@@ -1,21 +1,10 @@
 import { Box, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
-import { Link, isRouteErrorResponse, useRouteError } from 'react-router-dom';
+import { Link, useRouteError } from 'react-router-dom';
+import { getErrorMessage } from './getErrorMessage';
 
 export default function ErrorPage() {
   const error = useRouteError();
-  const errorMessage = (error: unknown): string => {
-    if (isRouteErrorResponse(error)) {
-      return `${error.status} ${error.statusText}`;
-    } else if (error instanceof Error) {
-      return error.message;
-    } else if (typeof error === 'string') {
-      return error;
-    } else {
-      console.error(error);
-      return 'Unknown error';
-    }
-  };
 
   return (
     <Box
@@ -27,7 +16,7 @@ export default function ErrorPage() {
         minHeight: '100vh',
       }}
     >
-      <Typography variant="h1">{errorMessage(error)}</Typography>
+      <Typography variant="h1">{getErrorMessage(error)}</Typography>
       <Typography variant="h6">Sorry, an unexpected error has occurred.</Typography>
       <Link to={'/'}>
         <Button variant="contained">Go back</Button>

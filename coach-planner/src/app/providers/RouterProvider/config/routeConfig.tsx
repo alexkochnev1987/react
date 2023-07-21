@@ -1,20 +1,19 @@
 import { Suspense, lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 import { RoutePath } from './constants';
-import { RequireAuth } from '@/components/hoc/Require-auth';
+import { RequireAuth } from '@/components/hoc/RequireAuth';
 import Layout from '@/components/layout/Layout';
+import UserPage from '@/pages/PageWrappers/UserPage';
+import ErrorPage from '@/pages/ErrorPage/Error-page';
+import { CenteredLoader } from '@/shared/ui/CenteredLoader';
 
-import UserPage from '@/pages/User-page';
-import { CircularProgress } from '@mui/material';
-import ErrorPage from '@/pages/Error-page';
-
-const ExerciseAsync = lazy(() => import('@/pages/Exercise'));
-const SetUserAsync = lazy(() => import('@/pages/Set-user'));
-const SetExerciseAsync = lazy(() => import('@/pages/Set-exercise'));
-const PlanAsync = lazy(() => import('@/pages/Plan'));
-const ShowEventsAsync = lazy(() => import('@/pages/Show-events'));
-const TrainingsPageAsync = lazy(() => import('@/pages/Trainings-page'));
-const TrainingPageAsync = lazy(() => import('@/pages/Training-page'));
+const ExerciseAsync = lazy(() => import('@/pages/ExercisesPage/ExercisesPage'));
+const SetUserAsync = lazy(() => import('@/pages/SetUserPage/SetUserPage'));
+const SetExerciseAsync = lazy(() => import('@/pages/SetExercisePage/SetExercisePage'));
+const PlanAsync = lazy(() => import('@/pages/PlanPage/PlanPage'));
+const ShowEventsAsync = lazy(() => import('@/pages/ShowEventsPage/ShowEventsPage'));
+const TrainingsPageAsync = lazy(() => import('@/pages/TrainingsPage/TrainingsPage'));
+const TrainingPageAsync = lazy(() => import('@/pages/TrainingPage/TrainingPage'));
 const LoginAsync = lazy(() => import('@/pages/Login'));
 const RegistrationAsync = lazy(() => import('@/pages/Registration'));
 
@@ -66,7 +65,7 @@ export const Router = createBrowserRouter([
       {
         path: RoutePath.login,
         element: (
-          <Suspense fallback={<CircularProgress />}>
+          <Suspense fallback={<CenteredLoader />}>
             <LoginAsync />
           </Suspense>
         ),
@@ -74,7 +73,7 @@ export const Router = createBrowserRouter([
       {
         path: RoutePath.registration,
         element: (
-          <Suspense fallback={<CircularProgress />}>
+          <Suspense fallback={<CenteredLoader />}>
             <RegistrationAsync />
           </Suspense>
         ),

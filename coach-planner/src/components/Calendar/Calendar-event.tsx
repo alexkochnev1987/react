@@ -19,7 +19,6 @@ export const CalendarEventComponent = ({ training }: { training?: TrainingRespon
       style={{
         width: '100%',
         height: '100%',
-        // zIndex: 9999,
       }}
     >
       <h4 style={{ fontSize: 10 }}>{training?.name}</h4>

@@ -1,6 +1,5 @@
 import { Container, Typography } from '@mui/material';
 import { FirestoreError } from 'firebase/firestore';
-import React from 'react';
 
 export const FirebaseError = ({ error }: { error: FirestoreError }) => {
   return (

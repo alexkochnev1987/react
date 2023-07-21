@@ -21,43 +21,45 @@ export const ExerciseCard = ({ exercise }: { exercise: ExerciseResponse }) => {
   };
 
   return (
-    <Card>
-      <SubmitDialog
-        content={deleteDialogContent}
-        open={openSubmit}
-        submit={deleteMyExercise}
-        onClose={() => {
-          setOpenSubmit(false);
-        }}
-      />
-      <CardHeader
-        title={exercise.name}
-        avatar={<Avatar sx={{ bgcolor: red[500] }} aria-label="recipe" src={exercise.coachImage} />}
-        subheader={exercise.tag?.map((x) => (
-          <Chip label={x} key={x} />
-        ))}
-        action={
-          <>
-            <Button onClick={() => setOpenSubmit(true)} color="error">
-              <DeleteForeverIcon />
-            </Button>
-            <NavLink to={RoutePath.exercise + RoutePath.main + exercise.id} style={{ textDecoration: 'none' }}>
-              <Button>
-                <ModeEditOutlineIcon />
+    <Grid item xs={12}>
+      <Card>
+        <SubmitDialog
+          content={deleteDialogContent}
+          open={openSubmit}
+          submit={deleteMyExercise}
+          onClose={() => {
+            setOpenSubmit(false);
+          }}
+        />
+        <CardHeader
+          title={exercise.name}
+          avatar={<Avatar sx={{ bgcolor: red[500] }} aria-label="recipe" src={exercise.coachImage} />}
+          subheader={exercise.tag?.map((x) => (
+            <Chip label={x} key={x} />
+          ))}
+          action={
+            <>
+              <Button onClick={() => setOpenSubmit(true)} color="error">
+                <DeleteForeverIcon />
               </Button>
-            </NavLink>
-          </>
-        }
-      />
-      <Grid container padding={1}>
-        <Grid item xs={12} sm={8} md={6} lg={6}>
-          <CardMedia component="img" width={'100%'} image={exercise.img} alt={exercise.name} />
+              <NavLink to={RoutePath.exercise + RoutePath.main + exercise.id} style={{ textDecoration: 'none' }}>
+                <Button>
+                  <ModeEditOutlineIcon />
+                </Button>
+              </NavLink>
+            </>
+          }
+        />
+        <Grid container padding={1}>
+          <Grid item xs={12} sm={8} md={6} lg={6}>
+            <CardMedia component="img" width={'100%'} image={exercise.img} alt={exercise.name} />
+          </Grid>
+          <Grid item xs={12} sm={4} md={6} lg={6}>
+            <ExpandText label="Description" text={exercise.description} />
+            <ExpandText label="Key points" text={exercise.keyPoints} />
+          </Grid>
         </Grid>
-        <Grid item xs={12} sm={4} md={6} lg={6}>
-          <ExpandText label="Description" text={exercise.description} />
-          <ExpandText label="Key points" text={exercise.keyPoints} />
-        </Grid>
-      </Grid>
-    </Card>
+      </Card>
+    </Grid>
   );
 };

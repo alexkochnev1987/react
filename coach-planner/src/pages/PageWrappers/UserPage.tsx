@@ -1,14 +1,13 @@
 import { Outlet } from 'react-router-dom';
-
 import { Suspense } from 'react';
-import { CircularProgress } from '@mui/material';
 import { Navbar } from '@/widgets/Navbar';
+import { CenteredLoader } from '@/shared/ui/CenteredLoader';
 
 const UserPage = () => {
   return (
     <>
       <Navbar />
-      <Suspense fallback={<CircularProgress />}>
+      <Suspense fallback={<CenteredLoader />}>
         <Outlet />
       </Suspense>
     </>

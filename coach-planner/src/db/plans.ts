@@ -1,7 +1,15 @@
-import { collection, doc, serverTimestamp } from 'firebase/firestore';
+import { Timestamp, collection, doc, serverTimestamp } from 'firebase/firestore';
 import { db } from '../firebase';
 import { DbCollections } from './constants';
 import { addDocFunction, deleteDocFunction, updateDocFunction } from './firestore';
+
+export interface PlanResponse {
+  coachId: string;
+  create: Timestamp;
+  id: string;
+  modify: Timestamp;
+  name: string;
+}
 
 export const getPlansCollection = (userUiid: string) => {
   const path = `${DbCollections.users}/${userUiid}/${DbCollections.plans}`;

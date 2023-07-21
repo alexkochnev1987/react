@@ -5,7 +5,7 @@ import { Box, IconButton, Link, Typography } from '@mui/material';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useDocument } from 'react-firebase-hooks/firestore';
-import { FirebaseError } from '@/components/Firebase-error';
+import { FirebaseError } from '@/widgets/FirebaseError';
 import { useThemes } from '@/app/providers/ThemeProvider/lib/useThemes';
 import { getUserDocRef } from '@/db/user';
 import { useAppSelector } from '@/store/hooks';

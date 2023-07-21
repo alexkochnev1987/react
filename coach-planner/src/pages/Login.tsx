@@ -4,7 +4,7 @@ import GoogleIcon from '@mui/icons-material/Google';
 import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { auth } from '../firebase';
 import { Grid, Typography } from '@mui/material';
-import { AuthWrapper } from '../components/Auth-wrapper';
+import { AuthWrapper } from '../widgets/AuthWrapper';
 import { useIsUserLogin } from '../hooks/useIsUserLogin';
 import { EmailPasswordForm } from '../components/forms/Email-password-form';
 import { RoutePath } from '@/app/providers/RouterProvider/config/constants';

@@ -2,8 +2,7 @@ import { Grid, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { auth } from '../firebase';
-import { AuthWrapper } from '../components/Auth-wrapper';
-
+import { AuthWrapper } from '../widgets/AuthWrapper';
 import { EmailPasswordForm } from '../components/forms/Email-password-form';
 import { useIsUserLogin } from '../hooks/useIsUserLogin';
 import { RoutePath } from '@/app/providers/RouterProvider/config/constants';

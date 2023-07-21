@@ -5,15 +5,19 @@ import '../firebase';
 import { store } from '../store/store';
 import React from 'react';
 import { AppRouter } from './providers/RouterProvider';
+import { ErrorBoundary } from './providers/ErrorBoundary/ErrorBoundary';
+import { FallbackComponent } from './providers/ErrorBoundary/FallbackComponent';
 
 function App() {
   return (
     <React.StrictMode>
-      <Provider store={store}>
-        <ThemeProvider>
-          <AppRouter />
-        </ThemeProvider>
-      </Provider>
+      <ErrorBoundary fallback={FallbackComponent}>
+        <Provider store={store}>
+          <ThemeProvider>
+            <AppRouter />
+          </ThemeProvider>
+        </Provider>
+      </ErrorBoundary>
     </React.StrictMode>
   );
 }

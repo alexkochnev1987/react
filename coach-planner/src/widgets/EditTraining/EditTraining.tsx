@@ -57,7 +57,7 @@ export const EditTraining = ({ training }: { training: TrainingResponse }) => {
           setOpenDialog(false);
         }}
       />
-      <Card sx={{ overflow: 'visible', position: 'relative' }}>
+      <Card sx={{ overflow: 'visible', position: 'relative', background: (t) => t.palette.background.paper }}>
         <Grid
           container
           position={'sticky'}
@@ -67,9 +67,9 @@ export const EditTraining = ({ training }: { training: TrainingResponse }) => {
           sx={{
             width: '100%',
             top: 0,
-            background: theme.palette.background.paper,
             zIndex: theme.zIndex.appBar,
             boxSizing: 'border-box',
+            background: (t) => t.palette.background.paper,
           }}
         >
           <Grid item textAlign={'center'} margin={'auto'}>
@@ -89,8 +89,10 @@ export const EditTraining = ({ training }: { training: TrainingResponse }) => {
             </Fab>
           </Grid>
         </Grid>
-        {exercises &&
-          exercises.map((x) => <ExerciseParamsCard coachId={coachId} trainingId={id} key={x.uuid} exercise={x} />)}
+        <Grid container p={1} spacing={1}>
+          {exercises &&
+            exercises.map((x) => <ExerciseParamsCard coachId={coachId} trainingId={id} key={x.uuid} exercise={x} />)}
+        </Grid>
       </Card>
     </>
   );

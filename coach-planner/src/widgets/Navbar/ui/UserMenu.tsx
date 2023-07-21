@@ -10,6 +10,7 @@ import { selectUser } from '@/store/slices/userSlice';
 import { Avatar, Button, CircularProgress, IconButton, Menu, MenuItem, Typography } from '@mui/material';
 import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { getUserAction } from './getUserAction';
 
 interface UserMenuProps {
   loading: boolean;
@@ -17,50 +18,26 @@ interface UserMenuProps {
   userName: string | undefined;
 }
 
+const GREETINGS = 'Hello ';
+const NO_NAME = 'No name';
+
 export const UserMenu: FC<UserMenuProps> = ({ loading, userImage, userName }) => {
-  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const signOut = () => {
-    auth.signOut();
-  };
+  const {
+    anchorElUser,
+    handleCloseUserMenu,
+    handleOpenUserMenu,
+    createNewPlan,
+    createNewTraining,
+    createNewExercise,
+    signOut,
+    goToProfile,
+  } = getUserAction();
 
-  const userUiid = useAppSelector(selectUser);
-  const GREETINGS = 'Hello ';
-  const NO_NAME = 'No name';
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const createNewExercise = async () => {
-    const newExercise = await createExercise(userUiid);
-    dispatch(setImageNull());
-    if (newExercise) navigate(`${RoutePath.exercise}/${newExercise?.id}`);
-  };
-
-  const createNewTraining = async () => {
-    if (userUiid) {
-      const trainingId = await createTraining(userUiid);
-
-      if (trainingId) {
-        navigate(`${RoutePath.trainings}/${trainingId}`);
-      }
-    }
-  };
-
-  const createNewPlan = async () => {
-    if (userUiid) {
-      const planId = await createPlan(userUiid, 'Enter Plan Name');
-      if (planId) {
-        navigate(`${RoutePath.plan}/${planId.id}`);
-      }
-    }
-  };
   const settings = [
-    { name: 'Profile', action: () => navigate(RoutePath.user) },
+    {
+      name: 'Profile',
+      action: goToProfile,
+    },
     { name: 'Logout', action: signOut },
     { name: 'Create Exercise', action: createNewExercise },
     { name: 'Create Training', action: createNewTraining },
@@ -73,10 +50,10 @@ export const UserMenu: FC<UserMenuProps> = ({ loading, userImage, userName }) =>
         {loading ? <CircularProgress /> : <Avatar src={userImage || ''} />}
       </Button>
       <Menu
-        sx={{ mt: '45px' }}
+        sx={{ mt: '10px' }}
         anchorEl={anchorElUser}
         anchorOrigin={{
-          vertical: 'top',
+          vertical: 'bottom',
           horizontal: 'right',
         }}
         keepMounted

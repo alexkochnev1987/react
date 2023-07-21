@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { SearchInput } from '@/shared/ui/SearchInput';
 import { CustomUser, getUserCollection } from '../../../db/user';
 import { useCollection } from 'react-firebase-hooks/firestore';
-import { FirebaseError } from '../../../components/Firebase-error';
+import { FirebaseError } from '../../../widgets/FirebaseError';
 import { type DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
 import { includeStringValue } from '../lib/helpers';
 

@@ -4,7 +4,7 @@ import { CircularProgress, List, Stack, Switch, Typography } from '@mui/material
 import { ExpandTag } from './Expand-tag';
 import { useState } from 'react';
 import { getExerciseCollection } from '@/db/exercises';
-import { FirebaseError } from '../../components/Firebase-error';
+import { FirebaseError } from '../FirebaseError';
 
 export const ExerciseTree = ({ coachId }: { coachId: string }) => {
   const [exercises, loading, error] = useCollection(getExerciseCollection(coachId));
