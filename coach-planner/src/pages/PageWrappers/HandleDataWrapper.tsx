@@ -2,7 +2,6 @@ import { FirebaseError } from '@/widgets/FirebaseError';
 import { CenteredLoader } from '@/shared/ui/CenteredLoader';
 import { FirestoreError } from 'firebase/firestore';
 import { FC, ReactNode } from 'react';
-import { SerializedError } from '@reduxjs/toolkit';
 
 interface HandleDataWrapperProps {
   children?: ReactNode;

@@ -4,6 +4,7 @@ import { SetUserFields, setUserSchema } from '../../components/forms/constants-s
 import { LoadImage } from '../../components/forms/Load-image';
 import { useSetUserActions } from './useSetUserActions';
 import { HandleDataWrapper } from '../PageWrappers/HandleDataWrapper';
+import { getUserEmail } from '@/service/user.service';
 
 const SetUser = () => {
   const mainText = 'Set user data';
@@ -17,6 +18,10 @@ const SetUser = () => {
             {mainText}
           </Typography>
           <LoadImage user={userData} />
+          <Typography component="h4" variant="h6" align="center">
+            <>{'Email: '}</>
+            {getUserEmail()}
+          </Typography>
           <SetUserForm
             schema={setUserSchema}
             fields={SetUserFields}

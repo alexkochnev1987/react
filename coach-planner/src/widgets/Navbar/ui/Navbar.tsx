@@ -7,10 +7,10 @@ import Brightness7Icon from '@mui/icons-material/Brightness7';
 import { useDocument } from 'react-firebase-hooks/firestore';
 import { FirebaseError } from '@/widgets/FirebaseError';
 import { useThemes } from '@/app/providers/ThemeProvider/lib/useThemes';
-import { getUserDocRef } from '@/db/user';
 import { NavLink, useLocation } from 'react-router-dom';
 import { RoutePath } from '@/app/providers/RouterProvider/config/constants';
 import { UserMenu } from './UserMenu';
+import { getUserDocRef } from '@/repository/user';
 const NavRoutes = [
   {
     name: 'Exercises',
@@ -33,7 +33,7 @@ export function Navbar() {
   const location = useLocation();
 
   if (error) {
-    return <FirebaseError error={error} />;
+    return <FirebaseError message={error.message} />;
   }
 
   return (

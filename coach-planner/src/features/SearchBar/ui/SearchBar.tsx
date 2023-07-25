@@ -2,7 +2,7 @@ import React, { ChangeEvent, useState } from 'react';
 import { Box, FormControlLabel, Paper, Radio, RadioGroup, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { SearchInput } from '@/shared/ui/SearchInput';
-import { CustomUser, getUserCollection } from '../../../db/user';
+import { CustomUser, getUserCollection } from '../../../service/user.service';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { FirebaseError } from '../../../widgets/FirebaseError';
 import { type DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
@@ -26,7 +26,10 @@ export const SearchBar = () => {
 
   if (error) return <FirebaseError error={error} />;
 
-  const reduceFunction = (previousValue: JSX.Element[], currentValue: QueryDocumentSnapshot<DocumentData>) => {
+  const reduceFunction = (
+    previousValue: JSX.Element[],
+    currentValue: QueryDocumentSnapshot<DocumentData>,
+  ) => {
     const user = { ...currentValue.data() } as CustomUser;
     const element = (
       <Typography align="left" variant="body1" key={currentValue.id}>

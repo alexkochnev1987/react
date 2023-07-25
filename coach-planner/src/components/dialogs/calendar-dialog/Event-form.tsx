@@ -8,10 +8,7 @@ import { SelectTraining } from './Select-training';
 import { createEvent, updateEvent } from '../../../db/events';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { getTrainingsCollection } from '@/db/trainings';
-import { useAppSelector } from '@/store/hooks';
-import { selectUser } from '@/store/slices/userExercisesSlice';
 import { IExerciseParams } from '@/components/exercise-params/constants';
-import { getPlansCollection } from '@/db/plans';
 
 const colors: string[] = [
   'blue',
@@ -47,11 +44,10 @@ interface EventFormProps {
   submit: () => void;
   close: () => void;
   calendarId: string;
-  userUiid: string;
 }
 
-export const EventForm = ({ event, submit, close, calendarId, userUiid }: EventFormProps) => {
-  const [trainings] = useCollection(getTrainingsCollection(userUiid));
+export const EventForm = ({ event, submit, close, calendarId }: EventFormProps) => {
+  const [trainings] = useCollection(getTrainingsCollection());
   const defaultValues = { ...initialValue, ...event };
   const {
     handleSubmit,
@@ -65,10 +61,10 @@ export const EventForm = ({ event, submit, close, calendarId, userUiid }: EventF
 
   const onSubmit: SubmitHandler<CalendarEvent> = (data) => {
     if (data.id) {
-      updateEvent(userUiid, calendarId, data);
+      updateEvent(calendarId, data);
       return submit();
     }
-    createEvent(userUiid, calendarId, data);
+    createEvent(calendarId, data);
     submit();
   };
 

@@ -1,5 +1,6 @@
 import { setUserDefaultData } from '@/components/forms/constants-set-user-form';
-import { CustomUser, getUserDocRef, setUser, updateUser } from '@/db/user';
+import { CustomUser } from '@/service/user.service';
+import { getUserDocRef, setUser, updateUser } from '@/repository/user';
 import { useDocument } from 'react-firebase-hooks/firestore';
 
 export const useSetUserActions = () => {
@@ -10,8 +11,9 @@ export const useSetUserActions = () => {
   };
   const setValues = (userData: CustomUser | undefined) => {
     if (userData) {
-      const { name, surName, team, age } = userData;
-      return { name, surName, team, age };
+      const { name, surName, team, age, birthDay } = userData;
+      const dayBirth = birthDay ? birthDay.toDate() : setUserDefaultData.birthDay;
+      return { name, surName, team, age, birthDay: dayBirth };
     }
     return setUserDefaultData;
   };

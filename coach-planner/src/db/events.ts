@@ -14,7 +14,7 @@ import { getPlansCollection } from './plans';
 export const getEventsCollectionLink = (planId: string) =>
   getCollectionRef(`${getPlansCollection()}/${planId}/${DbCollections.events}`);
 
-export const createEvent = (userUiid: string, planId: string, event: Partial<MyCalendarEvents>) => {
+export const createEvent = (planId: string, event: Partial<MyCalendarEvents>) => {
   if (!planId) return;
   const docRef = getEventsCollectionLink(planId);
   addDoc(docRef, { ...event, create: serverTimestamp() });

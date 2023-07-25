@@ -2,7 +2,7 @@ import { ChangeEvent, useState } from 'react';
 import { Avatar, Box, CircularProgress } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import { CustomUser, loadFileSetLink } from '../../db/user';
+import { CustomUser, loadFileSetLink } from '../../service/user.service';
 
 export const LoadImage = ({ user }: { user: CustomUser | undefined }) => {
   const [loading, setLoading] = useState(false);

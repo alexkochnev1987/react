@@ -1,7 +1,6 @@
 import { ShowCalendar } from '../../components/Calendar/Show-calendar';
 import { Box, CardHeader } from '@mui/material';
 import { EditContent } from '../../features/EditContent/ui/Edit-content';
-
 import { useEventsData } from './useEventsData';
 import { HandleDataWrapper } from '../PageWrappers/HandleDataWrapper';
 
@@ -12,7 +11,11 @@ const ShowEventsPage = () => {
     <HandleDataWrapper loading={loading} error={error}>
       <Box display={'flex'} flexDirection={'column'} flex={1}>
         {calendar && (
-          <CardHeader title={<EditContent label={'Plan name'} callback={editPlanName} value={calendar.name} />} />
+          <CardHeader
+            title={
+              <EditContent label={'Plan name'} callback={editPlanName} value={calendar.name} />
+            }
+          />
         )}
         <Box flex={1} position={'relative'}>
           <Box

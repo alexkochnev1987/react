@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import { HintMessage } from './Hint-message';
 import { SetUserFields } from './constants-set-user-form';
 import { ReactNode } from 'react';
+import { parseDateForInput } from '@/shared/lib/parseDate';
 
 export const SetUserForm = ({
   callback,
@@ -25,13 +26,18 @@ export const SetUserForm = ({
     handleSubmit,
     formState: { errors, isValid },
   } = useForm({
-    defaultValues: defaultValues,
+    defaultValues: { ...defaultValues, birthDay: parseDateForInput(defaultValues.birthDay) },
     resolver: yupResolver(schema),
     mode: 'all',
   });
 
   return (
-    <Box component="form" onSubmit={handleSubmit(callback)} noValidate sx={{ mt: 1, width: '100%' }}>
+    <Box
+      component="form"
+      onSubmit={handleSubmit(callback)}
+      noValidate
+      sx={{ mt: 1, width: '100%' }}
+    >
       {children}
       {fields.map((x) => {
         const error = errors?.[x.name]?.message;
@@ -41,7 +47,14 @@ export const SetUserForm = ({
               name={x.name}
               control={control}
               render={({ field }) => (
-                <TextField {...field} required fullWidth margin="normal" label={x.label} type={x.type} />
+                <TextField
+                  {...field}
+                  required
+                  fullWidth
+                  margin="normal"
+                  label={x.label}
+                  type={x.type}
+                />
               )}
             />
             {typeof error === 'string' ? (
@@ -52,7 +65,6 @@ export const SetUserForm = ({
           </Box>
         );
       })}
-
       <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }} disabled={!isValid}>
         {submitText}
       </Button>

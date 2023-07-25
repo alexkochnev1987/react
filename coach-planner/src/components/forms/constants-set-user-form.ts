@@ -6,12 +6,13 @@ export const setUserSchema = yup.object({
   team: yup.string().max(100),
   age: yup.number().min(0).max(140),
   img: yup.string(),
+  birthDay: yup.date(),
 });
 
 export type SetUserFormData = yup.InferType<typeof setUserSchema>;
 
 export interface SetUserFields {
-  name: 'name' | 'surName' | 'team' | 'age';
+  name: 'name' | 'surName' | 'team' | 'age' | 'birthDay';
   label: string;
   type: string;
   hint: string;
@@ -42,6 +43,12 @@ export const SetUserFields: SetUserFields[] = [
     type: 'number',
     hint: 'Allowed only numbers min 0 max 140',
   },
+  {
+    name: 'birthDay',
+    label: 'Birth date',
+    type: 'date',
+    hint: 'Enter valid date',
+  },
 ];
 
 export const setUserDefaultData = {
@@ -49,4 +56,5 @@ export const setUserDefaultData = {
   surName: '',
   team: '',
   age: 18,
+  birthDay: new Date(Date.now()),
 };

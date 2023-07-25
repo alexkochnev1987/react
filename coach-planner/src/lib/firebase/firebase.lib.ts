@@ -41,6 +41,9 @@ export const getUserUiid = () => {
   if (!userUiid) throw new Error('User not found');
   return userUiid;
 };
+export const getUserData = () => {
+  return auth.currentUser;
+};
 
 export const getInitPath = () => {
   const userUiid = getUserUiid();
