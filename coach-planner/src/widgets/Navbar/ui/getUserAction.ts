@@ -1,18 +1,16 @@
 import { RoutePath } from '@/app/providers/RouterProvider/config/constants';
-import { createExercise } from '@/db/exercises';
+import { createExercise } from '@/service/exercise.service';
 import { createPlan } from '@/db/plans';
 import { createTraining } from '@/db/trainings';
-import { auth } from '@/firebase';
+import { auth } from '@/lib/firebase/firebase.lib';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { setImageNull } from '@/store/slices/draw-objects-slice';
-import { selectUser } from '@/store/slices/userSlice';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export const getUserAction = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const userUiid = useAppSelector(selectUser);
 
   const signOut = () => {
     auth.signOut();
@@ -27,7 +25,7 @@ export const getUserAction = () => {
   };
 
   const createNewExercise = async () => {
-    const newExercise = await createExercise(userUiid);
+    const newExercise = await createExercise();
     dispatch(setImageNull());
     if (newExercise) {
       navigate(`${RoutePath.exercise}/${newExercise?.id}`);
@@ -36,7 +34,7 @@ export const getUserAction = () => {
   };
 
   const createNewTraining = async () => {
-    const trainingId = await createTraining(userUiid);
+    const trainingId = await createTraining();
     if (trainingId) {
       navigate(`${RoutePath.trainings}/${trainingId}`);
       handleCloseUserMenu();
@@ -44,7 +42,7 @@ export const getUserAction = () => {
   };
 
   const createNewPlan = async () => {
-    const planId = await createPlan(userUiid, 'Enter Plan Name');
+    const planId = await createPlan('Enter Plan Name');
     if (planId) {
       navigate(`${RoutePath.plan}/${planId.id}`);
       handleCloseUserMenu();

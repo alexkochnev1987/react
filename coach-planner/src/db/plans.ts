@@ -1,7 +1,14 @@
-import { Timestamp, collection, doc, serverTimestamp } from 'firebase/firestore';
-import { db } from '../firebase';
+import {
+  Timestamp,
+  addDoc,
+  deleteDoc,
+  getCollectionRef,
+  getDocRef,
+  serverTimestamp,
+  updateDoc,
+} from '@/lib/firebase/firebase.lib';
 import { DbCollections } from './constants';
-import { addDocFunction, deleteDocFunction, updateDocFunction } from './firestore';
+import { getInitPath } from '../lib/firebase/firestore';
 
 export interface PlanResponse {
   coachId: string;
@@ -11,28 +18,27 @@ export interface PlanResponse {
   name: string;
 }
 
-export const getPlansCollection = (userUiid: string) => {
-  const path = `${DbCollections.users}/${userUiid}/${DbCollections.plans}`;
-  return collection(db, path);
+export const getPlansCollection = () => {
+  const path = getInitPath() + DbCollections.plans;
+  return getCollectionRef(path);
 };
-export const getPlanDocRef = (userUiid: string, id: string) => doc(getPlansCollection(userUiid), id);
+export const getPlanDocRef = (id: string) => getDocRef(getPlansCollection(), id);
 
-export const createPlan = (coachId: string, name: string) => {
-  if (!coachId) return;
-  return addDocFunction(getPlansCollection(coachId), { coachId: coachId, name: name });
+export const createPlan = (name: string) => {
+  return addDoc(getPlansCollection(), { name: name, create: serverTimestamp() });
 };
 
-export const updatePlan = (userUiid: string, id: string, name: string) => {
-  const docRef = getPlanDocRef(userUiid, id);
+export const updatePlan = (id: string, name: string) => {
+  const docRef = getPlanDocRef(id);
 
   const newTraining = {
     name,
     modify: serverTimestamp(),
   };
-  updateDocFunction(docRef, newTraining);
+  updateDoc(docRef, newTraining);
 };
 
-export const deletePlan = (userUiid: string, id: string) => {
-  const docRef = doc(getPlansCollection(userUiid), id);
-  deleteDocFunction(docRef);
+export const deletePlan = (id: string) => {
+  const docRef = getPlanDocRef(id);
+  deleteDoc(docRef);
 };

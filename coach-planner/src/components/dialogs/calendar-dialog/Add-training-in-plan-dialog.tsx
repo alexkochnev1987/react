@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { deleteEvent } from '../../../db/events';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useAppSelector } from '@/store/hooks';
-import { selectUser } from '@/store/slices/userSlice';
+import { selectUser } from '@/store/slices/userExercisesSlice';
 
 interface SimpleDialogProps {
   open: boolean;
@@ -50,7 +50,13 @@ export const AddTrainingDialog = (props: SimpleDialogProps) => {
       </DialogTitle>
       <DialogContent>
         {id && (
-          <EventForm submit={submitForm} event={eventParams} close={onClose} calendarId={id} userUiid={userUiid} />
+          <EventForm
+            submit={submitForm}
+            event={eventParams}
+            close={onClose}
+            calendarId={id}
+            userUiid={userUiid}
+          />
         )}
       </DialogContent>
     </Dialog>

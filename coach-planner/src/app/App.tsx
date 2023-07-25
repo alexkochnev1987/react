@@ -1,7 +1,7 @@
 import { ThemeProvider } from './providers/ThemeProvider';
 import { Provider } from 'react-redux';
 import './styles/index.scss';
-import '../firebase';
+import '../lib/firebase/firebase.lib';
 import { store } from '../store/store';
 import React from 'react';
 import { AppRouter } from './providers/RouterProvider';

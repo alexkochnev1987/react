@@ -3,12 +3,16 @@ import { Box, Button, Tooltip } from '@mui/material';
 import { ActionsOnConva, TooltipTitle } from '../../features/DrawToolbar/ui/constants';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../../firebase';
-import { createExercise } from '../../db/exercises';
+import { auth } from '../../lib/firebase/firebase.lib';
+import { createExercise } from '../../service/exercise.service';
 import { RoutePath } from '@/app/providers/RouterProvider/config/constants';
 import { ToolIconButton } from '@/shared/ui/ToolIconButton/ui/ToolIconButton';
 
-export const SaveImageButtons = ({ saveImage }: { saveImage: (id: string | undefined) => Promise<void> }) => {
+export const SaveImageButtons = ({
+  saveImage,
+}: {
+  saveImage: (id: string | undefined) => Promise<void>;
+}) => {
   const { id } = useParams();
   const onSaveImage = () => {
     saveImage(id);
@@ -30,7 +34,11 @@ export const SaveImageButtons = ({ saveImage }: { saveImage: (id: string | undef
       <ToolIconButton onClick={onSaveImage} isActive={false} toolTipTitle={TooltipTitle.save}>
         {ActionsOnConva.saveIcon}
       </ToolIconButton>
-      <ToolIconButton onClick={createNewExercise} isActive={false} toolTipTitle={TooltipTitle.saveAs}>
+      <ToolIconButton
+        onClick={createNewExercise}
+        isActive={false}
+        toolTipTitle={TooltipTitle.saveAs}
+      >
         {ActionsOnConva.saveAs}
       </ToolIconButton>
     </Box>

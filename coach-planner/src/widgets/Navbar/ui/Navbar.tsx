@@ -8,8 +8,6 @@ import { useDocument } from 'react-firebase-hooks/firestore';
 import { FirebaseError } from '@/widgets/FirebaseError';
 import { useThemes } from '@/app/providers/ThemeProvider/lib/useThemes';
 import { getUserDocRef } from '@/db/user';
-import { useAppSelector } from '@/store/hooks';
-import { selectUser } from '@/store/slices/userSlice';
 import { NavLink, useLocation } from 'react-router-dom';
 import { RoutePath } from '@/app/providers/RouterProvider/config/constants';
 import { UserMenu } from './UserMenu';
@@ -30,8 +28,7 @@ const NavRoutes = [
 
 export function Navbar() {
   const APP_NAME = 'CoachPlanner';
-  const userUiid = useAppSelector(selectUser);
-  const [userData, loading, error] = useDocument(getUserDocRef(userUiid));
+  const [userData, loading, error] = useDocument(getUserDocRef());
   const { mode, toggleThemeMode } = useThemes();
   const location = useLocation();
 
@@ -63,7 +60,11 @@ export function Navbar() {
           ))}
         </Box>
 
-        <UserMenu userName={userData?.data()?.name} loading={loading} userImage={userData?.data()?.img} />
+        <UserMenu
+          userName={userData?.data()?.name}
+          loading={loading}
+          userImage={userData?.data()?.img}
+        />
       </Toolbar>
     </AppBar>
   );

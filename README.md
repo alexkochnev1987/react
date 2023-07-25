@@ -52,3 +52,5 @@ VITE_FIREBASE_MEASUREMENT_ID= //measurementId
 3. Установите зависимости:`yarn install`
 
 4. Запустите проект:`yarn dev`
+
+5. npx firebase deploy

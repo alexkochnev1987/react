@@ -24,19 +24,19 @@ export const ExerciseParamsCard = ({
 }) => {
   const submitParams = (data: IExerciseParams) => {
     const newExercise = { ...exercise, params: data };
-    updateExerciseInTraining(coachId, newExercise, trainingId);
+    updateExerciseInTraining(newExercise, trainingId);
   };
 
   const deleteExercise = () => {
-    deleteExerciseInTraining(coachId, exercise.uuid, trainingId);
+    deleteExerciseInTraining(exercise.uuid, trainingId);
   };
 
   const shiftExerciseUp = () => {
-    shiftExercise(coachId, trainingId, exercise.uuid, shiftExerciseLeft);
+    shiftExercise(trainingId, exercise.uuid, shiftExerciseLeft);
   };
 
   const shiftExerciseDown = () => {
-    shiftExercise(coachId, trainingId, exercise.uuid, shiftExerciseRight);
+    shiftExercise(trainingId, exercise.uuid, shiftExerciseRight);
   };
 
   return (

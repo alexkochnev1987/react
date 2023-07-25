@@ -1,8 +1,21 @@
-import { type PayloadAction, createSlice, createSelector, createAsyncThunk } from '@reduxjs/toolkit';
+import {
+  type PayloadAction,
+  createSlice,
+  createSelector,
+  createAsyncThunk,
+} from '@reduxjs/toolkit';
 import { RootState } from '../store';
-import { ArrowLine, DrawObjectsState, Equipment, LineTypes, Player, PlayerTypes, getObjectWithId } from './constants';
+import {
+  ArrowLine,
+  DrawObjectsState,
+  Equipment,
+  LineTypes,
+  Player,
+  PlayerTypes,
+  getObjectWithId,
+} from './constants';
 import { AllDrawType } from '../../features/DrawExercise/lib/helpers';
-import { updateExercise, uploadBlob } from '../../db/exercises';
+import { updateExercise, uploadBlob } from '../../service/exercise.service';
 
 const initialState: DrawObjectsState = {
   current: null,
@@ -15,21 +28,21 @@ type ArrowLineProps = Omit<ArrowLine, 'id'>;
 type EquipmentProps = Omit<Equipment, 'id'>;
 type ScaleFieldType = Equipment['scale'];
 
-export const loadFile = async (userUiid: string, file: Blob, id: string | undefined, conva: AllDrawType) => {
+export const loadFile = async (file: Blob, id: string | undefined, conva: AllDrawType) => {
   if (id) {
-    const img = await uploadBlob(userUiid, file, id);
-    await updateExercise(userUiid, id, { ...img, conva });
+    const img = await uploadBlob(file, id);
+    await updateExercise(id, { ...img, conva });
   }
 };
 
 export const saveImage = createAsyncThunk<
   string,
-  { userUiid: string; file: Blob; id: string | undefined },
+  { file: Blob; id: string | undefined },
   { rejectValue: string }
->('draw/saveImage', async ({ userUiid, file, id }, thunkApi) => {
+>('draw/saveImage', async ({ file, id }, thunkApi) => {
   const state = thunkApi.getState() as RootState;
   const { players, lines, equipment } = state.draw;
-  loadFile(userUiid, file, id, { players, lines, equipment });
+  loadFile(file, id, { players, lines, equipment });
   return '';
 });
 const drawObjectsSlice = createSlice({
@@ -62,7 +75,10 @@ const drawObjectsSlice = createSlice({
     },
     drawLine(state, action: PayloadAction<number[]>) {
       if (state.lines && state.current) {
-        state.lines[state.current].points = [...state.lines[state.current].points, ...action.payload];
+        state.lines[state.current].points = [
+          ...state.lines[state.current].points,
+          ...action.payload,
+        ];
       }
     },
     setPoint(state, action: PayloadAction<number[]>) {
@@ -122,7 +138,8 @@ const drawObjectsSlice = createSlice({
 
     setRotation(state, action: PayloadAction<number>) {
       if (state.current) {
-        if (state.equipment?.[state.current]) state.equipment[state.current].rotation = action.payload;
+        if (state.equipment?.[state.current])
+          state.equipment[state.current].rotation = action.payload;
       }
     },
     setScale(state, action: PayloadAction<ScaleFieldType>) {
@@ -155,7 +172,9 @@ export const {
 
 const selectDraw = (state: RootState) => state.draw;
 
-export const selectLinesObject = createSelector([selectDraw], (draw) => (draw.lines ? Object.values(draw.lines) : []));
+export const selectLinesObject = createSelector([selectDraw], (draw) =>
+  draw.lines ? Object.values(draw.lines) : [],
+);
 export const selectCurrentId = createSelector([selectDraw], (draw) => draw.current);
 
 export const selectPlyersObject = createSelector([selectDraw], (draw) =>

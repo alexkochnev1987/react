@@ -4,14 +4,14 @@ import IconButton from '@mui/material/IconButton';
 import PhotoCamera from '@mui/icons-material/PhotoCamera';
 import { CustomUser, loadFileSetLink } from '../../db/user';
 
-export const LoadImage = ({ userUiid, user }: { userUiid: string; user: CustomUser | undefined }) => {
+export const LoadImage = ({ user }: { user: CustomUser | undefined }) => {
   const [loading, setLoading] = useState(false);
   const handleFileUpload = async (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target?.files;
     if (files) {
       const file = files[0];
       setLoading(true);
-      await loadFileSetLink(userUiid, user, file);
+      await loadFileSetLink(user, file);
       setLoading(false);
     }
   };
@@ -20,7 +20,12 @@ export const LoadImage = ({ userUiid, user }: { userUiid: string; user: CustomUs
     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <Avatar alt="User image" src={user?.img} sx={{ width: 300, height: 300 }} />
       <Box>
-        <IconButton color="primary" aria-label="upload picture" component="label" disabled={loading}>
+        <IconButton
+          color="primary"
+          aria-label="upload picture"
+          component="label"
+          disabled={loading}
+        >
           <input hidden accept="image/*" type="file" onChange={handleFileUpload} />
           {loading ? <CircularProgress /> : <PhotoCamera />}
         </IconButton>

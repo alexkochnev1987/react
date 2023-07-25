@@ -1,10 +1,10 @@
 import { EditExerciseCard } from '@/widgets/EditExerciseCard/ui/EditExerciseCard';
-import { useGetExercise } from './useGetExercise';
 import { HandleDataWrapper } from '../PageWrappers/HandleDataWrapper';
+import { getExerciseFromStore, loadExerciseFromServer } from '@/service/store.service';
 
 const SetExercise = () => {
-  const { loading, error, exercise } = useGetExercise();
-
+  const { loading, error, exercise } = getExerciseFromStore();
+  loadExerciseFromServer();
   return (
     <HandleDataWrapper loading={loading} error={error}>
       {exercise && <EditExerciseCard exercise={exercise} />}

@@ -30,7 +30,8 @@ export const EditTraining = ({ training }: { training: TrainingResponse }) => {
     if (
       event &&
       event.type === 'keydown' &&
-      ((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift')
+      ((event as React.KeyboardEvent).key === 'Tab' ||
+        (event as React.KeyboardEvent).key === 'Shift')
     ) {
       return;
     }
@@ -39,15 +40,20 @@ export const EditTraining = ({ training }: { training: TrainingResponse }) => {
   };
 
   const deleteMyTraining = () => {
-    deleteTraining(training.coachId, id);
+    deleteTraining(id);
     navigate(RoutePath.trainings);
   };
 
   const theme = useTheme();
   return (
     <>
-      <SwipeableDrawer anchor={'right'} open={openDrawer} onClose={toggleDrawer(false)} onOpen={toggleDrawer(true)}>
-        {<ExerciseTree coachId={coachId} />}
+      <SwipeableDrawer
+        anchor={'right'}
+        open={openDrawer}
+        onClose={toggleDrawer(false)}
+        onOpen={toggleDrawer(true)}
+      >
+        {<ExerciseTree />}
       </SwipeableDrawer>
       <SubmitDialog
         content={deleteTrainingContent}
@@ -57,7 +63,13 @@ export const EditTraining = ({ training }: { training: TrainingResponse }) => {
           setOpenDialog(false);
         }}
       />
-      <Card sx={{ overflow: 'visible', position: 'relative', background: (t) => t.palette.background.paper }}>
+      <Card
+        sx={{
+          overflow: 'visible',
+          position: 'relative',
+          background: (t) => t.palette.background.paper,
+        }}
+      >
         <Grid
           container
           position={'sticky'}
@@ -91,7 +103,9 @@ export const EditTraining = ({ training }: { training: TrainingResponse }) => {
         </Grid>
         <Grid container p={1} spacing={1}>
           {exercises &&
-            exercises.map((x) => <ExerciseParamsCard coachId={coachId} trainingId={id} key={x.uuid} exercise={x} />)}
+            exercises.map((x) => (
+              <ExerciseParamsCard coachId={coachId} trainingId={id} key={x.uuid} exercise={x} />
+            ))}
         </Grid>
       </Card>
     </>

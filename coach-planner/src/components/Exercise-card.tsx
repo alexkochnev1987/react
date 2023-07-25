@@ -1,23 +1,21 @@
-import { deleteExercise } from '../db/exercises';
 import { Avatar, Button, Card, CardHeader, CardMedia, Chip, Grid } from '@mui/material';
 import { red } from '@mui/material/colors';
-import { ExpandText } from '../shared/ui/ExpandText';
+import { ExpandText } from '@/shared/ui/ExpandText';
 import { NavLink } from 'react-router-dom';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import { SubmitDialog } from './dialogs/exercise-dialog/submit-dialog';
 import { useState } from 'react';
-import { deleteDialogContent } from '../widgets/EditExerciseCard/lib/constants';
-import { ExerciseResponse } from '../db/constants';
+import { deleteDialogContent } from '@/widgets/EditExerciseCard/lib/constants';
 import { RoutePath } from '@/app/providers/RouterProvider/config/constants';
-import { useAppSelector } from '@/store/hooks';
-import { selectUser } from '@/store/slices/userSlice';
+import { ExerciseForPage } from '@/service/parseExerciseResponse';
+import { useExerciseStore } from '@/service/store.service';
 
-export const ExerciseCard = ({ exercise }: { exercise: ExerciseResponse }) => {
+export const ExerciseCard = ({ exercise }: { exercise: ExerciseForPage }) => {
   const [openSubmit, setOpenSubmit] = useState(false);
-  const userUiid = useAppSelector(selectUser);
+  const { dispatch, deleteUserExercise } = useExerciseStore();
   const deleteMyExercise = () => {
-    deleteExercise(userUiid, exercise.id);
+    dispatch(deleteUserExercise(exercise.id));
   };
 
   return (
@@ -33,7 +31,9 @@ export const ExerciseCard = ({ exercise }: { exercise: ExerciseResponse }) => {
         />
         <CardHeader
           title={exercise.name}
-          avatar={<Avatar sx={{ bgcolor: red[500] }} aria-label="recipe" src={exercise.coachImage} />}
+          avatar={
+            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe" src={exercise.coachImage} />
+          }
           subheader={exercise.tag?.map((x) => (
             <Chip label={x} key={x} />
           ))}
@@ -42,7 +42,10 @@ export const ExerciseCard = ({ exercise }: { exercise: ExerciseResponse }) => {
               <Button onClick={() => setOpenSubmit(true)} color="error">
                 <DeleteForeverIcon />
               </Button>
-              <NavLink to={RoutePath.exercise + RoutePath.main + exercise.id} style={{ textDecoration: 'none' }}>
+              <NavLink
+                to={RoutePath.exercise + RoutePath.main + exercise.id}
+                style={{ textDecoration: 'none' }}
+              >
                 <Button>
                   <ModeEditOutlineIcon />
                 </Button>

@@ -9,7 +9,7 @@ import { createEvent, updateEvent } from '../../../db/events';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { getTrainingsCollection } from '@/db/trainings';
 import { useAppSelector } from '@/store/hooks';
-import { selectUser } from '@/store/slices/userSlice';
+import { selectUser } from '@/store/slices/userExercisesSlice';
 import { IExerciseParams } from '@/components/exercise-params/constants';
 import { getPlansCollection } from '@/db/plans';
 
@@ -76,10 +76,16 @@ export const EventForm = ({ event, submit, close, calendarId, userUiid }: EventF
     <form onSubmit={handleSubmit(onSubmit)}>
       <Grid container p={1} spacing={1}>
         <Grid item xs={12}>
-          {trainings && <SelectTraining setValue={setValue} id={defaultValues.training} trainings={trainings} />}
+          {trainings && (
+            <SelectTraining setValue={setValue} id={defaultValues.training} trainings={trainings} />
+          )}
         </Grid>
         <Grid item xs={12}>
-          <InputDate startAt={defaultValues.startAt} endAt={defaultValues.endAt} setValue={setValue}>
+          <InputDate
+            startAt={defaultValues.startAt}
+            endAt={defaultValues.endAt}
+            setValue={setValue}
+          >
             <Controller
               name="color"
               control={control}

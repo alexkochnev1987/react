@@ -3,11 +3,11 @@ import { splitExercisesByTag } from './splitExercisesByTags';
 import { CircularProgress, List, Stack, Switch, Typography } from '@mui/material';
 import { ExpandTag } from './Expand-tag';
 import { useState } from 'react';
-import { getExerciseCollection } from '@/db/exercises';
 import { FirebaseError } from '../FirebaseError';
+import { getExerciseCollection } from '@/repository/exercise';
 
-export const ExerciseTree = ({ coachId }: { coachId: string }) => {
-  const [exercises, loading, error] = useCollection(getExerciseCollection(coachId));
+export const ExerciseTree = () => {
+  const [exercises, loading, error] = useCollection(getExerciseCollection());
 
   const [checked, setChecked] = useState(true);
 
@@ -18,13 +18,17 @@ export const ExerciseTree = ({ coachId }: { coachId: string }) => {
     return <CircularProgress />;
   }
   if (error) {
-    return <FirebaseError error={error} />;
+    return <FirebaseError message={error.message} />;
   }
   return (
     <>
       <Stack direction="row" spacing={1} alignItems="center">
         <Typography>Sort by Age</Typography>
-        <Switch checked={checked} onChange={handleChange} inputProps={{ 'aria-label': 'controlled' }} />
+        <Switch
+          checked={checked}
+          onChange={handleChange}
+          inputProps={{ 'aria-label': 'controlled' }}
+        />
         <Typography>Sort by tag</Typography>
       </Stack>
       <List sx={{ width: 250, bgcolor: 'background.paper' }}>

@@ -1,15 +1,11 @@
-import { ExerciseResponse } from '@/db/constants';
-import { getExerciseCollection } from '@/db/exercises';
-import { useUserUiid } from '@/shared/hooks/useUserUiid';
-import { selectUser } from '@/store/slices/userSlice';
-import { useCollection } from 'react-firebase-hooks/firestore';
+import { useAppDispatch } from '@/store/hooks';
+import { fetchUserExercises } from '@/store/slices/userExercisesSlice';
+import { useEffect } from 'react';
 
-export const useGetExercises = () => {
-  const userUiid = useUserUiid();
-  const collection = getExerciseCollection(userUiid);
-  const [value, loading, error] = useCollection(collection);
+// export const useGetExercises = () => {
+//   const dispatch = useAppDispatch();
 
-  const exercises = value?.docs.map((doc) => ({ id: doc.id, ...doc.data() } as ExerciseResponse));
-
-  return { loading, error, exercises };
-};
+//   useEffect(() => {
+//     dispatch(fetchUserExercises());
+//   }, []);
+// };

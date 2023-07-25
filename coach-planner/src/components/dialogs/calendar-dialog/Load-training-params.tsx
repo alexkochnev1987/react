@@ -6,7 +6,7 @@ import { type DocumentData, DocumentSnapshot } from 'firebase/firestore';
 import { getTrainingRef } from '../../../db/trainings';
 import { TrainingResponse } from '../../../db/constants';
 import { useAppSelector } from '@/store/hooks';
-import { selectUser } from '@/store/slices/userSlice';
+import { selectUser } from '@/store/slices/userExercisesSlice';
 
 export const LoadTrainingParams = ({ id }: { id: string }) => {
   const userUiid = useAppSelector(selectUser);

@@ -7,7 +7,7 @@ import { HandleDataWrapper } from '../PageWrappers/HandleDataWrapper';
 
 const SetUser = () => {
   const mainText = 'Set user data';
-  const { userUiid, userData, loading, error, setData, setValues } = useSetUserActions();
+  const { userData, loading, error, setData, setValues } = useSetUserActions();
 
   return (
     <HandleDataWrapper loading={loading} error={error}>
@@ -16,7 +16,7 @@ const SetUser = () => {
           <Typography component="h1" variant="h4" align="center">
             {mainText}
           </Typography>
-          <LoadImage user={userData} userUiid={userUiid} />
+          <LoadImage user={userData} />
           <SetUserForm
             schema={setUserSchema}
             fields={SetUserFields}

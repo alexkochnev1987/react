@@ -1,15 +1,5 @@
-import { RoutePath } from '@/app/providers/RouterProvider/config/constants';
-
-import { createExercise } from '@/db/exercises';
-import { createPlan } from '@/db/plans';
-import { createTraining } from '@/db/trainings';
-import { auth } from '@/firebase';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { setImageNull } from '@/store/slices/draw-objects-slice';
-import { selectUser } from '@/store/slices/userSlice';
-import { Avatar, Button, CircularProgress, IconButton, Menu, MenuItem, Typography } from '@mui/material';
-import { FC, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Avatar, Button, CircularProgress, Menu, MenuItem, Typography } from '@mui/material';
+import { FC } from 'react';
 import { getUserAction } from './getUserAction';
 
 interface UserMenuProps {

@@ -1,25 +1,31 @@
-import { collection, doc } from 'firebase/firestore';
-import { db } from '../firebase';
+import {
+  addDoc,
+  db,
+  deleteDoc,
+  getCollectionRef,
+  getDocRef,
+  serverTimestamp,
+  updateDoc,
+} from '@/lib/firebase/firebase.lib';
 import { DbCollections } from './constants';
 import { MyCalendarEvents } from '../components/dialogs/calendar-dialog/Event-form';
-import { addDocFunction, deleteDocFunction, updateDocFunction } from './firestore';
 import { getPlansCollection } from './plans';
 
-export const getEventsCollectionLink = (userUiid: string, planId: string) =>
-  collection(getPlansCollection(userUiid), planId, DbCollections.events);
+export const getEventsCollectionLink = (planId: string) =>
+  getCollectionRef(`${getPlansCollection()}/${planId}/${DbCollections.events}`);
 
 export const createEvent = (userUiid: string, planId: string, event: Partial<MyCalendarEvents>) => {
   if (!planId) return;
-  const docRef = getEventsCollectionLink(userUiid, planId);
-  addDocFunction(docRef, event);
+  const docRef = getEventsCollectionLink(planId);
+  addDoc(docRef, { ...event, create: serverTimestamp() });
 };
 
-export const updateEvent = (userUiid: string, planId: string, event: Partial<MyCalendarEvents>) => {
-  const docRef = doc(getEventsCollectionLink(userUiid, planId), event.id);
-  updateDocFunction(docRef, event);
+export const updateEvent = (planId: string, event: Partial<MyCalendarEvents>) => {
+  const docRef = getDocRef(getEventsCollectionLink(planId), event.id);
+  updateDoc(docRef, { ...event, modify: serverTimestamp() });
 };
 
-export const deleteEvent = (userUiid: string, planId: string, eventId: string) => {
-  const docRef = doc(getEventsCollectionLink(userUiid, planId), eventId);
-  deleteDocFunction(docRef);
+export const deleteEvent = (planId: string, eventId: string) => {
+  const docRef = getDocRef(getEventsCollectionLink(planId), eventId);
+  deleteDoc(docRef);
 };

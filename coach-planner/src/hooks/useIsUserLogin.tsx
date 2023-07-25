@@ -1,5 +1,5 @@
 import { useAppDispatch } from '@/store/hooks';
-import { setUser } from '@/store/slices/userSlice';
+import { setUser } from '@/store/slices/userExercisesSlice';
 import { type UserCredential } from 'firebase/auth';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';

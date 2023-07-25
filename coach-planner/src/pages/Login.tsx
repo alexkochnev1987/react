@@ -2,7 +2,7 @@ import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import GoogleIcon from '@mui/icons-material/Google';
 import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
-import { auth } from '../firebase';
+import { auth } from '../lib/firebase/firebase.lib';
 import { Grid, Typography } from '@mui/material';
 import { AuthWrapper } from '../widgets/AuthWrapper';
 import { useIsUserLogin } from '../hooks/useIsUserLogin';
@@ -14,7 +14,8 @@ const Login = () => {
   const googleLoginText = 'Login with google';
   const forgotPassword = 'Forgot password?';
   const goToRegistrationLinkText = "Don't have an account? Sign Up";
-  const [signInWithEmailAndPassword, user, loading, emailError] = useSignInWithEmailAndPassword(auth);
+  const [signInWithEmailAndPassword, user, loading, emailError] =
+    useSignInWithEmailAndPassword(auth);
   const [signInWithGoogle, googleUser, googleLoading, googleError] = useSignInWithGoogle(auth);
 
   const loginWithGoogleHandler = async () => {
@@ -38,7 +39,11 @@ const Login = () => {
       )}
       <Grid container alignItems={'center'} justifyContent="flex-end" spacing={1}>
         <Grid item xs={12} sm={4} md={4} textAlign={'end'}>
-          <Button onClick={loginWithGoogleHandler} disabled={googleLoading} startIcon={<GoogleIcon />}>
+          <Button
+            onClick={loginWithGoogleHandler}
+            disabled={googleLoading}
+            startIcon={<GoogleIcon />}
+          >
             {googleLoginText}
           </Button>
         </Grid>

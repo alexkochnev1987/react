@@ -1,13 +1,13 @@
-import { FallbackComponent } from '@/app/providers/ErrorBoundary/FallbackComponent';
 import { FirebaseError } from '@/widgets/FirebaseError';
 import { CenteredLoader } from '@/shared/ui/CenteredLoader';
 import { FirestoreError } from 'firebase/firestore';
 import { FC, ReactNode } from 'react';
+import { SerializedError } from '@reduxjs/toolkit';
 
 interface HandleDataWrapperProps {
   children?: ReactNode;
   loading: boolean;
-  error: FirestoreError | undefined;
+  error: FirestoreError | undefined | string | null;
 }
 
 export const HandleDataWrapper: FC<HandleDataWrapperProps> = ({ loading, error, children }) => {
@@ -15,7 +15,11 @@ export const HandleDataWrapper: FC<HandleDataWrapperProps> = ({ loading, error, 
     return <CenteredLoader />;
   }
   if (error instanceof FirestoreError) {
-    return <FirebaseError error={error} />;
+    return <FirebaseError message={error.message} />;
+  }
+
+  if (typeof error === 'string') {
+    return <FirebaseError message={error} />;
   }
 
   return <>{children}</>;

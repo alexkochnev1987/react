@@ -1,35 +1,40 @@
 import { Button, Card, CardHeader, Grid } from '@mui/material';
-import { deleteExercise, updateExercise } from '../../../db/exercises';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useEffect, useState } from 'react';
 import { SubmitDialog } from '../../../components/dialogs/exercise-dialog/submit-dialog';
 import { useNavigate } from 'react-router-dom';
 import { EditContent } from '@/features/EditContent/ui/Edit-content';
 import { deleteDialogContent, editContentFieldArray, editTagsFieldArray } from '../lib/constants';
-import { setImage } from '../../../store/slices/draw-objects-slice';
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { ExerciseResponse } from '../../../db/constants';
 import { RoutePath } from '@/app/providers/RouterProvider/config/constants';
 import { EditTags } from '@/features/EditTags/ui/EditTags';
 import { AllDrawType } from '@/features/DrawExercise/lib/helpers';
 import { DrawExercise } from '@/features/DrawExercise/ui/DrawExercise';
-import { selectUser } from '@/store/slices/userSlice';
-import { Timestamp } from 'firebase/firestore';
+import { ExerciseForPage } from '@/service/parseExerciseResponse';
+import { Timestamp } from '@/lib/firebase/firebase.lib';
+import { ExerciseResponse } from '@/db/constants';
+import { useExerciseStore } from '@/service/store.service';
 
-export const EditExerciseCard = ({ exercise }: { exercise: ExerciseResponse }) => {
-  const navigate = useNavigate();
-  const userUiid = useAppSelector(selectUser);
+export const EditExerciseCard = ({ exercise }: { exercise: ExerciseForPage }) => {
   const [openSubmit, setOpenSubmit] = useState(false);
-  const deleteMyExercise = () => {
-    deleteExercise(userUiid, exercise.id);
+  const navigate = useNavigate();
+  const { dispatch, deleteUserExercise, updateExerciseFunction, setImage } = useExerciseStore();
+
+  const deleteExercise = () => {
+    dispatch(deleteUserExercise(exercise.id));
     navigate(RoutePath.exercise);
   };
 
-  const updateMyExercise = (content: string | AllDrawType | string[] | undefined | Timestamp, fieldName: string) => {
-    updateExercise(userUiid, exercise.id, { [fieldName]: content });
+  const updateExercise = (
+    content: string | AllDrawType | string[] | undefined | Timestamp,
+    fieldName: keyof ExerciseResponse,
+  ) => {
+    dispatch(
+      updateExerciseFunction({
+        id: exercise.id,
+        exercise: { [fieldName]: content },
+      }),
+    );
   };
-
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (exercise.conva) {
@@ -42,7 +47,7 @@ export const EditExerciseCard = ({ exercise }: { exercise: ExerciseResponse }) =
       <SubmitDialog
         content={deleteDialogContent}
         open={openSubmit}
-        submit={deleteMyExercise}
+        submit={deleteExercise}
         onClose={() => {
           setOpenSubmit(false);
         }}
@@ -51,7 +56,7 @@ export const EditExerciseCard = ({ exercise }: { exercise: ExerciseResponse }) =
         title={
           <EditContent
             label={'Название упражнения'}
-            callback={(value) => updateMyExercise(value, 'name')}
+            callback={(value) => updateExercise(value, 'name')}
             value={exercise.name}
           />
         }
@@ -67,14 +72,18 @@ export const EditExerciseCard = ({ exercise }: { exercise: ExerciseResponse }) =
         </Grid>
         {editContentFieldArray.map(({ field, label }) => (
           <Grid item xs={12} key={field}>
-            <EditContent callback={(value) => updateMyExercise(value, field)} value={exercise[field]} label={label} />
+            <EditContent
+              callback={(value) => updateExercise(value, field)}
+              value={exercise[field]}
+              label={label}
+            />
           </Grid>
         ))}
 
         {editTagsFieldArray.map(({ field, defaultTags, label }) => (
           <Grid item xs={12} key={field}>
             <EditTags
-              callback={(value) => updateMyExercise(value, field)}
+              callback={(value) => updateExercise(value, field)}
               defaultTags={defaultTags}
               tags={exercise[field]}
               placeholder={label}

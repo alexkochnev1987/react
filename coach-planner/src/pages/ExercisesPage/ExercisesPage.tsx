@@ -1,15 +1,16 @@
 import { ExerciseCard } from '../../components/Exercise-card';
 import { Grid } from '@mui/material';
-import { useGetExercises } from './useGetExercises';
-import { HandleDataWrapper } from '../PageWrappers/HandleDataWrapper';
+import { HandleDataWrapper } from '@/pages/PageWrappers/HandleDataWrapper';
+import { getUserExercisesFromStore, loadExercisesFromServer } from '@/service/store.service';
 
-const Exercise = () => {
-  const { loading, error, exercises } = useGetExercises();
+const ExercisesPage = () => {
+  const { loading, error, exercises } = getUserExercisesFromStore();
+  loadExercisesFromServer();
 
   return (
     <HandleDataWrapper loading={loading} error={error}>
       <Grid container spacing={1} p={1}>
-        {exercises?.map((exercise) => (
+        {exercises.map((exercise) => (
           <ExerciseCard key={exercise.id} exercise={exercise} />
         ))}
       </Grid>
@@ -17,4 +18,4 @@ const Exercise = () => {
   );
 };
 
-export default Exercise;
+export default ExercisesPage;

@@ -1,13 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit';
 import canvas from './slices/canvas-slice';
 import draw from './slices/draw-objects-slice';
-import user from './slices/userSlice';
+import userExercises from './slices/userExercisesSlice';
+import exercise from './slices/exerciseSlice';
 
 export const store = configureStore({
   reducer: {
-    user,
+    userExercises,
     canvas,
     draw,
+    exercise,
   },
 });
 
