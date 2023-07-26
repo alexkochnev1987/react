@@ -1,35 +1,50 @@
-import { NavLink } from 'react-router-dom';
-import { Button, IconButton, Link } from '@mui/material';
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { SubmitDialog } from '../../components/dialogs/exercise-dialog/submit-dialog';
-import { RoutePath } from '@/app/providers/RouterProvider/config/constants';
+import { Button, Grid } from '@mui/material';
+import SubmitDialog from '../../components/dialogs/exercise-dialog/submit-dialog';
 import { usePlanData } from './usePlanData';
 import { HandleDataWrapper } from '../PageWrappers/HandleDataWrapper';
+import { useState } from 'react';
+import PlanCard from './PlanCard';
 const deleteDialogContent = {
-  title: 'Вы хотите удалить план',
-  message: 'План будет удалено безвозвратно',
-  submit: 'Подтвердить',
-  cancel: 'Отмена',
+  title: 'Caution: Deletion Permanently Removes the Plan!',
+  message:
+    'Clicking the button below will result in the permanent deletion of the plan. This action cannot be undone. Make sure you want to proceed with this irreversible action before clicking the button.',
+  submit: 'Accept',
+  cancel: 'Cancel',
 };
 
 const PlanPage = () => {
-  const { plans, isOpen, closeDialog, openDialog, deleteMyPlan, loading, error } = usePlanData();
+  const buttonText = 'Create plan';
+  const [isOpen, setIsOpen] = useState(false);
+  const [planId, setPlanId] = useState('');
+  const { plans, deletePlan, createNewPlan, loading, error } = usePlanData(planId);
+  const closeDialog = () => setIsOpen(false);
+  const openDialog = (id: string) => {
+    setPlanId(id);
+    setIsOpen(true);
+  };
+
+  const onSubmit = () => {
+    deletePlan(planId);
+    closeDialog();
+  };
+
   return (
     <HandleDataWrapper loading={loading} error={error}>
-      <SubmitDialog content={deleteDialogContent} open={isOpen} submit={deleteMyPlan} onClose={closeDialog} />
-      {plans &&
-        plans.map((x) => (
-          <span key={x.id}>
-            <Button>
-              <Link component={NavLink} to={RoutePath.plan + RoutePath.main + x.id}>
-                {x.name}
-              </Link>
-            </Button>
-            <IconButton color="error" onClick={() => openDialog(x.id)}>
-              <DeleteForeverIcon />
-            </IconButton>
-          </span>
-        ))}
+      <Grid container spacing={2} p={1}>
+        <Grid item xs={12}>
+          <Button variant="outlined" onClick={createNewPlan}>
+            {buttonText}
+          </Button>
+        </Grid>
+
+        {plans && plans.map((x) => <PlanCard plan={x} openDialog={openDialog} key={x.id} />)}
+      </Grid>
+      <SubmitDialog
+        content={deleteDialogContent}
+        open={isOpen}
+        submit={onSubmit}
+        onClose={closeDialog}
+      />
     </HandleDataWrapper>
   );
 };

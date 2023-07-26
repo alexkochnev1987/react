@@ -8,6 +8,7 @@ export const useEventsData = () => {
   const params = useParams();
   const id = params.id as string;
   const [value, loading, error] = useDocument(getPlanDocRef(id));
+
   const calendar = value ? ({ id: value.id, ...value?.data() } as PlanResponse) : undefined;
   const editPlanName = (name: string | string[] | AllDrawType | undefined | Timestamp) => {
     if (name && typeof name === 'string') updatePlan(id, name);

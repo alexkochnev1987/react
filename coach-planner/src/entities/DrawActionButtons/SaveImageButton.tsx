@@ -17,11 +17,9 @@ export const SaveImageButtons = ({
   const onSaveImage = () => {
     saveImage(id);
   };
-
-  const [user] = useAuthState(auth);
   const navigate = useNavigate();
   const createNewExercise = async () => {
-    const newExercise = await createExercise(user?.uid);
+    const newExercise = await createExercise();
     if (newExercise) {
       const route = `${RoutePath.exercise}/${newExercise.id}`;
       navigate(route);

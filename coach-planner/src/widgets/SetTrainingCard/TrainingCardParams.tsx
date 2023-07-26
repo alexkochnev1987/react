@@ -52,7 +52,7 @@ export const TrainingCardParams: FC<TrainingCardParamsProps> = ({ training, colo
           />
         </Box>
         <Box display={'flex'} justifyContent={'space-between'}>
-          <DescriptionField label="Created" data={parseDate(training.create.toDate())} />
+          <DescriptionField label="Created" data={parseDate(training.create?.toDate())} />
           {training.modify && (
             <DescriptionField label="Modify" data={parseDate(training.modify?.toDate())} />
           )}

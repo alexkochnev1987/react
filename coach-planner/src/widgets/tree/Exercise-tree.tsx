@@ -2,17 +2,26 @@ import { useCollection } from 'react-firebase-hooks/firestore';
 import { splitExercisesByTag } from './splitExercisesByTags';
 import { CircularProgress, List, Stack, Switch, Typography } from '@mui/material';
 import { ExpandTag } from './Expand-tag';
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { FirebaseError } from '../FirebaseError';
 import { getExerciseCollection } from '@/repository/exercise';
+import SortRadioButtons from './SortRadioButtons';
+import { useParams } from 'react-router-dom';
 
 export const ExerciseTree = () => {
+  const { id } = useParams();
   const [exercises, loading, error] = useCollection(getExerciseCollection());
 
-  const [checked, setChecked] = useState(true);
+  const [filterBy, setFilterBy] = useState('name');
 
-  const handleChange = () => {
-    setChecked((state) => !state);
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setFilterBy(event.target.value);
+  };
+
+  const [ascending, setAscending] = useState(true);
+
+  const handleOrder = () => {
+    setAscending((state) => !state);
   };
   if (loading) {
     return <CircularProgress />;
@@ -22,23 +31,21 @@ export const ExerciseTree = () => {
   }
   return (
     <>
-      <Stack direction="row" spacing={1} alignItems="center">
-        <Typography>Sort by Age</Typography>
-        <Switch
-          checked={checked}
-          onChange={handleChange}
-          inputProps={{ 'aria-label': 'controlled' }}
-        />
-        <Typography>Sort by tag</Typography>
+      <Stack spacing={1} alignItems="center" p={1}>
+        <SortRadioButtons value={filterBy} handleChange={handleChange} />
+        <Stack direction="row" alignItems={'center'}>
+          <Typography>Ascending</Typography>
+          <Switch
+            checked={ascending}
+            onChange={handleOrder}
+            inputProps={{ 'aria-label': 'controlled' }}
+          />
+          <Typography>Descending</Typography>
+        </Stack>
+        <List sx={{ width: 250, bgcolor: 'background.paper' }}>
+          {exercises && splitExercisesByTag(exercises, id, filterBy, ascending)}
+        </List>
       </Stack>
-      <List sx={{ width: 250, bgcolor: 'background.paper' }}>
-        {exercises &&
-          Object.entries(splitExercisesByTag(exercises, checked))
-            .filter((x) => (x ? true : false))
-            .map(([key, value]) => {
-              return <ExpandTag tag={key} exercises={value} key={key} />;
-            })}
-      </List>
     </>
   );
 };

@@ -1,7 +1,7 @@
 import { RoutePath } from '@/app/providers/RouterProvider/config/constants';
 import { TrainingResponse } from '@/db/constants';
 import { Card, Fab, Grid } from '@mui/material';
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Chart } from '@/features/Chart/Chart';
 import { countEnergySupplyTime } from '@/utils/countEnergySupplyTime';
@@ -14,7 +14,6 @@ interface TrainingCardProps {
 
 export const TrainingCard: FC<TrainingCardProps> = ({ training }) => {
   const navigate = useNavigate();
-  const [isEdited, setIsEdited] = useState(false);
   const navigateTo = () => {
     navigate(RoutePath.trainings + RoutePath.main + training.id);
   };

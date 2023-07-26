@@ -6,7 +6,7 @@ import { countEnergySupplyTime } from '../../utils/countEnergySupplyTime';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
-import { SubmitDialog } from '../../components/dialogs/exercise-dialog/submit-dialog';
+import SubmitDialog from '../../components/dialogs/exercise-dialog/submit-dialog';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { Chart } from '../../features/Chart/Chart';
 import { TrainingResponse } from '../../db/constants';
@@ -15,10 +15,11 @@ import { ExerciseTree } from '@/widgets/Tree/Exercise-tree';
 import { TrainingCardParams } from '../SetTrainingCard/TrainingCardParams';
 
 const deleteTrainingContent = {
-  title: 'Вы хотите удалить тренироовку',
-  message: 'Тренировка будет удалена безвозвратно',
-  submit: 'Подтвердить',
-  cancel: 'Отмена',
+  title: 'Caution: Deletion Permanently Removes the Training!',
+  message:
+    'Clicking the button below will result in the permanent deletion of the training. This action cannot be undone. Make sure you want to proceed with this irreversible action before clicking the button.',
+  submit: 'Accept',
+  cancel: 'Cancel',
 };
 
 export const EditTraining = ({ training }: { training: TrainingResponse }) => {

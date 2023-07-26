@@ -1,15 +1,23 @@
 import { ExerciseCard } from '../../components/Exercise-card';
-import { Grid } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import { HandleDataWrapper } from '@/pages/PageWrappers/HandleDataWrapper';
 import { getUserExercisesFromStore, loadExercisesFromServer } from '@/service/store.service';
+import { useCreateActions } from '@/widgets/Navbar/ui/useCreateActions';
 
 const ExercisesPage = () => {
   const { loading, error, exercises } = getUserExercisesFromStore();
+  const { createNewExercise } = useCreateActions();
+  const buttonText = 'Create exercise';
   loadExercisesFromServer();
 
   return (
     <HandleDataWrapper loading={loading} error={error}>
       <Grid container spacing={1} p={1}>
+        <Grid item textAlign={'end'} xs={12}>
+          <Button variant="outlined" onClick={createNewExercise}>
+            {buttonText}
+          </Button>
+        </Grid>
         {exercises.map((exercise) => (
           <ExerciseCard key={exercise.id} exercise={exercise} />
         ))}

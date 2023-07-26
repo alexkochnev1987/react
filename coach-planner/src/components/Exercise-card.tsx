@@ -4,19 +4,16 @@ import { ExpandText } from '@/shared/ui/ExpandText';
 import { NavLink } from 'react-router-dom';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
-import { SubmitDialog } from './dialogs/exercise-dialog/submit-dialog';
+import SubmitDialog from './dialogs/exercise-dialog/submit-dialog';
 import { useState } from 'react';
 import { deleteDialogContent } from '@/widgets/EditExerciseCard/lib/constants';
 import { RoutePath } from '@/app/providers/RouterProvider/config/constants';
 import { ExerciseForPage } from '@/service/parseExerciseResponse';
-import { useExerciseStore } from '@/service/store.service';
+import { useDeleteExercise } from '@/service/store.service';
 
 export const ExerciseCard = ({ exercise }: { exercise: ExerciseForPage }) => {
   const [openSubmit, setOpenSubmit] = useState(false);
-  const { dispatch, deleteUserExercise } = useExerciseStore();
-  const deleteMyExercise = () => {
-    dispatch(deleteUserExercise(exercise.id));
-  };
+  const deleteExercise = useDeleteExercise(exercise.id);
 
   return (
     <Grid item xs={12}>
@@ -24,7 +21,7 @@ export const ExerciseCard = ({ exercise }: { exercise: ExerciseForPage }) => {
         <SubmitDialog
           content={deleteDialogContent}
           open={openSubmit}
-          submit={deleteMyExercise}
+          submit={deleteExercise}
           onClose={() => {
             setOpenSubmit(false);
           }}

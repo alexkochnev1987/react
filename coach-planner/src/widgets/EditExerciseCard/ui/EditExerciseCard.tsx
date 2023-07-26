@@ -1,46 +1,17 @@
 import { Button, Card, CardHeader, Grid } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { useEffect, useState } from 'react';
-import { SubmitDialog } from '../../../components/dialogs/exercise-dialog/submit-dialog';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import SubmitDialog from '../../../components/dialogs/exercise-dialog/submit-dialog';
 import { EditContent } from '@/features/EditContent/ui/Edit-content';
 import { deleteDialogContent, editContentFieldArray, editTagsFieldArray } from '../lib/constants';
-import { RoutePath } from '@/app/providers/RouterProvider/config/constants';
 import { EditTags } from '@/features/EditTags/ui/EditTags';
-import { AllDrawType } from '@/features/DrawExercise/lib/helpers';
 import { DrawExercise } from '@/features/DrawExercise/ui/DrawExercise';
 import { ExerciseForPage } from '@/service/parseExerciseResponse';
-import { Timestamp } from '@/lib/firebase/firebase.lib';
-import { ExerciseResponse } from '@/db/constants';
 import { useExerciseStore } from '@/service/store.service';
 
 export const EditExerciseCard = ({ exercise }: { exercise: ExerciseForPage }) => {
   const [openSubmit, setOpenSubmit] = useState(false);
-  const navigate = useNavigate();
-  const { dispatch, deleteUserExercise, updateExerciseFunction, setImage } = useExerciseStore();
-
-  const deleteExercise = () => {
-    dispatch(deleteUserExercise(exercise.id));
-    navigate(RoutePath.exercise);
-  };
-
-  const updateExercise = (
-    content: string | AllDrawType | string[] | undefined | Timestamp,
-    fieldName: keyof ExerciseResponse,
-  ) => {
-    dispatch(
-      updateExerciseFunction({
-        id: exercise.id,
-        exercise: { [fieldName]: content },
-      }),
-    );
-  };
-
-  useEffect(() => {
-    if (exercise.conva) {
-      dispatch(setImage(exercise.conva));
-    }
-  }, [exercise, dispatch]);
+  const { deleteExercise, updateExercise } = useExerciseStore(exercise.conva);
 
   return (
     <Card>

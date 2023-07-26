@@ -1,10 +1,4 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-} from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 
 export interface dialogContent {
   title: string;
@@ -21,17 +15,12 @@ interface SubmitDialogProps {
   content?: dialogContent;
 }
 
-const dialogTitle = "Вы уверены, что хотите закрыть страницу?";
-const dialogMessage = "Все несохраненные данные будут потеряны.";
-const cancelContent = "Отмена";
-const submitContent = "Подтвердить";
+const dialogTitle = 'Do you want close this page?';
+const dialogMessage = 'All unsaved data will be lose.';
+const cancelContent = 'Cancel';
+const submitContent = 'Accept';
 
-export const SubmitDialog = ({
-  content,
-  open,
-  onClose,
-  submit,
-}: SubmitDialogProps) => {
+export default ({ content, open, onClose, submit }: SubmitDialogProps) => {
   const cancel = () => {
     onClose();
   };
@@ -46,7 +35,7 @@ export const SubmitDialog = ({
         <Button onClick={() => cancel()} color="primary">
           {content?.cancel ? content.cancel : cancelContent}
         </Button>
-        <Button onClick={submit} color="primary">
+        <Button onClick={submit} color="error" variant="contained">
           {content?.submit ? content.submit : submitContent}
         </Button>
       </DialogActions>
