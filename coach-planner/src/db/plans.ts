@@ -28,14 +28,15 @@ export const createPlan = (name: string) => {
   return addDoc(getPlansCollection(), { name: name, create: serverTimestamp() });
 };
 
-export const updatePlan = (id: string, name: string) => {
+export const updatePlan = async (id: string, name?: string) => {
   const docRef = getPlanDocRef(id);
+  const trainingObj = name ? { name } : {};
 
   const newTraining = {
-    name,
+    ...trainingObj,
     modify: serverTimestamp(),
   };
-  updateDoc(docRef, newTraining);
+  await updateDoc(docRef, newTraining);
 };
 
 export const deletePlan = (id: string) => {

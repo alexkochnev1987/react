@@ -26,7 +26,7 @@ export const EditExerciseCard = ({ exercise }: { exercise: ExerciseForPage }) =>
       <CardHeader
         title={
           <EditContent
-            label={'Название упражнения'}
+            label={'Exercise name'}
             callback={(value) => updateExercise(value, 'name')}
             value={exercise.name}
           />
