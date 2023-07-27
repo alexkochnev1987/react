@@ -9,6 +9,8 @@ import SortRadioButtons from './SortRadioButtons';
 import { useParams } from 'react-router-dom';
 
 export const ExerciseTree = () => {
+  const ascLabel = 'Ascending';
+  const descLabel = 'Descending';
   const { id } = useParams();
   const [exercises, loading, error] = useCollection(getExerciseCollection());
 
@@ -34,13 +36,13 @@ export const ExerciseTree = () => {
       <Stack spacing={1} alignItems="center" p={1}>
         <SortRadioButtons value={filterBy} handleChange={handleChange} />
         <Stack direction="row" alignItems={'center'}>
-          <Typography>Ascending</Typography>
+          <Typography>{ascLabel}</Typography>
           <Switch
             checked={ascending}
             onChange={handleOrder}
             inputProps={{ 'aria-label': 'controlled' }}
           />
-          <Typography>Descending</Typography>
+          <Typography>{descLabel}</Typography>
         </Stack>
         <List sx={{ width: 250, bgcolor: 'background.paper' }}>
           {exercises && splitExercisesByTag(exercises, id, filterBy, ascending)}

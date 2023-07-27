@@ -2,11 +2,12 @@ import React, { ChangeEvent, useState } from 'react';
 import { Box, FormControlLabel, Paper, Radio, RadioGroup, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { SearchInput } from '@/shared/ui/SearchInput';
-import { CustomUser, getUserCollection } from '../../../service/user.service';
+import { CustomUser } from '../../../service/user.service';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import { FirebaseError } from '../../../widgets/FirebaseError';
 import { type DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
 import { includeStringValue } from '../lib/helpers';
+import { getUserCollection } from '@/repository/user';
 
 export const SearchBar = () => {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ export const SearchBar = () => {
     setValue(e.target.value);
   };
 
-  if (error) return <FirebaseError error={error} />;
+  if (error) return <FirebaseError message={error.message} />;
 
   const reduceFunction = (
     previousValue: JSX.Element[],

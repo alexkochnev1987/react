@@ -22,9 +22,10 @@ const radioArray: { value: FilterValues; label: string }[] = [
 ];
 
 const SortRadioButtons: FC<SortRadioButtonsProps> = ({ value, handleChange }) => {
+  const groupBy = 'Group exercise by';
   return (
     <FormControl>
-      <FormLabel>Sort by</FormLabel>
+      <FormLabel>{groupBy}</FormLabel>
       <RadioGroup row value={value} onChange={handleChange}>
         {radioArray.map(({ value, label }) => (
           <FormControlLabel value={value} control={<Radio />} label={label} key={value} />

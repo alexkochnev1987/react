@@ -54,7 +54,7 @@ export const EditTraining = ({ training }: { training: TrainingResponse }) => {
         onClose={toggleDrawer(false)}
         onOpen={toggleDrawer(true)}
       >
-        {<ExerciseTree />}
+        <ExerciseTree />
       </SwipeableDrawer>
       <SubmitDialog
         content={deleteTrainingContent}
