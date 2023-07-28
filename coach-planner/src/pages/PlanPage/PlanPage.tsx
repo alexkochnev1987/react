@@ -31,7 +31,7 @@ const PlanPage = () => {
   return (
     <HandleDataWrapper loading={loading} error={error}>
       <Grid container spacing={2} p={1}>
-        <Grid item xs={12}>
+        <Grid item textAlign={'end'} xs={12}>
           <Button variant="outlined" onClick={createNewPlan}>
             {buttonText}
           </Button>

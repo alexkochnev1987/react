@@ -3,7 +3,7 @@ import { HandleDataWrapper } from '../PageWrappers/HandleDataWrapper';
 import { getExerciseFromStore, loadExerciseFromServer } from '@/service/store.service';
 
 const SetExercise = () => {
-  const { loading, error, exercise } = getExerciseFromStore();
+  const { exercise, loading, error } = getExerciseFromStore();
   loadExerciseFromServer();
   return (
     <HandleDataWrapper loading={loading} error={error}>

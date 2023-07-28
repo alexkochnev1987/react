@@ -1,5 +1,12 @@
-import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@mui/material';
 import { ChangeEvent, FC } from 'react';
+import {
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  IconButton,
+  Radio,
+  RadioGroup,
+} from '@mui/material';
 
 interface SortRadioButtonsProps {
   value: string;

@@ -8,9 +8,21 @@ import {
   setUserAction,
   setWidth,
 } from '../../../store/slices/canvas-slice';
-import { ActionsOnConva, TooltipTitle, lineTypesArray, playerTypesArray, toolsTypesArray } from './constants';
+import {
+  ActionsOnConva,
+  TooltipTitle,
+  lineTypesArray,
+  playerTypesArray,
+  toolsTypesArray,
+} from './constants';
 import { deleteCurrent, setCurrent } from '../../../store/slices/draw-objects-slice';
-import { ColorTypes, EquipmentTypes, LineTypes, PlayerTypes, UserActionsValues } from '../../../store/slices/constants';
+import {
+  ColorTypes,
+  EquipmentTypes,
+  LineTypes,
+  PlayerTypes,
+  UserActionsValues,
+} from '../../../store/slices/constants';
 import { ToolIconButton } from '@/shared/ui/ToolIconButton/ui/ToolIconButton';
 import { RenderButtonList } from '@/entities/DrawActionButtons/RenderButtonList';
 import { SelectLine, SelectTypes } from '@/entities/SelectLine/ui/SelectLine';
@@ -63,9 +75,20 @@ export const UserActions = ({
   };
 
   return (
-    <Box display={'flex'} alignItems={'center'} gap={'5px'} sx={{ height: '55px' }} justifyContent={'space-between'}>
-      <Box display={'flex'} gap={'5px'}>
-        <ToolIconButton color="error" onClick={onDeleteElement} toolTipTitle={TooltipTitle.deleteLine} isActive={false}>
+    <Box
+      display={'flex'}
+      alignItems={'center'}
+      gap={'5px'}
+      sx={{ minHeight: '55px' }}
+      justifyContent={'space-between'}
+    >
+      <Box display={'flex'} gap={'5px'} flexWrap={'wrap'} sx={{ width: '100%' }}>
+        <ToolIconButton
+          color="error"
+          onClick={onDeleteElement}
+          toolTipTitle={TooltipTitle.deleteLine}
+          isActive={false}
+        >
           {ActionsOnConva.deleteIcon}
         </ToolIconButton>
         <RenderButtonList arr={lineTypesArray} callback={setUserActionHandler} data={action} />
@@ -76,16 +99,24 @@ export const UserActions = ({
 
         {(action === UserActionsValues.draw || action === UserActionsValues.select) && (
           <>
-            <SelectLine onChange={onChangeLineType} value={lineType} selectType={SelectTypes.LINE} />
+            <SelectLine
+              onChange={onChangeLineType}
+              value={lineType}
+              selectType={SelectTypes.LINE}
+            />
             <SelectLine onChange={onChangeSize} value={`${width}`} selectType={SelectTypes.SIZE} />
           </>
         )}
 
         {action === UserActionsValues.addEquipment && (
-          <RenderButtonList arr={toolsTypesArray} callback={setToolActionHandler} data={equipment} />
+          <RenderButtonList
+            arr={toolsTypesArray}
+            callback={setToolActionHandler}
+            data={equipment}
+          />
         )}
+        {children}
       </Box>
-      {children}
     </Box>
   );
 };

@@ -1,6 +1,6 @@
-import { Button, Card, CardHeader, Grid } from '@mui/material';
+import { Box, Button, Card, CardHeader, Grid } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import SubmitDialog from '../../../components/dialogs/exercise-dialog/submit-dialog';
 import { EditContent } from '@/features/EditContent/ui/Edit-content';
 import { deleteDialogContent, editContentFieldArray, editTagsFieldArray } from '../lib/constants';
@@ -11,7 +11,13 @@ import { useExerciseStore } from '@/service/store.service';
 
 export const EditExerciseCard = ({ exercise }: { exercise: ExerciseForPage }) => {
   const [openSubmit, setOpenSubmit] = useState(false);
-  const { deleteExercise, updateExercise } = useExerciseStore(exercise.conva);
+  const { deleteExercise, updateExercise } = useExerciseStore();
+  const boxRef = useRef<HTMLDivElement>(null);
+  const [konva, setKonva] = useState(0);
+
+  useEffect(() => {
+    if (boxRef.current) setKonva(boxRef.current?.getBoundingClientRect().width);
+  }, [boxRef.current]);
 
   return (
     <Card>
@@ -38,8 +44,8 @@ export const EditExerciseCard = ({ exercise }: { exercise: ExerciseForPage }) =>
         }
       />
       <Grid container padding={1} spacing={2}>
-        <Grid item>
-          <DrawExercise />
+        <Grid item xs={12} paddingRight={1}>
+          <Box ref={boxRef}>{konva && <DrawExercise exercise={exercise} widthKonva={konva} />}</Box>
         </Grid>
         {editContentFieldArray.map(({ field, label }) => (
           <Grid item xs={12} key={field}>

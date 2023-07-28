@@ -83,7 +83,8 @@ export enum EquipmentTypes {
 
 export interface DrawObjectsState {
   current: string | null;
-  lines: { [key: string]: ArrowLine } | null;
-  players: { [key: string]: Player } | null;
-  equipment: { [key: string]: Equipment } | null;
+  lines: Record<string, ArrowLine> | null;
+  players: Record<string, Player> | null;
+  equipment: Record<string, Equipment> | null;
+  convaSize?: number | null;
 }

@@ -16,12 +16,16 @@ import {
 } from './constants';
 import { AllDrawType } from '../../features/DrawExercise/lib/helpers';
 import { updateExercise, uploadBlob } from '../../service/exercise.service';
+import { updatePointsEquipment } from './updatePointsEquipment';
+import { updatePointsPlayers } from './updatePointsPlayers';
+import { updatePointsLines } from './updatePointsLines';
 
 const initialState: DrawObjectsState = {
   current: null,
   lines: null,
   players: null,
   equipment: null,
+  convaSize: null,
 };
 type PlayerProps = Omit<Player, 'id'>;
 type ArrowLineProps = Omit<ArrowLine, 'id'>;
@@ -42,7 +46,8 @@ export const saveImage = createAsyncThunk<
 >('draw/saveImage', async ({ file, id }, thunkApi) => {
   const state = thunkApi.getState() as RootState;
   const { players, lines, equipment } = state.draw;
-  loadFile(file, id, { players, lines, equipment });
+  const convaSize = window.innerWidth;
+  loadFile(file, id, { players, lines, equipment, convaSize });
   return '';
 });
 const drawObjectsSlice = createSlice({
@@ -55,10 +60,19 @@ const drawObjectsSlice = createSlice({
       state.players = null;
       state.current = null;
     },
-    setImage(state, action: PayloadAction<AllDrawType>) {
-      state.equipment = action.payload.equipment;
-      state.lines = action.payload.lines;
-      state.players = action.payload.players;
+    setImage(state, action: PayloadAction<{ konva: AllDrawType; currentSize: number }>) {
+      const { konva, currentSize } = action.payload;
+      if (konva.convaSize) {
+        const differencePercent = currentSize / konva.convaSize;
+        if (konva.equipment)
+          state.equipment = updatePointsEquipment(konva.equipment, differencePercent);
+        if (konva.lines) state.lines = updatePointsLines(konva.lines, differencePercent);
+        if (konva.players) state.players = updatePointsPlayers(konva.players, differencePercent);
+      } else {
+        state.equipment = konva.equipment;
+        state.lines = konva.lines;
+        state.players = konva.players;
+      }
     },
     addLine(state, action: PayloadAction<ArrowLineProps>) {
       const newLine = getObjectWithId(action.payload);
@@ -177,7 +191,7 @@ export const selectLinesObject = createSelector([selectDraw], (draw) =>
 );
 export const selectCurrentId = createSelector([selectDraw], (draw) => draw.current);
 
-export const selectPlyersObject = createSelector([selectDraw], (draw) =>
+export const selectPlayersObject = createSelector([selectDraw], (draw) =>
   draw.players ? Object.values(draw.players) : [],
 );
 

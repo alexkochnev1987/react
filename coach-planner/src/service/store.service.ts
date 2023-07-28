@@ -32,7 +32,7 @@ export const loadExerciseFromServer = () => {
   }, [dispatch]);
 };
 
-export const useExerciseStore = (conva: AllDrawType | undefined) => {
+export const useExerciseStore = () => {
   const dispatch = useAppDispatch();
   const { id } = useParams();
   const navigate = useNavigate();
@@ -54,11 +54,6 @@ export const useExerciseStore = (conva: AllDrawType | undefined) => {
         }),
       );
   };
-  useEffect(() => {
-    if (conva) {
-      dispatch(setImage(conva));
-    }
-  }, [dispatch]);
 
   return { deleteExercise, updateExercise };
 };

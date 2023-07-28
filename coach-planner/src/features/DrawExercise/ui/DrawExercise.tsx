@@ -1,5 +1,5 @@
 import { Stage, Layer } from 'react-konva';
-import { useCallback, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { KonvaEventObject } from 'konva/lib/Node';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import {
@@ -21,14 +21,19 @@ import {
   drawLine,
   saveImage,
   setCurrent,
+  setImage,
 } from '../../../store/slices/draw-objects-slice';
 import { UserActions } from '@/features/DrawToolbar/ui/UserActions';
 import { SaveImageButtons } from '@/entities/DrawActionButtons/SaveImageButton';
-
-const convaWidth = 800,
-  convaHeight = 400;
-
-export const DrawExercise = () => {
+import { ExerciseForPage } from '@/service/parseExerciseResponse';
+import { AllDrawType } from '../lib/helpers';
+export const DrawExercise = ({
+  widthKonva,
+  exercise,
+}: {
+  widthKonva: number;
+  exercise: ExerciseForPage;
+}) => {
   const dispatch = useAppDispatch();
   const stageRef = useRef<StageType>(null);
   const action = useAppSelector(selectUserAction);
@@ -117,6 +122,17 @@ export const DrawExercise = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (exercise.conva) {
+      const payload: { konva: AllDrawType; currentSize: number } = {
+        konva: exercise.conva,
+        currentSize: widthKonva,
+      };
+
+      dispatch(setImage(payload));
+    }
+  }, [dispatch]);
+
   return (
     <>
       <UserActions {...{ action, color, lineType, width, type, equipment }}>
@@ -124,8 +140,8 @@ export const DrawExercise = () => {
       </UserActions>
       <Stage
         ref={stageRef}
-        width={convaWidth}
-        height={convaHeight}
+        width={widthKonva}
+        height={widthKonva / 2}
         onTouchStart={handleMouseDown}
         onTouchMove={handleMouseMove}
         onTouchEnd={handleMouseUp}
@@ -135,7 +151,7 @@ export const DrawExercise = () => {
         style={{ position: 'relative' }}
       >
         <Layer>
-          <DrawEntities width={convaWidth} height={convaHeight} />
+          <DrawEntities width={widthKonva} height={widthKonva / 2} />
         </Layer>
       </Stage>
     </>

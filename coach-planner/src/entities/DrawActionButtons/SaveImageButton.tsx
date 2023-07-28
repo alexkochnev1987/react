@@ -1,9 +1,7 @@
-import { Box, Button, Tooltip } from '@mui/material';
+import { Box } from '@mui/material';
 
 import { ActionsOnConva, TooltipTitle } from '../../features/DrawToolbar/ui/constants';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '../../lib/firebase/firebase.lib';
 import { createExercise } from '../../service/exercise.service';
 import { RoutePath } from '@/app/providers/RouterProvider/config/constants';
 import { ToolIconButton } from '@/shared/ui/ToolIconButton/ui/ToolIconButton';
@@ -28,7 +26,7 @@ export const SaveImageButtons = ({
   };
 
   return (
-    <Box display={'flex'} sx={{ height: '45px' }} gap={'5px'}>
+    <Box display={'flex'} sx={{ height: '45px' }} gap={'5px'} flex={1} justifyContent={'end'}>
       <ToolIconButton onClick={onSaveImage} isActive={false} toolTipTitle={TooltipTitle.save}>
         {ActionsOnConva.saveIcon}
       </ToolIconButton>
