@@ -5,16 +5,18 @@ import { DescriptionField } from '@/shared/ui/DescriptionField';
 import { EditTrainingTags } from '@/shared/ui/EditTrainingTag';
 import { countEnergySupplyTime } from '@/utils/countEnergySupplyTime';
 import { Box, Chip, Fab, Grid, TextField, Typography } from '@mui/material';
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 import { ageOptions, tagOptions } from '../EditExerciseCard/lib/constants';
 import { EditTrainingField } from '@/shared/ui/EditTrainingField';
+import { ExpandText } from '@/shared/ui/ExpandText';
 
 interface TrainingCardParamsProps {
   training: TrainingResponse;
   color?: string;
+  children?: ReactNode;
 }
 
-export const TrainingCardParams: FC<TrainingCardParamsProps> = ({ training, color }) => {
+export const TrainingCardParams: FC<TrainingCardParamsProps> = ({ children, training, color }) => {
   const updateMyTraining = (content: string | string[], fieldName: string) => {
     updateTraining(training.id, { [fieldName]: content });
   };
@@ -31,7 +33,8 @@ export const TrainingCardParams: FC<TrainingCardParamsProps> = ({ training, colo
   return (
     <Grid container spacing={1}>
       <Grid item xs>
-        <Box display={'flex'} justifyContent={'space-between'} height={60}>
+        <Box display={'flex'} justifyContent={'space-between'} height={45}>
+          {children}
           <EditTrainingField
             label={'Name'}
             startValue={training.name || ''}
@@ -51,58 +54,61 @@ export const TrainingCardParams: FC<TrainingCardParamsProps> = ({ training, colo
             disabled
           />
         </Box>
-        <Box display={'flex'} justifyContent={'space-between'}>
-          <DescriptionField label="Created" data={parseDate(training.create?.toDate())} />
-          {training.modify && (
-            <DescriptionField label="Modify" data={parseDate(training.modify?.toDate())} />
-          )}
-        </Box>
 
-        <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}>
-          <EditTrainingTags
-            label={'Age'}
-            tagOptions={ageOptions}
-            startValue={training.age}
-            onSubmit={updateTrainingAge}
-          >
-            <DescriptionField label="Age">
-              {training.age?.map((age) => (
-                <Chip label={age} key={age} size="small" />
-              ))}
-            </DescriptionField>
-          </EditTrainingTags>
-          <EditTrainingTags
-            label="Tag"
-            tagOptions={tagOptions}
-            onSubmit={updateTrainingTags}
-            startValue={training.tag}
-          >
-            <DescriptionField label="Tag">
-              {training.tag?.map((tag) => (
-                <Chip label={tag} key={tag} size="small" />
-              ))}
-            </DescriptionField>
-          </EditTrainingTags>
-        </Box>
+        <ExpandText label="Options">
+          <Grid spacing={1} container>
+            <Grid item xs={6}>
+              <DescriptionField label="Created" data={parseDate(training.create?.toDate())} />
+            </Grid>
+            <Grid item xs={6}>
+              {training.modify && (
+                <DescriptionField label="Modify" data={parseDate(training.modify?.toDate())} />
+              )}
+            </Grid>
+          </Grid>
+          <Grid spacing={1} container>
+            <Grid item xs={6}>
+              <EditTrainingTags
+                label={'Age'}
+                tagOptions={ageOptions}
+                startValue={training.age}
+                onSubmit={updateTrainingAge}
+              >
+                <DescriptionField label="Age">
+                  {training.age?.map((age) => (
+                    <Chip label={age} key={age} size="small" />
+                  ))}
+                </DescriptionField>
+              </EditTrainingTags>
+            </Grid>
+            <Grid item xs={6}>
+              <EditTrainingTags
+                label="Tag"
+                tagOptions={tagOptions}
+                onSubmit={updateTrainingTags}
+                startValue={training.tag}
+              >
+                <DescriptionField label="Tag">
+                  {training.tag?.map((tag) => (
+                    <Chip label={tag} key={tag} size="small" />
+                  ))}
+                </DescriptionField>
+              </EditTrainingTags>
+            </Grid>
+            <Grid item>
+              <EditTrainingField
+                small
+                label={'Description'}
+                startValue={training.description || ''}
+                onSubmit={updateDescription}
+              >
+                <DescriptionField label="Description" data={training.description} />
+              </EditTrainingField>
+            </Grid>
+          </Grid>
 
-        <EditTrainingField
-          small
-          label={'Description'}
-          startValue={training.description || ''}
-          onSubmit={updateDescription}
-        >
-          <Box
-            sx={{
-              textOverflow: 'auto',
-              overflow: 'auto',
-              height: '100%',
-              maxHeight: '50px',
-              width: '100%',
-            }}
-          >
-            <DescriptionField label="Description" data={training.description} />
-          </Box>
-        </EditTrainingField>
+          <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}></Box>
+        </ExpandText>
       </Grid>
     </Grid>
   );

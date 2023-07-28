@@ -3,12 +3,20 @@ import React, { useState } from 'react';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 
-export const ExpandText = ({ label, children, text }: { label: string; children?: React.ReactNode; text?: string }) => {
+export const ExpandText = ({
+  label,
+  children,
+  text,
+}: {
+  label: string;
+  children?: React.ReactNode;
+  text?: string;
+}) => {
   const [expanded, setExpanded] = useState(false);
   const handleExpandClick = () => setExpanded((x) => !x);
   return (
     <>
-      <CardActions disableSpacing>
+      <CardActions disableSpacing sx={{ padding: 0 }}>
         {label}
         <IconButton
           onClick={handleExpandClick}

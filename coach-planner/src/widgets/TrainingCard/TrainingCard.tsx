@@ -22,13 +22,13 @@ export const TrainingCard: FC<TrainingCardProps> = ({ training }) => {
     <Grid item xs={12}>
       <Card>
         <Grid container p={1} spacing={1}>
-          <Grid item xs={8}>
+          <Grid item xs>
             <TrainingCardParams training={training} color="primary" />
           </Grid>
           <Grid item xs={3}>
             <Chart params={countEnergySupplyTime(training.exercises)} />
           </Grid>
-          <Grid item xs={1} display={'flex'} justifyContent={'center'} alignItems={'center'}>
+          <Grid item xs={1.5} display={'flex'} justifyContent={'center'} alignItems={'center'}>
             <Fab color="primary" onClick={navigateTo}>
               <EditIcon />
             </Fab>

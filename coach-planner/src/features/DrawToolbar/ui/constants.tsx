@@ -15,26 +15,27 @@ import { ReactComponent as Stick } from '@/shared/assets/icons/stick.svg';
 import { EquipmentTypes, PlayerTypes, UserActionsValues } from '../../../store/slices/constants';
 import { ReactComponent as Ball } from '@/shared/assets/icons/tennis-ball.svg';
 import { ReactComponent as GoalIcon } from '@/shared/assets/icons/goal.svg';
+import { Box } from '@mui/material';
 
 export const lineTypesArray = [
   {
     title: 'Select object',
-    icon: <HighlightAltIcon />,
+    icon: <HighlightAltIcon sx={{ width: '100%', height: '100%' }} />,
     value: UserActionsValues.select,
   },
   {
     title: 'Draw line',
-    icon: <DrawIcon />,
+    icon: <DrawIcon sx={{ width: '100%', height: '100%' }} />,
     value: UserActionsValues.draw,
   },
   {
     title: 'Add equipment',
-    icon: <ConstructionIcon />,
+    icon: <ConstructionIcon sx={{ width: '100%', height: '100%' }} />,
     value: UserActionsValues.addEquipment,
   },
   {
     title: 'Add user',
-    icon: <CategoryIcon />,
+    icon: <CategoryIcon sx={{ width: '100%', height: '100%' }} />,
     value: UserActionsValues.addPlayer,
   },
 ];
@@ -53,15 +54,15 @@ export const ActionsOnConva = {
 
 export const playerTypesArray = [
   {
-    icon: <TripOriginIcon />,
+    icon: <TripOriginIcon sx={{ width: '100%', height: '100%' }} />,
     value: PlayerTypes.circle,
   },
   {
-    icon: <ChangeHistoryIcon />,
+    icon: <ChangeHistoryIcon sx={{ width: '100%', height: '100%' }} />,
     value: PlayerTypes.triangle,
   },
   {
-    icon: <CropSquareIcon />,
+    icon: <CropSquareIcon sx={{ width: '100%', height: '100%' }} />,
     value: PlayerTypes.square,
   },
 ];
@@ -76,7 +77,11 @@ export const toolsTypesArray = [
     value: EquipmentTypes.cone,
   },
   {
-    icon: <Stick />,
+    icon: (
+      <Box sx={{ fill: (t) => t.palette.primary.main, fontSize: '0rem' }}>
+        <Stick />
+      </Box>
+    ),
     value: EquipmentTypes.stick,
   },
   {
@@ -84,7 +89,11 @@ export const toolsTypesArray = [
     value: EquipmentTypes.ball,
   },
   {
-    icon: <Tire />,
+    icon: (
+      <Box sx={{ fill: (t) => t.palette.primary.main, fontSize: '0rem' }}>
+        <Tire />
+      </Box>
+    ),
     value: EquipmentTypes.tire,
   },
   {
@@ -92,3 +101,11 @@ export const toolsTypesArray = [
     value: EquipmentTypes.goal,
   },
 ];
+
+const TireIconComponent = () => {
+  return (
+    <Box sx={{ fill: (t) => t.palette.primary.main, fontSize: '0rem' }}>
+      <Tire />,
+    </Box>
+  );
+};

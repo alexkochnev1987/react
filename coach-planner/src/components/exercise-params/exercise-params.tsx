@@ -9,14 +9,30 @@ import {
   LoadIntensity,
 } from './constants';
 import { InputNumberComponent } from './Input-number';
-import { Box, Button, ClickAwayListener, Container, FormControlLabel, Grid, Switch, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  ClickAwayListener,
+  Container,
+  FormControlLabel,
+  Grid,
+  Switch,
+  Typography,
+} from '@mui/material';
 import { setEnergySupply } from '../../utils/setEnergySupply';
 import { countExerciseTime } from '../../utils/countExerciseTime';
 import { SelectComponent } from './Select-componet';
 import { setRest } from '../../utils/setRest';
 import { EditContentButtons } from '@/entities/EditContentButtons';
+import { DescriptionField } from '@/shared/ui/DescriptionField';
 
-export const energyOptions = [EnergySupply.CP, EnergySupply.CPLa, EnergySupply.LA, EnergySupply.O2, EnergySupply.Rest];
+export const energyOptions = [
+  EnergySupply.CP,
+  EnergySupply.CPLa,
+  EnergySupply.LA,
+  EnergySupply.O2,
+  EnergySupply.Rest,
+];
 
 export const intensityOptions = [
   LoadIntensity.max,
@@ -44,7 +60,9 @@ export const ExerciseParams = ({
     defaultValues: params ? { ...ExerciseParamsDefault, ...params } : ExerciseParamsDefault,
     mode: 'all',
   });
-  const [modeManual, setModeManual] = useState(params ? (params.modeManual ? params.modeManual : false) : false);
+  const [modeManual, setModeManual] = useState(
+    params ? (params.modeManual ? params.modeManual : false) : false,
+  );
   const onSubmit: SubmitHandler<IExerciseParams> = (data) => {
     const myParams = { ...data, modeManual: modeManual };
     submit(myParams);
@@ -80,47 +98,62 @@ export const ExerciseParams = ({
 
   return (
     <ClickAwayListener onClickAway={handleBlur}>
-      <form onFocus={handleFocus} onSubmit={handleSubmit(onSubmit)} ref={refForm} style={{ minWidth: '320px' }}>
-        <Box display={'flex'} justifyContent={'space-around'}>
-          <FormControlLabel
-            control={<Switch checked={modeManual} onChange={handleChange} />}
-            label={modeManual ? 'Manual' : 'Auto'}
+      <form onFocus={handleFocus} onSubmit={handleSubmit(onSubmit)} ref={refForm}>
+        <Grid container alignItems={'center'} pb={1}>
+          <Grid item xs={4}>
+            <FormControlLabel
+              labelPlacement="top"
+              control={<Switch checked={modeManual} onChange={handleChange} size="small" />}
+              label={modeManual ? 'Manual' : 'Auto'}
+            />
+          </Grid>
+          <Grid item xs>
+            <DescriptionField label={'Total'}>{totalTime} min</DescriptionField>
+          </Grid>
+        </Grid>
+        <Box display={'flex'} flexWrap={'wrap'} gap={1}>
+          <SelectComponent
+            label="Intensity"
+            items={intensityOptions}
+            callback={(value) => setValue('loadIntensity', value)}
+            value={getValues('loadIntensity')}
           />
-          <Typography variant="h6" textAlign="center">
-            Total:{totalTime} min
-          </Typography>
-        </Box>
-        <Box display={'flex'}>
-          <Box display={'flex'} flexDirection={'column'} sx={{ paddingTop: '10px', gap: '10px' }}>
-            <SelectComponent
-              label="Intensity"
-              items={intensityOptions}
-              callback={(value) => setValue('loadIntensity', value)}
-              value={getValues('loadIntensity')}
+          <SelectComponent
+            label="Energy"
+            manual={!modeManual}
+            items={energyOptions}
+            callback={(value) => setValue('energySupply', value as EnergySupply)}
+            value={getValues('energySupply')}
+          />
+          {ExerciseParamsArray.map((x) => (
+            <InputNumberComponent
+              key={x.name}
+              mode={modeManual}
+              x={x}
+              control={control}
+              errors={errors}
             />
-            <SelectComponent
-              label="Energy"
-              manual={!modeManual}
-              items={energyOptions}
-              callback={(value) => setValue('energySupply', value as EnergySupply)}
-              value={getValues('energySupply')}
-            />
+          ))}
+          <Box display={'flex'} gap={1} width={'100%'} flexWrap={'wrap'}>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={handleBlur}
+              disabled={!formActive}
+              sx={{ width: '110px' }}
+            >
+              Cancel
+            </Button>
+            <Button
+              sx={{ width: '110px' }}
+              type="submit"
+              variant="contained"
+              color="success"
+              disabled={!formActive}
+            >
+              Save
+            </Button>
           </Box>
-          <Box display={'flex'} flexWrap={'wrap'}>
-            {ExerciseParamsArray.map((x) => (
-              <Box sx={{ paddingLeft: '10px', paddingTop: '10px' }} key={x.name}>
-                <InputNumberComponent mode={modeManual} x={x} control={control} errors={errors} />
-              </Box>
-            ))}
-          </Box>
-        </Box>
-        <Box display={'flex'} justifyContent={'center'} gap={'10px'} sx={{ paddingTop: '10px' }}>
-          <Button variant="contained" color="error" onClick={handleBlur} disabled={!formActive}>
-            Cancel
-          </Button>
-          <Button type="submit" variant="contained" color="success" disabled={!formActive}>
-            Save
-          </Button>
         </Box>
       </form>
     </ClickAwayListener>

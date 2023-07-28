@@ -14,7 +14,7 @@ export const SelectComponent = ({
   manual?: boolean;
 }) => {
   return (
-    <FormControl size="small" sx={{ width: '100px' }}>
+    <FormControl size="small" sx={{ width: '110px' }}>
       <InputLabel>{label}</InputLabel>
       <Select
         label={label}

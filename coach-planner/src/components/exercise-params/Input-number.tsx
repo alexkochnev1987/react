@@ -25,7 +25,7 @@ export const InputNumberComponent = ({
             disabled={mode ? false : x.name === 'rest'}
             size="small"
             type="number"
-            sx={{ width: '110px' }}
+            sx={{ width: '110px', display: 'block' }}
             inputProps={{ min: 0 }}
             {...field}
             error={!!errors[x.name]}

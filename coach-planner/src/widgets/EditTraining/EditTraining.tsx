@@ -85,22 +85,29 @@ export const EditTraining = ({ training }: { training: TrainingResponse }) => {
             background: (t) => t.palette.background.paper,
           }}
         >
-          <Grid item textAlign={'center'} margin={'auto'}>
-            <Fab size="small" onClick={() => setOpenDialog(true)} color="error">
-              <DeleteForeverIcon />
-            </Fab>
-          </Grid>
-          <Grid item xs={7}>
-            <TrainingCardParams training={training} color="primary" />
+          <Grid item xs>
+            <TrainingCardParams training={training} color="primary">
+              <Fab
+                size="small"
+                onClick={() => setOpenDialog(true)}
+                color="error"
+                sx={{ width: '50px' }}
+              >
+                <DeleteForeverIcon />
+              </Fab>
+            </TrainingCardParams>
           </Grid>
           <Grid item xs={3}>
             <Chart params={countEnergySupplyTime(exercises)} />
           </Grid>
-          <Grid item xs={0.5} textAlign={'center'} margin={'auto'}>
-            <Fab onClick={toggleDrawer(true)} color="primary" size="small">
-              <AddIcon />
-            </Fab>
-          </Grid>
+          <Fab
+            onClick={toggleDrawer(true)}
+            color="primary"
+            size="small"
+            sx={{ position: 'absolute', bottom: -30, right: 5 }}
+          >
+            <AddIcon />
+          </Fab>
         </Grid>
         <Grid container p={1} spacing={1}>
           {exercises &&

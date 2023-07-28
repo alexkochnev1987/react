@@ -5,7 +5,15 @@ interface ToolIconButtonProps {
   onClick: () => void;
   children?: React.ReactNode;
   toolTipTitle?: string;
-  color?: 'default' | 'inherit' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning';
+  color?:
+    | 'default'
+    | 'inherit'
+    | 'primary'
+    | 'secondary'
+    | 'error'
+    | 'info'
+    | 'success'
+    | 'warning';
 }
 
 export const ToolIconButton: FC<ToolIconButtonProps> = ({
@@ -21,6 +29,8 @@ export const ToolIconButton: FC<ToolIconButtonProps> = ({
         onClick={() => onClick()}
         color={color}
         sx={{
+          height: '40px',
+          width: '40px',
           border: isActive ? '2px solid' : 'none',
         }}
       >
@@ -34,7 +44,9 @@ export const ToolIconButton: FC<ToolIconButtonProps> = ({
         onClick={() => onClick()}
         color={color}
         sx={{
-          border: isActive ? '2px solid' : 'none',
+          height: '40px',
+          width: '40px',
+          border: isActive ? '2px solid' : '2px',
         }}
       >
         {children}

@@ -35,7 +35,7 @@ export const UserMenu: FC<UserMenuProps> = ({ loading, userImage, userName }) =>
   ];
   return (
     <>
-      <Button onClick={handleOpenUserMenu} sx={{ p: 0 }} color="inherit">
+      <Button onClick={handleOpenUserMenu} sx={{ p: 0, maxWidth: '120px' }} color="inherit">
         {`${GREETINGS} ${userName || NO_NAME}!`}
         {loading ? <CircularProgress /> : <Avatar src={userImage || ''} />}
       </Button>
