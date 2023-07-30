@@ -60,30 +60,10 @@ export const ExerciseCard = ({ exercise }: { exercise: ExerciseForPage }) => {
                 control={
                   <Switch color="primary" onChange={changeExerciseStatus} checked={exercise.open} />
                 }
-                label={exercise.open ? 'Open' : 'Close'}
+                label={exercise.open ? 'Public' : 'Private'}
                 labelPlacement={'top'}
               />
               <Box>
-                {/* {exercise.open ? (
-                  <Button
-                    onClick={changeExerciseStatus}
-                    variant="contained"
-                    color="error"
-                    disabled={loading}
-                  >
-                    Close
-                  </Button>
-                ) : (
-                  <Button
-                    onClick={changeExerciseStatus}
-                    variant="contained"
-                    color="success"
-                    disabled={loading}
-                  >
-                    Open
-                  </Button>
-                )} */}
-
                 <Button onClick={() => setOpenSubmit(true)} color="error">
                   <DeleteForeverIcon />
                 </Button>

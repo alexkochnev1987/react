@@ -11,7 +11,7 @@ import {
 } from '@/lib/firebase/firebase.lib';
 import { ExerciseForPage } from '@/service/parseExerciseResponse';
 
-const getOpenExerciseCollection = () => getCollectionRef(DbCollections.openExercise);
+export const getOpenExerciseCollection = () => getCollectionRef(DbCollections.openExercise);
 
 export const getOpenExerciseDocRef = (id: string) => getDocRef(getOpenExerciseCollection(), id);
 

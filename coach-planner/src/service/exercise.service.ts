@@ -9,10 +9,9 @@ import {
   uploadExerciseBlob,
 } from '@/repository/exercise';
 
-export const createExercise = async (coachImage?: string | null | undefined) => {
+export const createExercise = async () => {
   try {
-    const image = coachImage || '';
-    const result = await addDocExercise({ coachImage: image });
+    const result = await addDocExercise();
     return result;
   } catch (error) {
     throw error;

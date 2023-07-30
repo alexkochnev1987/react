@@ -18,7 +18,7 @@ export const Burger: FC<BurgerProps> = ({ children }) => {
     setAnchorElNav(event.currentTarget);
   };
   return (
-    <Box sx={{ flexGrow: 1, display: { xs: 'flex', sm: 'none' }, alignItems: 'center' }}>
+    <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}>
       <IconButton
         size="large"
         aria-label="account of current user"

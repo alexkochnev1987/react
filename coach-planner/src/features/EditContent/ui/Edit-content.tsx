@@ -9,9 +9,9 @@ export const EditContent = ({
   value,
   label,
 }: {
-  value: string | undefined | string[] | AllDrawType | Timestamp;
+  value: string | undefined | string[] | AllDrawType | Timestamp | boolean;
   label: string;
-  callback: (value: string | undefined | string[] | AllDrawType | Timestamp) => void;
+  callback: (value: string | undefined | string[] | AllDrawType | Timestamp | boolean) => void;
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [content, setContent] = useState(value);

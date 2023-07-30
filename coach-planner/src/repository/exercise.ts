@@ -23,9 +23,8 @@ export const getExerciseCollection = () => getCollectionRef(exercisePath());
 
 export const getExerciseDocRef = (id: string) => getDocRef(getExerciseCollection(), id);
 
-export const addDocExercise = async (exercise: Partial<UpdateExerciseBody>) => {
+export const addDocExercise = async () => {
   const result = await addDoc(getExerciseCollection(), {
-    ...exercise,
     create: serverTimestamp(),
   });
   return result;
@@ -53,15 +52,19 @@ export const updateDocExercise = async (
 export const deleteImage = async (id: string) => {
   const userUiid = getUserUiid();
   const link = `${userUiid}/${id}`;
-  const fileRef = getStorageRef(link);
-  await deleteObject(fileRef);
+  try {
+    const fileRef = getStorageRef(link);
+
+    await deleteObject(fileRef);
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const deleteExerciseAndImageDoc = async (id: string): Promise<void> => {
   const docRef = getExerciseDocRef(id);
-  const img = deleteImage(id);
-  const doc = deleteDoc(docRef);
-  await Promise.all([doc, img]);
+  await deleteDoc(docRef);
+  await deleteImage(id);
 };
 
 export const uploadExerciseBlob = async (file: Blob, id: string) => {

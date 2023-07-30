@@ -16,6 +16,7 @@ const TrainingsPageAsync = lazy(() => import('@/pages/TrainingsPage/TrainingsPag
 const TrainingPageAsync = lazy(() => import('@/pages/TrainingPage/TrainingPage'));
 const LoginAsync = lazy(() => import('@/pages/Login'));
 const RegistrationAsync = lazy(() => import('@/pages/Registration'));
+const PublicExerciseAsync = lazy(() => import('@/pages/PublicExercisesPage/PublicExercisesPage'));
 
 export const Router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ export const Router = createBrowserRouter([
           {
             path: RoutePath.trainings + RoutePath.id,
             element: <TrainingPageAsync />,
+          },
+          {
+            path: RoutePath.public,
+            element: <PublicExerciseAsync />,
           },
         ],
       },

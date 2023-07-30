@@ -18,9 +18,16 @@ import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { addExerciseInOpenFolder, deleteExerciseFromOpenFolder } from './openExercise.service';
 import { ExerciseForPage } from './parseExerciseResponse';
+import { useCollection, useDocument } from 'react-firebase-hooks/firestore';
+import { getExerciseCollection, getExerciseDocRef } from '@/repository/exercise';
 
 export const getUserExercisesFromStore = () => useAppSelector(userExercisesState);
 export const getExerciseFromStore = () => useAppSelector(exerciseState);
+// export const getExerciseFromStore = () => {
+//   const {id}= useParams()
+//   const [value, loading, data] = useDocument(getExerciseDocRef(id||''))
+//   const exercises =value? {id:value.id, ...value?.data()}as ExerciseForPage:[]
+// }
 
 export const loadExercisesFromServer = () => {
   const dispatch = useAppDispatch();
@@ -49,7 +56,7 @@ export const useExerciseStore = () => {
     }
   };
   const updateExercise = (
-    content: string | AllDrawType | string[] | undefined | Timestamp,
+    content: string | AllDrawType | string[] | undefined | Timestamp | boolean,
     fieldName: keyof ExerciseResponse,
   ) => {
     if (id)

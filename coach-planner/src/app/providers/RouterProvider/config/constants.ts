@@ -8,6 +8,7 @@ export enum AppRoutes {
   PLAN = 'plan',
   ALL_EXERCISE = 'all',
   ID = 'id',
+  PUBLIC_EXERCISES = 'public',
 }
 
 export const RoutePath: Record<AppRoutes, string> = {
@@ -20,4 +21,5 @@ export const RoutePath: Record<AppRoutes, string> = {
   [AppRoutes.PLAN]: '/plan',
   [AppRoutes.ALL_EXERCISE]: '/all-exercise',
   [AppRoutes.ID]: '/:id',
+  [AppRoutes.PUBLIC_EXERCISES]: '/public-exercises',
 };

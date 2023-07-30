@@ -7,7 +7,7 @@ import { Timestamp } from 'firebase/firestore';
 interface TagInputProps extends InputProps {
   defaultTags: string[];
   placeholder: string;
-  tags: string | AllDrawType | string[] | undefined | Timestamp;
+  tags: string | AllDrawType | string[] | undefined | Timestamp | boolean;
   callback: (x: string[]) => void;
 }
 

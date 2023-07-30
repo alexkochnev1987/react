@@ -12,7 +12,6 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { RoutePath } from '@/app/providers/RouterProvider/config/constants';
 import { UserMenu } from './UserMenu';
 import { getUserDocRef } from '@/repository/user';
-import { useState } from 'react';
 import { Burger } from './Burger';
 export const NavRoutes = [
   {
@@ -26,6 +25,10 @@ export const NavRoutes = [
   {
     name: 'Trainings',
     link: RoutePath.trainings,
+  },
+  {
+    name: 'Public Exercises',
+    link: RoutePath.public,
   },
 ];
 
@@ -56,7 +59,7 @@ export function Navbar() {
         <Box
           sx={{
             flexGrow: 1,
-            display: { xs: 'none', sm: 'flex' },
+            display: { xs: 'none', md: 'flex' },
             alignItems: 'center',
           }}
         >

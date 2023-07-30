@@ -1,4 +1,4 @@
-import React, { ChangeEvent, ReactNode, useState } from 'react';
+import { ChangeEvent, ReactNode, useState } from 'react';
 import { Box, FormControlLabel, Paper, Radio, RadioGroup, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { SearchInput } from '@/shared/ui/SearchInput';
@@ -9,7 +9,7 @@ import { type DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
 import { includeStringValue } from '../lib/helpers';
 import { getUserCollection } from '@/repository/user';
 
-export const SearchBar = ({ children }: { children: ReactNode }) => {
+export const SearchBar = ({ children }: { children?: ReactNode }) => {
   const navigate = useNavigate();
   const nullHints = 'Coaches not found';
   const radioLabel = 'Filter By';
@@ -60,7 +60,6 @@ export const SearchBar = ({ children }: { children: ReactNode }) => {
       component="form"
       sx={{
         p: '2px 4px',
-        minWidth: 500,
       }}
       onSubmit={(e) => {
         e.preventDefault();

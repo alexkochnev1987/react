@@ -15,11 +15,9 @@ const ExercisesPage = () => {
     <HandleDataWrapper loading={loading} error={error}>
       <Grid container spacing={1} p={1}>
         <Grid item textAlign={'end'} xs={12}>
-          <SearchBar>
-            <Button variant="outlined" onClick={createNewExercise}>
-              {buttonText}
-            </Button>
-          </SearchBar>
+          <Button variant="outlined" onClick={createNewExercise}>
+            {buttonText}
+          </Button>
         </Grid>
         {exercises.map((exercise) => (
           <ExerciseCard key={exercise.id} exercise={exercise} />
