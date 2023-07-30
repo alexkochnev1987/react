@@ -28,7 +28,7 @@ const PlanCard: FC<PlanCardProps> = ({ plan, openDialog }) => {
   const navigate = useNavigate();
 
   return (
-    <Grid item xs={4}>
+    <Grid item xs={12} sm={6} md={4}>
       <Card>
         <Box display={'flex'}>
           <Box display={'flex'} sx={{ justifyContent: 'center', alignItems: 'center' }}>

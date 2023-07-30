@@ -37,14 +37,14 @@ export const EditTrainingTags: FC<EditTagProps> = ({
     setTagsValue(tags);
   };
   return (
-    <Box display={'flex'} sx={{ width: '100%' }} height={35} paddingTop={1} paddingBottom={1} alignItems={'center'}>
-      {edit ? (
-        <EditContentButtons flex handleCancel={() => setEdit(false)} handleSave={onSubmitHandler} />
-      ) : (
-        <IconButton onClick={() => setEdit(true)}>
-          <EditIcon sx={small ? { fontSize: '12px' } : { fontSize: '24px' }} />
-        </IconButton>
-      )}
+    <Box
+      display={'flex'}
+      sx={{ width: '100%' }}
+      height={35}
+      paddingTop={1}
+      paddingBottom={1}
+      alignItems={'center'}
+    >
       {edit ? (
         <Autocomplete
           size="small"
@@ -60,6 +60,13 @@ export const EditTrainingTags: FC<EditTagProps> = ({
         />
       ) : (
         children
+      )}
+      {edit ? (
+        <EditContentButtons flex handleCancel={() => setEdit(false)} handleSave={onSubmitHandler} />
+      ) : (
+        <IconButton onClick={() => setEdit(true)}>
+          <EditIcon sx={small ? { fontSize: '12px' } : { fontSize: '24px' }} />
+        </IconButton>
       )}
     </Box>
   );

@@ -1,5 +1,5 @@
 {
-  "cSpell.words": ["firestore", "middlewares", "toastr"],
+  "cSpell.words": ["firestore", "Konva", "middlewares", "toastr"],
   "editor.formatOnSave": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "i18n-ally.localesPaths": ["coach-planner/public/locales"]

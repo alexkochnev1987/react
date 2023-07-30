@@ -16,11 +16,11 @@ import { SetTrainingCard } from './SetTrainingCard';
 export const ExerciseParamsCard = ({
   trainingId,
   exercise,
-  coachId,
+  hide,
 }: {
-  coachId: string;
   trainingId: string;
   exercise: TrainingExerciseData;
+  hide: boolean;
 }) => {
   const submitParams = (data: IExerciseParams) => {
     const newExercise = { ...exercise, params: data };
@@ -45,6 +45,7 @@ export const ExerciseParamsCard = ({
       deleteExercise={deleteExercise}
       submitParams={submitParams}
       params={exercise.params}
+      hide={hide}
     >
       <Box textAlign={'center'}>
         <IconButton onClick={shiftExerciseUp} color="primary" size="small">

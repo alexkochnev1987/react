@@ -17,7 +17,7 @@ const ShowEventsPage = () => {
             }
           />
         )}
-        <Box flex={1} position={'relative'}>
+        <Box flex={1} position={'relative'} sx={{ minHeight: '375px' }}>
           <Box
             sx={{
               position: 'absolute',

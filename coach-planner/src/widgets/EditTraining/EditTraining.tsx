@@ -1,4 +1,12 @@
-import { Card, Fab, Grid, SwipeableDrawer, useTheme } from '@mui/material';
+import {
+  Card,
+  Fab,
+  FormControlLabel,
+  Grid,
+  SwipeableDrawer,
+  Switch,
+  useTheme,
+} from '@mui/material';
 import { deleteTraining } from '../../db/trainings';
 import { ExerciseParamsCard } from '../SetTrainingCard/Exercise-params-card';
 import { countEnergySupplyTime } from '../../utils/countEnergySupplyTime';
@@ -45,6 +53,8 @@ export const EditTraining = ({ training }: { training: TrainingResponse }) => {
     navigate(RoutePath.trainings);
   };
 
+  const [hide, setHide] = useState(true);
+
   const theme = useTheme();
   return (
     <>
@@ -86,33 +96,42 @@ export const EditTraining = ({ training }: { training: TrainingResponse }) => {
           }}
         >
           <Grid item xs>
-            <TrainingCardParams training={training} color="primary">
-              <Fab
-                size="small"
-                onClick={() => setOpenDialog(true)}
-                color="error"
-                sx={{ width: '50px' }}
-              >
+            <TrainingCardParams
+              training={training}
+              color="primary"
+              secondChild={
+                <Grid
+                  item
+                  sm={12}
+                  textAlign={'center'}
+                  sx={{ display: { sm: 'block' }, position: 'absolute', right: 10, top: 50 }}
+                >
+                  <Fab onClick={toggleDrawer(true)} color="primary" size="small">
+                    <AddIcon />
+                  </Fab>
+                  <FormControlLabel
+                    sx={{ display: { md: 'none' } }}
+                    value={true}
+                    control={<Switch color="primary" onChange={() => setHide((prev) => !prev)} />}
+                    label={hide ? 'Params' : 'Image'}
+                    labelPlacement={'top'}
+                  />
+                </Grid>
+              }
+            >
+              <Fab size="small" onClick={() => setOpenDialog(true)} color="error">
                 <DeleteForeverIcon />
               </Fab>
             </TrainingCardParams>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={12} sm={4}>
             <Chart params={countEnergySupplyTime(exercises)} />
           </Grid>
-          <Fab
-            onClick={toggleDrawer(true)}
-            color="primary"
-            size="small"
-            sx={{ position: 'absolute', bottom: -30, right: 5 }}
-          >
-            <AddIcon />
-          </Fab>
         </Grid>
         <Grid container p={1} spacing={1}>
           {exercises &&
             exercises.map((x) => (
-              <ExerciseParamsCard coachId={coachId} trainingId={id} key={x.uuid} exercise={x} />
+              <ExerciseParamsCard trainingId={id} key={x.uuid} exercise={x} hide={hide} />
             ))}
         </Grid>
       </Card>

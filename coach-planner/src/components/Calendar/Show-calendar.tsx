@@ -7,8 +7,6 @@ import 'kalend/dist/styles/index.css';
 import { countMinutesByDate } from '../../utils/countMinutesByDate';
 import { PageChangeData } from 'kalend/common/interface';
 
-import { Box } from '@mui/material';
-
 export const ShowCalendar = ({ planId }: { planId: string }) => {
   const [myEvents] = useCollection(getEventsCollectionLink(planId));
   const [open, setOpen] = useState(false);

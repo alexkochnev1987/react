@@ -25,11 +25,11 @@ export const TrainingCard: FC<TrainingCardProps> = ({ training }) => {
           <Grid item xs>
             <TrainingCardParams training={training} color="primary" />
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={10} sm={3}>
             <Chart params={countEnergySupplyTime(training.exercises)} />
           </Grid>
-          <Grid item xs={1.5} display={'flex'} justifyContent={'center'} alignItems={'center'}>
-            <Fab color="primary" onClick={navigateTo}>
+          <Grid item xs={2} sm={1} display={'flex'} justifyContent={'center'} alignItems={'center'}>
+            <Fab color="primary" onClick={navigateTo} size={'small'}>
               <EditIcon />
             </Fab>
           </Grid>

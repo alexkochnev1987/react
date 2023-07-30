@@ -23,33 +23,36 @@ export const SetTrainingCard = ({
   submitParams,
   params,
   children,
+  hide,
 }: {
   deleteExercise: () => void;
   exercise: ExerciseResponse;
   submitParams: (data: IExerciseParams) => void;
   params: IExerciseParams;
   children?: React.ReactNode;
+
+  hide: boolean;
 }) => {
-  const [hide, setHide] = useState(true);
   return (
     <Grid item xs={12}>
       <Card>
         <Grid item xs={12} container spacing={2} padding={0} position={'relative'}>
-          <Grid item xs container>
+          <Grid item xs={12} sm={6} md={7} container>
             <Grid
               item
               container
               direction="column"
               justifyContent="space-evenly"
               alignItems="center"
-              width={'30px'}
+              xs={2}
+              md={1}
             >
               <IconButton onClick={deleteExercise} color="error" size="small">
                 <DeleteForeverIcon />
               </IconButton>
               {children}
             </Grid>
-            <Grid item xs>
+            <Grid item xs={10} md={6}>
               <Typography variant="h5" color={'primary'}>
                 {exercise.name}
               </Typography>
@@ -77,29 +80,22 @@ export const SetTrainingCard = ({
                 <ExpandText label="Description" text={exercise.description} />
               </Grid>
             </Grid>
-            <Grid item sm={5} minWidth={230} sx={{ display: { xs: 'none', md: 'grid' } }}>
+            <Grid item md={5} minWidth={230} sx={{ display: { xs: 'none', md: 'grid' } }}>
               <ExerciseParams submit={submitParams} params={params} />
             </Grid>
           </Grid>
-          <Grid item xs sm={5} sx={{ display: { xs: 'none', md: 'grid' } }}>
+          <Grid item md={5} sx={{ display: { xs: 'none', md: 'grid' } }}>
             <CardMedia component="img" image={exercise.img} alt={exercise.name} />
           </Grid>
           <Grid
             item
-            xs={8}
+            xs={12}
+            sm={6}
             sx={{ display: { xs: 'grid', md: 'none' } }}
             alignItems={'center'}
             textAlign={'center'}
             container
           >
-            <Grid item xs={12}>
-              <FormControlLabel
-                value="top"
-                control={<Switch color="primary" onChange={() => setHide((prev) => !prev)} />}
-                label={hide ? 'Params' : 'Image'}
-                labelPlacement="start"
-              />
-            </Grid>
             <Grid item xs={12}>
               {hide ? (
                 <ExerciseParams submit={submitParams} params={params} />

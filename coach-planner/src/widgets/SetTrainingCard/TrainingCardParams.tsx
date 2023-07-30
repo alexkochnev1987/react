@@ -14,9 +14,15 @@ interface TrainingCardParamsProps {
   training: TrainingResponse;
   color?: string;
   children?: ReactNode;
+  secondChild?: ReactNode;
 }
 
-export const TrainingCardParams: FC<TrainingCardParamsProps> = ({ children, training, color }) => {
+export const TrainingCardParams: FC<TrainingCardParamsProps> = ({
+  children,
+  training,
+  color,
+  secondChild,
+}) => {
   const updateMyTraining = (content: string | string[], fieldName: string) => {
     updateTraining(training.id, { [fieldName]: content });
   };
@@ -32,7 +38,7 @@ export const TrainingCardParams: FC<TrainingCardParamsProps> = ({ children, trai
 
   return (
     <Grid container spacing={1}>
-      <Grid item xs>
+      <Grid item xs position={'relative'}>
         <Box display={'flex'} justifyContent={'space-between'} height={45}>
           {children}
           <EditTrainingField
@@ -40,21 +46,21 @@ export const TrainingCardParams: FC<TrainingCardParamsProps> = ({ children, trai
             startValue={training.name || ''}
             onSubmit={updateTrainingName}
           >
-            <Typography variant="h4" color={color} textAlign={'start'}>
+            <Typography variant="h4" color={color} textAlign={'start'} flex={1}>
               {training.name || 'NAME NOT FOUND'}
             </Typography>
           </EditTrainingField>
 
           <TextField
-            sx={{ width: '125px' }}
+            sx={{ width: '85px' }}
             size={'small'}
-            label="Total time min"
+            label="Duration"
             variant="outlined"
             value={totalTime}
             disabled
           />
+          {secondChild}
         </Box>
-
         <ExpandText label="Options">
           <Grid spacing={1} container>
             <Grid item xs={6}>
@@ -95,19 +101,18 @@ export const TrainingCardParams: FC<TrainingCardParamsProps> = ({ children, trai
                 </DescriptionField>
               </EditTrainingTags>
             </Grid>
-            <Grid item>
+            <Grid item xs={12}>
               <EditTrainingField
                 small
                 label={'Description'}
                 startValue={training.description || ''}
                 onSubmit={updateDescription}
+                flex
               >
                 <DescriptionField label="Description" data={training.description} />
               </EditTrainingField>
             </Grid>
           </Grid>
-
-          <Box display={'flex'} justifyContent={'space-between'} alignItems={'center'}></Box>
         </ExpandText>
       </Grid>
     </Grid>
