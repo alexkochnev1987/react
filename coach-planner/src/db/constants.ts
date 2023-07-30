@@ -8,6 +8,7 @@ export enum DbCollections {
   plans = 'plans',
   events = 'events',
   users = 'users',
+  openExercise = 'openExercise',
 }
 
 export interface ExerciseResponse {
@@ -27,6 +28,7 @@ export interface ExerciseResponse {
   coachImage?: string;
   conva?: AllDrawType;
   imgRef?: string;
+  open?: boolean;
 }
 
 export type ExerciseResponseKeys = keyof ExerciseResponse;
@@ -41,6 +43,7 @@ export interface UpdateExerciseBody {
   link?: string;
   coachImage?: string;
   conva?: AllDrawType;
+  open?: boolean;
 }
 
 export interface TrainingExerciseData {

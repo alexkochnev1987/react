@@ -3,6 +3,7 @@ import { RootState } from '../store';
 import { getExerciseById, updateExercise } from '@/service/exercise.service';
 import { ExerciseForPage } from '@/service/parseExerciseResponse';
 import { UpdateExerciseBody } from '@/db/constants';
+import { changeExerciseAction } from './userExercisesSlice';
 
 interface ExerciseState {
   exercise: ExerciseForPage | null;
@@ -23,12 +24,15 @@ export const fetchExercise = createAsyncThunk(
     return response;
   },
 );
-export const updateExerciseFunction = createAsyncThunk(
-  'exercise/updateExercise',
-  async ({ id, exercise }: { id: string; exercise: Partial<UpdateExerciseBody> }) => {
-    await updateExercise(id, exercise);
-  },
-);
+
+export const updateExerciseFunction = createAsyncThunk<
+  Partial<UpdateExerciseBody>,
+  { id: string; exercise: Partial<UpdateExerciseBody> }
+>('exercise/updateExercise', async (data, thunkApi) => {
+  await updateExercise(data.id, data.exercise);
+  thunkApi.dispatch(changeExerciseAction(data));
+  return data.exercise;
+});
 
 const exerciseSlice = createSlice({
   name: 'exercise',
@@ -47,11 +51,16 @@ const exerciseSlice = createSlice({
       state.loading = false;
       state.error = action.error.message;
     });
-    builder.addCase(updateExerciseFunction.fulfilled, (state, action) => {});
-    builder.addCase(updateExerciseFunction.pending, (state, action) => {
+    builder.addCase(updateExerciseFunction.fulfilled, (state, action) => {
+      state.loading = false;
       state.error = null;
     });
+    builder.addCase(updateExerciseFunction.pending, (state, action) => {
+      state.error = null;
+      state.loading = true;
+    });
     builder.addCase(updateExerciseFunction.rejected, (state, action) => {
+      state.loading = false;
       state.error = action.error.message;
     });
   },
@@ -60,6 +69,7 @@ const exerciseSlice = createSlice({
 const selectExercise = (state: RootState) => state.exercise;
 
 export const exerciseState = createSelector([selectExercise], (state) => state);
+export const loadingExerciseState = createSelector([selectExercise], (state) => state.loading);
 
 export const {} = exerciseSlice.actions;
 export default exerciseSlice.reducer;

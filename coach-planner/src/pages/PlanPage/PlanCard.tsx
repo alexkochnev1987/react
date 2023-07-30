@@ -1,22 +1,22 @@
 import { FC } from 'react';
-import { PlanResponse, getPlanDocRef } from '@/db/plans';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { PlanResponse } from '@/db/plans';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
-  Button,
   Card,
   CardActionArea,
   CardHeader,
   Grid,
   IconButton,
   Link,
+  Typography,
 } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { RoutePath } from '@/app/providers/RouterProvider/config/constants';
 import { DescriptionField } from '@/shared/ui/DescriptionField';
 import { parseDate } from '@/shared/lib/parseDate';
-import { useCollection, useDocument } from 'react-firebase-hooks/firestore';
-import { getEventsCollectionLink } from '@/db/events';
+import { getEventsCollectionRef } from '@/db/events';
+import { useCollection } from 'react-firebase-hooks/firestore';
 
 interface PlanCardProps {
   plan: PlanResponse;
@@ -24,7 +24,7 @@ interface PlanCardProps {
 }
 
 const PlanCard: FC<PlanCardProps> = ({ plan, openDialog }) => {
-  const [myEvents, loading, error] = useCollection(getEventsCollectionLink(plan.id));
+  const [myEvents, loading, error] = useCollection(getEventsCollectionRef(plan.id));
   const navigate = useNavigate();
 
   return (
@@ -37,7 +37,14 @@ const PlanCard: FC<PlanCardProps> = ({ plan, openDialog }) => {
             </IconButton>
           </Box>
           <CardActionArea onClick={() => navigate(RoutePath.plan + RoutePath.main + plan.id)}>
-            <CardHeader title={plan.name} />
+            <Typography
+              variant="h4"
+              textAlign={'start'}
+              flex={1}
+              sx={{ color: (t) => t.palette.primary.main }}
+            >
+              {plan.name || 'NAME NOT FOUND'}
+            </Typography>
             <Box display={'flex'} justifyContent={'space-between'}>
               <DescriptionField label="Created" data={parseDate(plan.create?.toDate())} />
               {plan.modify && (

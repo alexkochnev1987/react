@@ -3,8 +3,12 @@ import { ExerciseResponse } from '@/db/constants';
 import { AllDrawType } from '@/features/DrawExercise/lib/helpers';
 import { Timestamp } from '@/lib/firebase/firebase.lib';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { setImage } from '@/store/slices/draw-objects-slice';
-import { exerciseState, fetchExercise, updateExerciseFunction } from '@/store/slices/exerciseSlice';
+import {
+  exerciseState,
+  fetchExercise,
+  loadingExerciseState,
+  updateExerciseFunction,
+} from '@/store/slices/exerciseSlice';
 import {
   deleteUserExercise,
   fetchUserExercises,
@@ -12,6 +16,8 @@ import {
 } from '@/store/slices/userExercisesSlice';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { addExerciseInOpenFolder, deleteExerciseFromOpenFolder } from './openExercise.service';
+import { ExerciseForPage } from './parseExerciseResponse';
 
 export const getUserExercisesFromStore = () => useAppSelector(userExercisesState);
 export const getExerciseFromStore = () => useAppSelector(exerciseState);
@@ -59,11 +65,32 @@ export const useExerciseStore = () => {
 };
 
 export const useDeleteExercise = (id: string) => {
+  const loading = useAppSelector(loadingExerciseState);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const deleteExercise = () => {
     dispatch(deleteUserExercise(id));
     navigate(RoutePath.exercise);
   };
-  return deleteExercise;
+
+  const openExercise = async (exercise: ExerciseForPage) => {
+    await addExerciseInOpenFolder(exercise);
+    dispatch(
+      updateExerciseFunction({
+        id: id,
+        exercise: { open: true },
+      }),
+    );
+  };
+
+  const hideExercise = async (id: string) => {
+    await deleteExerciseFromOpenFolder(id);
+    dispatch(
+      updateExerciseFunction({
+        id: id,
+        exercise: { open: false },
+      }),
+    );
+  };
+  return { loading, deleteExercise, openExercise, hideExercise };
 };

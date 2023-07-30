@@ -1,14 +1,14 @@
 import Kalend, { CalendarEvent, CalendarView, OnEventClickData, OnNewEventClickData } from 'kalend';
 import { useCallback, useState } from 'react';
 import { AddTrainingDialog } from '../dialogs/calendar-dialog/Add-training-in-plan-dialog';
-import { getEventsCollectionLink } from '../../db/events';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import 'kalend/dist/styles/index.css';
 import { countMinutesByDate } from '../../utils/countMinutesByDate';
 import { PageChangeData } from 'kalend/common/interface';
+import { getEventsCollectionRef } from '@/db/events';
 
 export const ShowCalendar = ({ planId }: { planId: string }) => {
-  const [myEvents] = useCollection(getEventsCollectionLink(planId));
+  const [myEvents] = useCollection(getEventsCollectionRef(planId));
   const [open, setOpen] = useState(false);
   const [name, setName] = useState<Partial<CalendarEvent>>({ color: 'blue' });
   const onEventClick = (data: OnEventClickData) => {

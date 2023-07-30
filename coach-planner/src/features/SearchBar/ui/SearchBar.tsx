@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, ReactNode, useState } from 'react';
 import { Box, FormControlLabel, Paper, Radio, RadioGroup, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { SearchInput } from '@/shared/ui/SearchInput';
@@ -9,7 +9,7 @@ import { type DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
 import { includeStringValue } from '../lib/helpers';
 import { getUserCollection } from '@/repository/user';
 
-export const SearchBar = () => {
+export const SearchBar = ({ children }: { children: ReactNode }) => {
   const navigate = useNavigate();
   const nullHints = 'Coaches not found';
   const radioLabel = 'Filter By';
@@ -67,7 +67,11 @@ export const SearchBar = () => {
         navigate(value);
       }}
     >
-      <Box sx={{ display: 'flex', gap: '10px' }}>
+      <Box
+        sx={{ display: 'flex', gap: '10px' }}
+        alignItems={'center'}
+        justifyContent={'space-between'}
+      >
         <Typography align="left" variant="body1">
           {radioLabel}
         </Typography>
@@ -75,6 +79,7 @@ export const SearchBar = () => {
           <FormControlLabel value="name" control={<Radio />} label="Name" />
           <FormControlLabel value="team" control={<Radio />} label="Team" />
         </RadioGroup>
+        {children}
       </Box>
 
       <SearchInput

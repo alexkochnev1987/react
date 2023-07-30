@@ -1,4 +1,15 @@
-import { Avatar, Button, Card, CardHeader, CardMedia, Chip, Grid } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  CardHeader,
+  CardMedia,
+  Chip,
+  FormControlLabel,
+  Grid,
+  Switch,
+} from '@mui/material';
 import { red } from '@mui/material/colors';
 import { ExpandText } from '@/shared/ui/ExpandText';
 import { NavLink } from 'react-router-dom';
@@ -13,7 +24,15 @@ import { useDeleteExercise } from '@/service/store.service';
 
 export const ExerciseCard = ({ exercise }: { exercise: ExerciseForPage }) => {
   const [openSubmit, setOpenSubmit] = useState(false);
-  const deleteExercise = useDeleteExercise(exercise.id);
+  const { loading, deleteExercise, openExercise, hideExercise } = useDeleteExercise(exercise.id);
+
+  const changeExerciseStatus = () => {
+    if (exercise.open) {
+      hideExercise(exercise.id);
+    } else {
+      openExercise(exercise);
+    }
+  };
 
   return (
     <Grid item xs={12}>
@@ -35,22 +54,52 @@ export const ExerciseCard = ({ exercise }: { exercise: ExerciseForPage }) => {
             <Chip label={x} key={x} />
           ))}
           action={
-            <>
-              <Button onClick={() => setOpenSubmit(true)} color="error">
-                <DeleteForeverIcon />
-              </Button>
-              <NavLink
-                to={RoutePath.exercise + RoutePath.main + exercise.id}
-                style={{ textDecoration: 'none' }}
-              >
-                <Button>
-                  <ModeEditOutlineIcon />
+            <Box display={{ xs: 'block', sm: 'flex' }} textAlign={'center'}>
+              <FormControlLabel
+                disabled={loading}
+                control={
+                  <Switch color="primary" onChange={changeExerciseStatus} checked={exercise.open} />
+                }
+                label={exercise.open ? 'Open' : 'Close'}
+                labelPlacement={'top'}
+              />
+              <Box>
+                {/* {exercise.open ? (
+                  <Button
+                    onClick={changeExerciseStatus}
+                    variant="contained"
+                    color="error"
+                    disabled={loading}
+                  >
+                    Close
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={changeExerciseStatus}
+                    variant="contained"
+                    color="success"
+                    disabled={loading}
+                  >
+                    Open
+                  </Button>
+                )} */}
+
+                <Button onClick={() => setOpenSubmit(true)} color="error">
+                  <DeleteForeverIcon />
                 </Button>
-              </NavLink>
-            </>
+                <NavLink
+                  to={RoutePath.exercise + RoutePath.main + exercise.id}
+                  style={{ textDecoration: 'none' }}
+                >
+                  <Button>
+                    <ModeEditOutlineIcon />
+                  </Button>
+                </NavLink>
+              </Box>
+            </Box>
           }
         />
-        <Grid container padding={1}>
+        <Grid container padding={1} spacing={1}>
           <Grid item xs={12} sm={8} md={6} lg={6}>
             <CardMedia component="img" width={'100%'} image={exercise.img} alt={exercise.name} />
           </Grid>

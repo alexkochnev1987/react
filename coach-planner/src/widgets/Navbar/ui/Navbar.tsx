@@ -39,10 +39,6 @@ export function Navbar() {
     return <FirebaseError message={error.message} />;
   }
 
-  const matches = useMediaQuery('(min-width:650px)');
-
-  console.log(matches);
-
   return (
     <AppBar position="static">
       <Toolbar

@@ -35,6 +35,14 @@ const userExerciseSlice = createSlice({
     deleteExerciseAction(state, action: PayloadAction<string>) {
       state.exercises = state.exercises.filter((x) => x.id !== action.payload);
     },
+    changeExerciseAction(
+      state,
+      action: PayloadAction<{ id: string; exercise: Partial<ExerciseForPage> }>,
+    ) {
+      state.exercises = state.exercises.map((x) =>
+        x.id !== action.payload.id ? x : { ...x, ...action.payload.exercise },
+      );
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchUserExercises.fulfilled, (state, action) => {
@@ -73,5 +81,5 @@ export const userExercisesLoadingSelector = createSelector(
   (user) => user.loading,
 );
 
-export const { deleteExerciseAction } = userExerciseSlice.actions;
+export const { deleteExerciseAction, changeExerciseAction } = userExerciseSlice.actions;
 export default userExerciseSlice.reducer;
