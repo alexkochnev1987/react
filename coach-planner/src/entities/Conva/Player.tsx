@@ -1,5 +1,11 @@
 import React, { useEffect } from 'react';
-import { selectCurrentId, setColor, setCurrent, setPlayerType, setPoint } from '../../store/slices/draw-objects-slice';
+import {
+  selectCurrentId,
+  setColor,
+  setCurrent,
+  setPlayerType,
+  setPoint,
+} from '../../store/slices/draw-objects-slice';
 import { Circle, RegularPolygon } from 'react-konva';
 import { KonvaEventObject } from 'konva/lib/Node';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -14,10 +20,10 @@ export const PlayerComponent = ({ player }: { player: Player }) => {
   const props = {
     x: player.point[0],
     y: player.point[1],
-    radius: 15,
+    radius: 10,
     stroke: '#000',
     fill: player.color,
-    strokeWidth: current === player.id ? 4 : 2,
+    strokeWidth: current === player.id ? 3 : 1,
     draggable: true,
     onMouseOver: function (e: KonvaEventObject<MouseEvent>) {
       document.body.style.cursor = 'pointer';
@@ -33,6 +39,9 @@ export const PlayerComponent = ({ player }: { player: Player }) => {
       }
     },
     onClick: function () {
+      dispatch(setCurrent(player.id));
+    },
+    onTouchStart: function () {
       dispatch(setCurrent(player.id));
     },
   };

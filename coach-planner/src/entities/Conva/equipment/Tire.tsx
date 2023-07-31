@@ -54,8 +54,15 @@ const middle = `M12,16c-2.2,0-4-1.8-4-4s1.8-4,4-4s4,1.8,4,4S14.2,16,12,16z`;
 export const Tire = ({ equipment }: { equipment: Equipment }) => {
   return (
     <DraggableWrapper equipment={equipment}>
-      <Path data={tire} fill={equipment.color} scaleX={0.055} scaleY={0.055} />
-      <Path data={middle} fill="white" scaleX={1.18} scaleY={1.18} stroke={equipment.color} strokeWidth={2} />
+      <Path data={tire} fill={'black'} scaleX={0.055} scaleY={0.055} />
+      <Path
+        data={middle}
+        fill="white"
+        scaleX={1.18}
+        scaleY={1.18}
+        stroke={equipment.color}
+        strokeWidth={2}
+      />
     </DraggableWrapper>
   );
 };
